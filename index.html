@@ -283,6 +283,12 @@
       <div class="section-label" style="margin-top:36px;">论文解读</div>
       <ul class="article-list">
 <li class="article-item">
+          <h2><a href="papers/scaling-learn.html">为什么大模型能学会小模型学不会的东西？——梯度干扰与稀有任务的留存</a></h2>
+          <div class="article-meta">2026-06-03<span class="sep">Scaling Law</span><span class="sep">梯度干扰</span><span class="sep">Stanford · Harvard · MIT · Anthropic</span></div>
+          <div class="article-desc">大模型不是"更聪明"——而是参数多到高频任务的梯度变得极微弱，不再覆盖稀有任务缓慢积累的特征。用 OLMo 4M–4B 实验验证：1B 模型对非任务 token 的梯度干扰仅 7.58×10⁻⁵，20M 模型高达 0.10。数据中心化：提高数据频率可能比盲目扩大模型更有效。</div>
+        </li>
+
+<li class="article-item">
           <h2><a href="papers/dmem.html">δ-mem：用 8×8 矩阵给冻结 LLM 加上在线记忆</a></h2>
           <div class="article-meta">2026-06-02<span class="sep">Agent Memory</span><span class="sep">Delta-Rule Learning</span><span class="sep">NTU · 复旦 · 交大</span></div>
           <div class="article-desc">在冻结 LLM 旁维护 8×8 在线关联记忆矩阵，通过 delta-rule 持续更新，读取向量直接注入 attention 生成低秩修正。MemoryAgentBench +31%，移除全部上下文后仅凭 64 元素矩阵仍能恢复关键推理链。</div>
