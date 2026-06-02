@@ -283,6 +283,12 @@
       <div class="section-label" style="margin-top:36px;">论文解读</div>
       <ul class="article-list">
 <li class="article-item">
+          <h2><a href="papers/dmem.html">δ-mem：用 8×8 矩阵给冻结 LLM 加上在线记忆</a></h2>
+          <div class="article-meta">2026-06-02<span class="sep">Agent Memory</span><span class="sep">Delta-Rule Learning</span><span class="sep">NTU · 复旦 · 交大</span></div>
+          <div class="article-desc">在冻结 LLM 旁维护 8×8 在线关联记忆矩阵，通过 delta-rule 持续更新，读取向量直接注入 attention 生成低秩修正。MemoryAgentBench +31%，移除全部上下文后仅凭 64 元素矩阵仍能恢复关键推理链。</div>
+        </li>
+
+<li class="article-item">
           <h2><a href="papers/video-o3.html">Video-o3：让视频理解模型学会"主动找线索"</a></h2>
           <div class="article-meta">2026-06-01<span class="sep">视频理解</span><span class="sep">Agent</span><span class="sep">多跳推理</span><span class="sep">ICML 2026</span></div>
           <div class="article-desc">Video-o3 给视频 MLLM 装上"主动寻线索"能力——迭代调用 VideoCrop 精查关键片段，攒够证据再下结论。7B 模型在 MLVU 72.1%、Video-Holmes 46.5% 刷 SOTA。</div>
