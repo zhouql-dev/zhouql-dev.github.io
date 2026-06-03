@@ -283,6 +283,12 @@
       <div class="section-label" style="margin-top:36px;">论文解读</div>
       <ul class="article-list">
 <li class="article-item">
+          <h2><a href="papers/dynamic-short-conv.html">动态短卷积：给 Transformer 加一个"会看情况的"局部感受野</a></h2>
+          <div class="article-meta">2026-06-04<span class="sep">Transformer</span><span class="sep">动态卷积</span><span class="sep">MIT · MIT-IBM Watson AI Lab</span></div>
+          <div class="article-desc">将静态短卷积替换为输入依赖的动态卷积，150M-2B 模型上 1.33-1.60× 计算优势，端到端训练仅 +8% 开销。泛化至 MoE、Mamba-2、Gated DeltaNet。思路简单、收益显著——几乎无脑可加的架构改进。</div>
+        </li>
+
+<li class="article-item">
           <h2><a href="papers/scaling-learn.html">为什么大模型能学会小模型学不会的东西？——梯度干扰与稀有任务的留存</a></h2>
           <div class="article-meta">2026-06-03<span class="sep">Scaling Law</span><span class="sep">梯度干扰</span><span class="sep">Stanford · Harvard · MIT · Anthropic</span></div>
           <div class="article-desc">大模型不是"更聪明"——而是参数多到高频任务的梯度变得极微弱，不再覆盖稀有任务缓慢积累的特征。用 OLMo 4M–4B 实验验证：1B 模型对非任务 token 的梯度干扰仅 7.58×10⁻⁵，20M 模型高达 0.10。数据中心化：提高数据频率可能比盲目扩大模型更有效。</div>
