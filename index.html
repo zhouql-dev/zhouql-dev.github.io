@@ -472,10 +472,10 @@
     // Collect featured items (always visible) and paper items (paginated)
     var sectionLabels = document.querySelectorAll('.section-label');
     var articleLists = document.querySelectorAll('.article-list');
-    var tutorialLabel = sectionLabels[0];
+    var papersLabel = sectionLabels[0];
     var blogLabel = sectionLabels[1];
-    var papersLabel = sectionLabels[2];
-    var papersList = articleLists[2] || articleLists[articleLists.length - 1];
+    var tutorialLabel = sectionLabels[2];
+    var papersList = articleLists[0] || articleLists[0];
     var paperItems = papersList ? Array.from(papersList.querySelectorAll('.article-item')) : [];
 
     var currentPage = 1;
