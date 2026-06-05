@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
       <ul class="article-list">
 <li class="article-item">
+          <h2><a href="papers/depth-attention.html">Depth-Attention：让 Transformer 在深度维度上也学会"选择性注意力"</a></h2>
+          <div class="article-meta">2026-06-06<span class="sep">Transformer</span><span class="sep">跨层信息流</span><span class="sep">KV Cache</span><span class="sep">GQA</span></div>
+          <div class="article-desc">自注意力在序列维度自由选择信息，但在深度维度只是残差累加。Depth-Attention 在注意力模块内部增加"沿深度方向的注意力"，让每层从前面的层选择性复用 value——零参数、零额外 KV cache、不到 0.01% 额外 FLOPs，1.5B/3B Qwen3 风格解码器全面最优。</div>
+        </li>
+<li class="article-card">
           <h2><a href="papers/anthropic-recursive-self-improvement.html">当 AI 构建自身——Anthropic 递归自我改进进展报告</a></h2>
           <div class="article-meta">2026-06-05<span class="sep">递归自我改进</span><span class="sep">AI 自主开发</span><span class="sep">Anthropic Institute</span></div>
           <div class="article-desc">Anthropic 首次披露内部数据：80%+ 代码由 Claude 编写，工程师代码产出是 2024 年的 8 倍，Claude 单次提交 800+ 修复将 API 错误降低 1000 倍。反馈循环已启动——每次 Claude 升级都加速下一个版本的构建。研究判断力是通向完整递归自我改进的关键鸿沟。罕见提出"可验证的暂停"政策立场。</div>
