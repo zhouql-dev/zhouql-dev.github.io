@@ -447,20 +447,19 @@
       <div class="section-label" style="margin-top:36px;">技术博客</div>
       <ul class="article-list">
         <li class="article-item featured">
-          <h2><a href="blog/raspberrypi-nanobot.html">用一台树莓派养两只 AI：我跑了三个多月的"家庭 AI 实验室"</a></h2>
-          <div class="article-meta"><span class="badge">实战</span>2026-05-22<span class="sep">树莓派</span><span class="sep">nanobot</span><span class="sep">AI Agent</span></div>
-          <div class="article-desc">600元树莓派 + 开源 nanobot，挂两个飞书AI助手（熊大&熊二），三个月自动出19期论文播客、近百篇论文解读、A股日报、美股模拟交易——每月电费1块8，API费用50块。一套普通人也能复制的7×24小时AI方案。</div>
-        </li>
-        <li class="article-item featured">
           <h2><a href="blog/anthropic-data-analytics.html">Anthropic 用 Claude 做自助数据分析的完整工程体系</a></h2>
           <div class="article-meta"><span class="badge">工程实践</span>2026-06-06<span class="sep">Claude</span><span class="sep">数据分析</span><span class="sep">Skill 设计</span><span class="sep">数据治理</span></div>
           <div class="article-desc">裸 Claude 回答数据分析问题准确率仅 21%，加上 skill 稳定 95%+，不维护一个月掉回 65%。四层架构（Data Foundations → Sources of Truth → Skills → Validation），精加工知识而非原始检索，LLM 自动生成元数据定义"净效果为负"。</div>
         </li>
-      
-        <li class="article-item">
+        <li class="article-item featured">
           <h2><a href="blog/ai-cyber-threats.html">AI 攻击者画像：832 个恶意账户揭示的三个关键趋势</a></h2>
           <div class="article-meta"><span class="badge">安全</span>2026-06-04<span class="sep">网络安全</span><span class="sep">MITRE ATT&CK</span><span class="sep">威胁情报</span></div>
           <div class="article-desc">Anthropic 审查 832 个恶意账户，映射到 MITRE ATT&CK 框架。三大发现：攻击重心从钓鱼向后渗透转移、传统威胁评估体系因 AI 而失效、编排架构成为高危攻击者唯一持久区分信号。</div>
+        </li>
+        <li class="article-item featured">
+          <h2><a href="blog/raspberrypi-nanobot.html">用一台树莓派养两只 AI：我跑了三个多月的"家庭 AI 实验室"</a></h2>
+          <div class="article-meta"><span class="badge">实战</span>2026-05-22<span class="sep">树莓派</span><span class="sep">nanobot</span><span class="sep">AI Agent</span></div>
+          <div class="article-desc">600元树莓派 + 开源 nanobot，挂两个飞书AI助手（熊大&熊二），三个月自动出19期论文播客、近百篇论文解读、A股日报、美股模拟交易——每月电费1块8，API费用50块。一套普通人也能复制的7×24小时AI方案。</div>
         </li>
 </ul>
 
@@ -497,11 +496,17 @@
     var papersLabel = sectionLabels[0];
     var blogLabel = sectionLabels[1];
     var tutorialLabel = sectionLabels[2];
-    var papersList = articleLists[0] || articleLists[0];
+    var papersList = articleLists[0];
+    var blogList = articleLists[1];
+    var tutorialList = articleLists[2];
     var paperItems = papersList ? Array.from(papersList.querySelectorAll('.article-item')) : [];
+    var blogItems = blogList ? Array.from(blogList.querySelectorAll('.article-item')) : [];
+    var tutorialItems = tutorialList ? Array.from(tutorialList.querySelectorAll('.article-item')) : [];
 
     var currentPage = 1;
-    var filteredItems = paperItems.slice(); // copy
+    var filteredItems = paperItems.slice();
+    var filteredBlog = blogItems.slice();
+    var filteredTutorial = tutorialItems.slice();
     var totalPages = 1;
     var searchQuery = '';
 
@@ -515,35 +520,70 @@
         if (!searchQuery) return true;
         return getItemText(item).indexOf(searchQuery) !== -1;
       });
+      filteredBlog = blogItems.filter(function(item) {
+        if (!searchQuery) return true;
+        return getItemText(item).indexOf(searchQuery) !== -1;
+      });
+      filteredTutorial = tutorialItems.filter(function(item) {
+        if (!searchQuery) return true;
+        return getItemText(item).indexOf(searchQuery) !== -1;
+      });
       currentPage = 1;
       render();
     }
 
-    function render() {
-      // Show/hide featured sections
-      var featuredParents = document.querySelectorAll('.article-item.featured');
-      featuredParents.forEach(function(item) {
-        var parent = item.closest('ul');
-        if (parent) parent.style.display = searchQuery ? 'none' : '';
+    function paginateList(items, perPage) {
+      items.forEach(function(item) { item.style.display = 'none'; });
+    }
+
+    function showPage(items, page, perPage) {
+      var start = (page - 1) * perPage;
+      items.forEach(function(item, i) {
+        if (i >= start && i < start + perPage) {
+          item.style.display = '';
+        }
       });
-      if (tutorialLabel) tutorialLabel.style.display = searchQuery ? 'none' : '';
-      if (blogLabel) blogLabel.style.display = searchQuery ? 'none' : '';
-      if (papersLabel) papersLabel.textContent = searchQuery ? '搜索结果' : '论文解读';
+    }
+
+    function render() {
+      var isSearch = !!searchQuery;
+
+      // Show/hide blog & tutorial sections during search
+      if (blogList) blogList.style.display = isSearch ? 'none' : '';
+      if (blogLabel) blogLabel.style.display = isSearch ? 'none' : '';
+      if (tutorialList) tutorialList.style.display = isSearch ? 'none' : '';
+      if (tutorialLabel) tutorialLabel.style.display = isSearch ? 'none' : '';
+      if (papersLabel) papersLabel.textContent = isSearch ? '搜索结果' : '论文解读';
 
       // Paginate paper items
       totalPages = Math.max(1, Math.ceil(filteredItems.length / PER_PAGE));
       if (currentPage > totalPages) currentPage = totalPages;
+      paginateList(paperItems, PER_PAGE);
+      showPage(filteredItems, currentPage, PER_PAGE);
 
-      paperItems.forEach(function(item) {
-        item.style.display = 'none';
-      });
-      filteredItems.forEach(function(item, i) {
-        if (i >= (currentPage - 1) * PER_PAGE && i < currentPage * PER_PAGE) {
-          item.style.display = '';
+      // Paginate blog items (always page 1)
+      var blogTotal = Math.max(1, Math.ceil(filteredBlog.length / PER_PAGE));
+      paginateList(blogItems, PER_PAGE);
+      showPage(filteredBlog, 1, PER_PAGE);
+
+      // Paginate tutorial items (always page 1)
+      paginateList(tutorialItems, PER_PAGE);
+      showPage(filteredTutorial, 1, PER_PAGE);
+
+      // Blog pagination
+      var blogPg = document.getElementById('blog-pagination');
+      if (blogTotal <= 1 && blogPg) { blogPg.innerHTML = ''; }
+      else if (blogTotal > 1) {
+        if (!blogPg) {
+          blogPg = document.createElement('div');
+          blogPg.id = 'blog-pagination';
+          blogPg.className = 'pagination';
+          blogList.parentNode.insertBefore(blogPg, tutorialLabel);
         }
-      });
+        blogPg.innerHTML = '<span class="page-info">' + Math.ceil(filteredBlog.length / PER_PAGE) + ' / ' + Math.ceil(blogItems.length / PER_PAGE) + '</span>';
+      }
 
-      // Show "no results"
+      // No results
       var noResult = document.getElementById('no-result');
       if (filteredItems.length === 0) {
         if (!noResult) {
@@ -564,7 +604,6 @@
     function renderPagination() {
       var pg = document.getElementById('pagination');
       if (totalPages <= 1) { pg.innerHTML = ''; return; }
-
       var html = '<button onclick="window._goPage(' + (currentPage - 1) + ')"' +
                  (currentPage === 1 ? ' disabled' : '') + '>&larr; 上一页</button>';
       html += '<span class="page-info">' + currentPage + ' / ' + totalPages + '</span>';
@@ -577,12 +616,9 @@
       if (n < 1 || n > totalPages) return;
       currentPage = n;
       render();
-      if (papersLabel) {
-        papersLabel.scrollIntoView({behavior: 'smooth', block: 'start'});
-      }
+      if (papersLabel) papersLabel.scrollIntoView({behavior: 'smooth', block: 'start'});
     };
 
-    // Search with debounce
     var searchInput = document.getElementById('search-input');
     var debounceTimer;
     searchInput.addEventListener('input', function() {
