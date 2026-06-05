@@ -268,7 +268,7 @@
           <div class="article-meta">2026-06-06<span class="sep">Transformer</span><span class="sep">跨层信息流</span><span class="sep">KV Cache</span><span class="sep">GQA</span></div>
           <div class="article-desc">自注意力在序列维度自由选择信息，但在深度维度只是残差累加。Depth-Attention 在注意力模块内部增加"沿深度方向的注意力"，让每层从前面的层选择性复用 value——零参数、零额外 KV cache、不到 0.01% 额外 FLOPs，1.5B/3B Qwen3 风格解码器全面最优。</div>
         </li>
-<li class="article-card">
+<li class="article-item">
           <h2><a href="papers/anthropic-recursive-self-improvement.html">当 AI 构建自身——Anthropic 递归自我改进进展报告</a></h2>
           <div class="article-meta">2026-06-05<span class="sep">递归自我改进</span><span class="sep">AI 自主开发</span><span class="sep">Anthropic Institute</span></div>
           <div class="article-desc">Anthropic 首次披露内部数据：80%+ 代码由 Claude 编写，工程师代码产出是 2024 年的 8 倍，Claude 单次提交 800+ 修复将 API 错误降低 1000 倍。反馈循环已启动——每次 Claude 升级都加速下一个版本的构建。研究判断力是通向完整递归自我改进的关键鸿沟。罕见提出"可验证的暂停"政策立场。</div>
@@ -450,6 +450,11 @@
           <h2><a href="blog/raspberrypi-nanobot.html">用一台树莓派养两只 AI：我跑了三个多月的"家庭 AI 实验室"</a></h2>
           <div class="article-meta"><span class="badge">实战</span>2026-05-22<span class="sep">树莓派</span><span class="sep">nanobot</span><span class="sep">AI Agent</span></div>
           <div class="article-desc">600元树莓派 + 开源 nanobot，挂两个飞书AI助手（熊大&熊二），三个月自动出19期论文播客、近百篇论文解读、A股日报、美股模拟交易——每月电费1块8，API费用50块。一套普通人也能复制的7×24小时AI方案。</div>
+        </li>
+        <li class="article-item featured">
+          <h2><a href="blog/anthropic-data-analytics.html">Anthropic 用 Claude 做自助数据分析的完整工程体系</a></h2>
+          <div class="article-meta"><span class="badge">工程实践</span>2026-06-06<span class="sep">Claude</span><span class="sep">数据分析</span><span class="sep">Skill 设计</span><span class="sep">数据治理</span></div>
+          <div class="article-desc">裸 Claude 回答数据分析问题准确率仅 21%，加上 skill 稳定 95%+，不维护一个月掉回 65%。四层架构（Data Foundations → Sources of Truth → Skills → Validation），精加工知识而非原始检索，LLM 自动生成元数据定义"净效果为负"。</div>
         </li>
       
         <li class="article-item">
