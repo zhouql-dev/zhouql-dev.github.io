@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anthropic 用 Claude 做自助数据分析的完整工程体系</title>
+<meta property="og:title" content="Anthropic 用 Claude 做自助数据分析的完整工程体系">
+<style>:root {
+  --bg: #f8f9fa;
+  --text: #1a1a2e;
+  --text-secondary: #374151;
+  --accent: #0f3460;
+  --accent-light: #1a4f8a;
+  --surface: #ffffff;
+  --border: #e5e7eb;
+  --muted: #6b7280;
+  --green: #16a34a;
+  --red: #dc2626;
+  --header-grad: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+[data-theme="dark"] {
+  --bg: #0d1117;
+  --text: #c9d1d9;
+  --text-secondary: #8b949e;
+  --accent: #58a6ff;
+  --surface: #161b22;
+  --border: #30363d;
+  --header-grad: linear-gradient(135deg, #010409 0%, #0d1117 50%, #161b22 100%);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Serif SC', Georgia, serif; background: var(--bg); color: var(--text); line-height: 1.9; font-size: 17px; transition: background 0.3s, color 0.3s; }
+#progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, #0f3460, #e94560); z-index: 1000; transition: width 0.1s; }
+#theme-toggle { position: fixed; top: 16px; right: 16px; width: 40px; height: 40px; border-radius: 50%; border: 2px solid var(--border); background: var(--surface); cursor: pointer; z-index: 999; font-size: 18px; display: flex; align-items: center; justify-content: center; }
+header { background: var(--header-grad); color: #fff; padding: 72px 24px 56px; text-align: center; }
+header h1 { font-size: 2rem; font-weight: 700; margin-bottom: 12px; line-height: 1.3; max-width: 800px; margin-left: auto; margin-right: auto; }
+.header-meta { font-size: 0.9rem; opacity: 0.8; margin-bottom: 16px; }
+.tags { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
+.tag { background: rgba(255,255,255,0.12); padding: 4px 14px; border-radius: 20px; font-size: 0.82rem; }
+.container { max-width: 800px; margin: 0 auto; padding: 0 24px; }
+.highlight-box { background: var(--surface); border-left: 4px solid var(--accent); padding: 20px 24px; margin: 32px 0; border-radius: 0 8px 8px 0; font-size: 0.95rem; }
+h2 { font-size: 1.35rem; font-weight: 700; margin: 48px 0 16px; color: var(--accent); }
+h3 { font-size: 1.1rem; font-weight: 600; margin: 28px 0 12px; }
+p { margin-bottom: 16px; }
+.figure-block { margin: 32px 0; text-align: center; }
+.figure-block img { max-width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 12px rgba(0,0,0,0.08); }
+.figure-block figcaption { color: var(--muted); font-size: 0.88rem; font-style: italic; margin-top: 10px; line-height: 1.5; }
+footer { margin-top: 64px; padding: 24px 0; border-top: 1px solid var(--border); text-align: center; color: var(--muted); font-size: 0.85rem; }
+footer a { color: var(--accent); }
+@media (max-width: 640px) {
+  header { padding: 48px 16px 36px; }
+  header h1 { font-size: 1.5rem; }
+  .container { padding: 0 16px; }
+  body { font-size: 15px; }
+}</style>
+</head>
+<body>
+<div id="progress" style="width:0%"></div>
+<button id="theme-toggle" title="切换主题">🌙</button>
+
+<header>
+<h1>Anthropic 用 Claude 做自助数据分析<br>的完整工程体系</h1>
+<div class="header-meta">来源：Anthropic Blog · 2026-06-03</div>
+<div class="tags">
+<span class="tag">Claude</span>
+<span class="tag">数据分析</span>
+<span class="tag">Agent 工程实践</span>
+<span class="tag">Skill 设计</span>
+<span class="tag">数据治理</span>
+</div>
+</header>
+
+<div class="container">
+
+<div class="highlight-box">
+<strong>核心数字：</strong>没有 skill，Claude 回答数据分析问题的准确率不超过 21%。加上精心设计的 skill，稳定 95% 以上，部分领域接近 99%。不维护一个月，掉回 65%。
+</div>
+
+<h2>一篇"不太 Anthropic"的文章</h2>
+
+<p>Anthropic 的博客通常是产品发布或安全研究。这篇不太一样——纯工程实践分享，讲他们内部如何让非技术人员通过 Claude 直接查数据，而不需要写 SQL。不是" Claude 能做什么"，而是"我们踩了哪些坑、怎么解决的"。</p>
+
+<p>这背后有一个判断：给 Claude 接上数据仓库然后说"去回答问题"，准确率不到 21%。这篇文章讲的是他们如何把这个数字拉到 95% 以上。</p>
+
+<h2>三种失败模式</h2>
+
+<p>他们把分析型 agent 的失败归纳为三类：<strong>实体歧义</strong>——用户问"产品 X 的营收"，agent 把"营收"映射到了错误的表或列；<strong>陈旧性</strong>——skill 或 reference doc 写的时候是正确的，但数据模型在不断演进，一个月不维护准确率从 95% 漂移到 65%；<strong>检索失败</strong>——正确答案存在于某个地方，但 agent 找不到它。</p>
+
+<figure class="figure-block">
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMzAwIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiPgogIDwhLS0gQmFja2dyb3VuZCAtLT4KICA8cmVjdCB3aWR0aD0iODAwIiBoZWlnaHQ9IjMwMCIgcng9IjE2IiBmaWxsPSIjRkRGOEYwIi8+CiAgCiAgPCEtLSBUaXRsZSAtLT4KICA8dGV4dCB4PSI0MDAiIHk9IjQwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMkMyNDE4Ij5BbmFseXRpY3MgQWdlbnQg5LiJ56eN5aSx6LSl5qih5byPPC90ZXh0PgogIAogIDwhLS0gTW9kZSAxIC0tPgogIDxyZWN0IHg9IjQwIiB5PSI3MCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIyMDAiIHJ4PSIxMiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjZTVlN2ViIi8+CiAgPGNpcmNsZSBjeD0iMTU1IiBjeT0iMTIwIiByPSIyNCIgZmlsbD0iI2RjMjYyNiIgb3BhY2l0eT0iMC45Ii8+CiAgPHRleHQgeD0iMTU1IiB5PSIxMjciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iNzAwIj4xPC90ZXh0PgogIDx0ZXh0IHg9IjE1NSIgeT0iMTY1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMkMyNDE4Ij7lrp7kvZPmrafkuYk8L3RleHQ+CiAgPHRleHQgeD0iMTU1IiB5PSIxOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2YjcyODAiPiLokKXmlLYi5pig5bCE5YiwPC90ZXh0PgogIDx0ZXh0IHg9IjE1NSIgeT0iMjA4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNmI3MjgwIj7plJnor6/nmoTooajmiJbliJc8L3RleHQ+CiAgPHRleHQgeD0iMTU1IiB5PSIyMzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiMxNmEzNGEiIGZvbnQtd2VpZ2h0PSI2MDAiPuKGkiBDYW5vbmljYWwg5pWw5o2u6ZuGPC90ZXh0PgogIDx0ZXh0IHg9IjE1NSIgeT0iMjU0IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExIiBmaWxsPSIjMTZhMzRhIiBmb250LXdlaWdodD0iNjAwIj4gICDmtojpmaTmrafkuYk8L3RleHQ+CiAgCiAgPCEtLSBNb2RlIDIgLS0+CiAgPHJlY3QgeD0iMjg1IiB5PSI3MCIgd2lkdGg9IjIzMCIgaGVpZ2h0PSIyMDAiIHJ4PSIxMiIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjZTVlN2ViIi8+CiAgPGNpcmNsZSBjeD0iNDAwIiBjeT0iMTIwIiByPSIyNCIgZmlsbD0iI2U5NDU2MCIgb3BhY2l0eT0iMC45Ii8+CiAgPHRleHQgeD0iNDAwIiB5PSIxMjciIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjI0IiBmb250LXdlaWdodD0iNzAwIj4yPC90ZXh0PgogIDx0ZXh0IHg9IjQwMCIgeT0iMTY1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjE2IiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMkMyNDE4Ij7pmYjml6fmgKc8L3RleHQ+CiAgPHRleHQgeD0iNDAwIiB5PSIxOTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2YjcyODAiPlNraWxsL+aWh+aho+ato+ehrui/hzwvdGV4dD4KICA8dGV4dCB4PSI0MDAiIHk9IjIwOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMiIgZmlsbD0iIzZiNzI4MCI+5L2G5qih5Z6L5bey5pS5IOKGkiA5NSXihpI2NSU8L3RleHQ+CiAgPHRleHQgeD0iNDAwIiB5PSIyMzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiMxNmEzNGEiIGZvbnQtd2VpZ2h0PSI2MDAiPuKGkiDlkIwgcmVwbyDlkIwgUFI8L3RleHQ+CiAgPHRleHQgeD0iNDAwIiB5PSIyNTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiMxNmEzNGEiIGZvbnQtd2VpZ2h0PSI2MDAiPiAgIENJIGhvb2sg5by65Yi25ZCM5q2lPC90ZXh0PgogIAogIDwhLS0gTW9kZSAzIC0tPgogIDxyZWN0IHg9IjUzMCIgeT0iNzAiIHdpZHRoPSIyMzAiIGhlaWdodD0iMjAwIiByeD0iMTIiIGZpbGw9IiNmZmYiIHN0cm9rZT0iI2U1ZTdlYiIvPgogIDxjaXJjbGUgY3g9IjY0NSIgY3k9IjEyMCIgcj0iMjQiIGZpbGw9IiMwZjM0NjAiIG9wYWNpdHk9IjAuOSIvPgogIDx0ZXh0IHg9IjY0NSIgeT0iMTI3IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIyNCIgZm9udC13ZWlnaHQ9IjcwMCI+MzwvdGV4dD4KICA8dGV4dCB4PSI2NDUiIHk9IjE2NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzJDMjQxOCI+5qOA57Si5aSx6LSlPC90ZXh0PgogIDx0ZXh0IHg9IjY0NSIgeT0iMTkwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEyIiBmaWxsPSIjNmI3MjgwIj7mraPnoa7nrZTmoYjlrZjlnKg8L3RleHQ+CiAgPHRleHQgeD0iNjQ1IiB5PSIyMDgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTIiIGZpbGw9IiM2YjcyODAiPuS9hiBhZ2VudCDmib7kuI3liLA8L3RleHQ+CiAgPHRleHQgeD0iNjQ1IiB5PSIyMzYiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiMxNmEzNGEiIGZvbnQtd2VpZ2h0PSI2MDAiPuKGkiBTa2lsbCDlgZrnu5PmnoTljJbot6/nlLE8L3RleHQ+CiAgPHRleHQgeD0iNjQ1IiB5PSIyNTQiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiMxNmEzNGEiIGZvbnQtd2VpZ2h0PSI2MDAiPiAgIOeqhOWMluaQnOe0ouepuumXtDwvdGV4dD4KPC9zdmc+" alt="三种失败模式">
+<figcaption>图 1：Analytics Agent 的三种失败模式及其解法</figcaption>
+</figure>
+
+<div class="highlight-box">
+注意一个关键洞察：<strong>问题不在模型能力，而在信息架构</strong>。模型足够聪明，问题是你没给它足够好的"地图"。
+</div>
+
+<h2>四层解法</h2>
+
+<figure class="figure-block">
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgNTIwIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiPgogIDxkZWZzPgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnMSIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMWExYTJlIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzE2MjEzZSIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0iZzIiIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzBmMzQ2MCIvPgogICAgICA8c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMxYTRmOGEiLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImczIiB4MT0iMCIgeTE9IjAiIHgyPSIxIiB5Mj0iMCI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiNlOTQ1NjAiLz4KICAgICAgPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjYzA1NTJkIi8+CiAgICA8L2xpbmVhckdyYWRpZW50PgogICAgPGxpbmVhckdyYWRpZW50IGlkPSJnNCIgeDE9IjAiIHkxPSIwIiB4Mj0iMSIgeTI9IjAiPgogICAgICA8c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMTZhMzRhIi8+CiAgICAgIDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzE1ODAzZCIvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICA8L2RlZnM+CiAgCiAgPCEtLSBMYXllciA0OiBWYWxpZGF0aW9uIC0tPgogIDxyZWN0IHg9IjQwIiB5PSIyMCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIxMDAiIHJ4PSIxMiIgZmlsbD0idXJsKCNnNCkiIG9wYWNpdHk9IjAuOSIvPgogIDx0ZXh0IHg9IjYwIiB5PSI1NSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiPkxheWVyIDQ6IFZhbGlkYXRpb248L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjgwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuODUpIiBmb250LXNpemU9IjEzIj5PZmZsaW5lIGV2YWxzIMK3IEFibGF0aW9uIHRlc3RpbmcgwrcgUGVyLWRvbWFpbiBhY2N1cmFjeSBnYXRlcyAofjkwJSk8L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjEwMiIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIiBmb250LXNpemU9IjEyIj5SZXN1bHRzIHN0b3JlZCBhcyB0ZWxlbWV0cnk6IHNraWxsIHZlcnNpb24sIGdpdCBTSEEsIG1vZGVsIElELCBwYXNzL2ZhaWw8L3RleHQ+CiAgCiAgPCEtLSBBcnJvdyAtLT4KICA8cG9seWdvbiBwb2ludHM9IjQwMCwxMzAgMzg1LDE0NSA0MTUsMTQ1IiBmaWxsPSIjNmI3MjgwIi8+CiAgCiAgPCEtLSBMYXllciAzOiBTa2lsbHMgLS0+CiAgPHJlY3QgeD0iNDAiIHk9IjE1MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIxMDAiIHJ4PSIxMiIgZmlsbD0idXJsKCNnMykiIG9wYWNpdHk9IjAuOSIvPgogIDx0ZXh0IHg9IjYwIiB5PSIxODUiIGZpbGw9IndoaXRlIiBmb250LXNpemU9IjE4IiBmb250LXdlaWdodD0iNzAwIj5MYXllciAzOiBTa2lsbHM8L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjIxMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg1KSIgZm9udC1zaXplPSIxMyI+S25vd2xlZGdlIHNraWxsIChyb3V0aW5nKSArIFVuYm9vayBza2lsbCAoYW5hbHlzdCBwcm9jZXNzKTwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iMjMyIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuNykiIGZvbnQtc2l6ZT0iMTIiPjIxJSDihpIgOTUlKyBhY2N1cmFjeSDCtyBDby1sb2NhdGVkIHdpdGggZGF0YSBtb2RlbCDCtyA5MCUgUFJzIGluY2x1ZGUgc2tpbGwgY2hhbmdlczwvdGV4dD4KICAKICA8IS0tIEFycm93IC0tPgogIDxwb2x5Z29uIHBvaW50cz0iNDAwLDI2MCAzODUsMjc1IDQxNSwyNzUiIGZpbGw9IiM2YjcyODAiLz4KICAKICA8IS0tIExheWVyIDI6IFNvdXJjZXMgb2YgVHJ1dGggLS0+CiAgPHJlY3QgeD0iNDAiIHk9IjI4MCIgd2lkdGg9IjcyMCIgaGVpZ2h0PSIxMTAiIHJ4PSIxMiIgZmlsbD0idXJsKCNnMikiLz4KICA8dGV4dCB4PSI2MCIgeT0iMzE1IiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSIxOCIgZm9udC13ZWlnaHQ9IjcwMCI+TGF5ZXIgMjogU291cmNlcyBvZiBUcnV0aDwvdGV4dD4KICA8dGV4dCB4PSI2MCIgeT0iMzQwIiBmaWxsPSJyZ2JhKDI1NSwyNTUsMjU1LDAuODUpIiBmb250LXNpemU9IjEzIj5TZW1hbnRpYyBsYXllciDihpIgTGluZWFnZSBncmFwaCDihpIgUXVlcnkgY29ycHVzIChkaXN0aWxsZWQpIOKGkiBCdXNpbmVzcyBjb250ZXh0PC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSIzNjUiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxMiI+QWdlbnQgc3RydWN0dXJhbGx5IHJvdXRlZCB0byBzZW1hbnRpYyBsYXllciBmaXJzdCDCtyBMTE0tYXV0byBkZWZpbml0aW9uczogbmV0LW5lZ2F0aXZlPC90ZXh0PgogIDx0ZXh0IHg9IjYwIiB5PSIzODIiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC43KSIgZm9udC1zaXplPSIxMiI+QnVzaW5lc3MgY29udGV4dDogbW9zdCB1bmRlcnJhdGVkIGxheWVyPC90ZXh0PgogIAogIDwhLS0gQXJyb3cgLS0+CiAgPHBvbHlnb24gcG9pbnRzPSI0MDAsNDAwIDM4NSw0MTUgNDE1LDQxNSIgZmlsbD0iIzZiNzI4MCIvPgogIAogIDwhLS0gTGF5ZXIgMTogRGF0YSBGb3VuZGF0aW9ucyAtLT4KICA8cmVjdCB4PSI0MCIgeT0iNDIwIiB3aWR0aD0iNzIwIiBoZWlnaHQ9IjkwIiByeD0iMTIiIGZpbGw9InVybCgjZzEpIi8+CiAgPHRleHQgeD0iNjAiIHk9IjQ1NSIgZmlsbD0id2hpdGUiIGZvbnQtc2l6ZT0iMTgiIGZvbnQtd2VpZ2h0PSI3MDAiPkxheWVyIDE6IERhdGEgRm91bmRhdGlvbnM8L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjQ4MCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjg1KSIgZm9udC1zaXplPSIxMyI+Q2Fub25pY2FsIGRhdGFzZXRzIMK3IERpbWVuc2lvbmFsIG1vZGVsaW5nIMK3IE1ldGFkYXRhIGFzIGZpcnN0LWNsYXNzIHByb2R1Y3Q8L3RleHQ+CiAgPHRleHQgeD0iNjAiIHk9IjUwMCIgZmlsbD0icmdiYSgyNTUsMjU1LDI1NSwwLjcpIiBmb250LXNpemU9IjEyIj5Hb3Zlcm5hbmNlIGVuZm9yY2VkIGJ5IHRvb2xpbmcgKyBDSSArIG1hbmRhdGUgwrcgU2FtZSByZXBvIGZvciBhbGwgZGF0YSBjb2RlPC90ZXh0Pgo8L3N2Zz4=" alt="四层架构">
+<figcaption>图 2：Anthropic 的 Agentic Analytics Stack 四层架构</figcaption>
+</figure>
+
+<h3>第一层：Data Foundations——从源头消除歧义</h3>
+
+<p>核心动作只有一个：<strong>收敛</strong>。把 40 个可能回答"营收"的表缩减成一个 canonical 数据集，一个概念对应一个权威答案。这看似简单，但执行难度极大——需要强制治理：工具链必须把 agent 路由到 canonical 数据集、CI 必须拦截绕过权威层的变更、下游团队必须在权威层上构建否则要解释为什么。</p>
+
+<p>他们还有一个关键实践：<strong>所有数据代码同 repo</strong>。建模、语义层、参考文档、仪表盘定义都放在同一个仓库里，一个 PR 改了模型，必须同步改下游文档，否则 CI 直接拦住。</p>
+
+<h3>第二层：Sources of Truth——agent 的参考书目</h3>
+
+<p>按可信度排序：语义层排第一，如果问题能映射到已定义的指标，agent 直接调函数拿一个数字。一个有趣的失败：他们试过让 LLM 自动从原始表和查询日志生成指标定义，结果产出了"看起来合理但编码了你想消除的歧义"的定义——<strong>净效果是负的</strong>。结论：文档可以让 Claude 起草，但定义必须人 owns。</p>
+
+<p>血缘图谱排第二。语义层覆盖不了时，agent 通过血缘关系推理出该从哪个上游模型聚合。查询历史排第三——直接给 agent 做非结构化检索，准确率提升不到 1 个百分点。正确做法是<strong>蒸馏成结构化的 per-domain reference doc</strong>。</p>
+
+<p>业务上下文被他们称为"最被低估的层"。不理解"Q2 launch"指的是哪个产品、两个部门对同一个词有不同定义——agent 能回答字面意思，但不是真正想问的。</p>
+
+<h3>第三层：Skills——从 21% 到 95% 的关键跳板</h3>
+
+<p>如果 Sources of Truth 是"知识"（什么指标是什么意思），那 Skill 就是"方法"（先查什么再查什么、遇到歧义怎么处理、一个完整的分析长什么样）。</p>
+
+<figure class="figure-block">
+<img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMTgwIiBmb250LWZhbWlseT0iSW50ZXIsIHNhbnMtc2VyaWYiPgogIDxyZWN0IHdpZHRoPSI4MDAiIGhlaWdodD0iMTgwIiByeD0iMTYiIGZpbGw9IiNGREY4RjAiLz4KICA8dGV4dCB4PSI0MDAiIHk9IjM1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjIwIiBmb250LXdlaWdodD0iNzAwIiBmaWxsPSIjMkMyNDE4Ij7lh4bnoa7njofmj5DljYfot6/lvoQ8L3RleHQ+CiAgCiAgPCEtLSBSYXcgQ2xhdWRlIC0tPgogIDxyZWN0IHg9IjMwIiB5PSI2MCIgd2lkdGg9IjE2MCIgaGVpZ2h0PSI4MCIgcng9IjEwIiBmaWxsPSIjZmVlMmUyIiBzdHJva2U9IiNkYzI2MjYiLz4KICA8dGV4dCB4PSIxMTAiIHk9Ijk1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjI4IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjZGMyNjI2Ij4yMSU8L3RleHQ+CiAgPHRleHQgeD0iMTEwIiB5PSIxMTgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTMiIGZpbGw9IiM2YjcyODAiPlJhdyBDbGF1ZGU8L3RleHQ+CiAgCiAgPCEtLSBBcnJvdyAtLT4KICA8bGluZSB4MT0iMTk1IiB5MT0iMTAwIiB4Mj0iMjU1IiB5Mj0iMTAwIiBzdHJva2U9IiM2YjcyODAiIHN0cm9rZS13aWR0aD0iMiIgbWFya2VyLWVuZD0idXJsKCNhcnJvdykiLz4KICA8ZGVmcz48bWFya2VyIGlkPSJhcnJvdyIgdmlld0JveD0iMCAwIDEwIDEwIiByZWZYPSIxMCIgcmVmWT0iNSIgbWFya2VyV2lkdGg9IjgiIG1hcmtlckhlaWdodD0iOCIgb3JpZW50PSJhdXRvLXN0YXJ0LWF1dG8iPjxwYXRoIGQ9Ik0gMCAwIEwgMTAgNSBMIDAgMTAgeiIgZmlsbD0iIzZiNzI4MCIvPjwvbWFya2VyPjwvZGVmcz4KICA8dGV4dCB4PSIyMjUiIHk9Ijg4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExIiBmaWxsPSIjMGYzNDYwIiBmb250LXdlaWdodD0iNjAwIj4rU2tpbGxzPC90ZXh0PgogIAogIDwhLS0gV2l0aCBTa2lsbHMgLS0+CiAgPHJlY3QgeD0iMjYwIiB5PSI2MCIgd2lkdGg9IjE2MCIgaGVpZ2h0PSI4MCIgcng9IjEwIiBmaWxsPSIjZmVmM2M3IiBzdHJva2U9IiNlOTQ1NjAiLz4KICA8dGV4dCB4PSIzNDAiIHk9Ijk1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjI4IiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjZTk0NTYwIj45NSUrPC90ZXh0PgogIDx0ZXh0IHg9IjM0MCIgeT0iMTE4IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjEzIiBmaWxsPSIjNmI3MjgwIj4rIFNraWxsczwvdGV4dD4KICAKICA8IS0tIEFycm93IC0tPgogIDxsaW5lIHgxPSI0MjUiIHkxPSIxMDAiIHgyPSI0ODUiIHkyPSIxMDAiIHN0cm9rZT0iIzZiNzI4MCIgc3Ryb2tlLXdpZHRoPSIyIiBtYXJrZXItZW5kPSJ1cmwoI2Fycm93KSIvPgogIDx0ZXh0IHg9IjQ1NSIgeT0iODgiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iMTEiIGZpbGw9IiMwZjM0NjAiIGZvbnQtd2VpZ2h0PSI2MDAiPivnu7TmiqQ8L3RleHQ+CiAgCiAgPCEtLSBNYWludGFpbmVkIC0tPgogIDxyZWN0IHg9IjQ5MCIgeT0iNjAiIHdpZHRoPSIxNjAiIGhlaWdodD0iODAiIHJ4PSIxMCIgZmlsbD0iI2RjZmNlNyIgc3Ryb2tlPSIjMTZhMzRhIi8+CiAgPHRleHQgeD0iNTcwIiB5PSI5NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIyOCIgZm9udC13ZWlnaHQ9IjgwMCIgZmlsbD0iIzE2YTM0YSI+fjk5JTwvdGV4dD4KICA8dGV4dCB4PSI1NzAiIHk9IjExOCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMyIgZmlsbD0iIzZiNzI4MCI+54m55a6a6aKG5Z+fPC90ZXh0PgogIAogIDwhLS0gV2FybmluZyAtLT4KICA8cmVjdCB4PSI2OTAiIHk9IjU1IiB3aWR0aD0iODAiIGhlaWdodD0iOTAiIHJ4PSIxMCIgZmlsbD0iI2ZmZiIgc3Ryb2tlPSIjZGMyNjI2IiBzdHJva2UtZGFzaGFycmF5PSI0Ii8+CiAgPHRleHQgeD0iNzMwIiB5PSI4NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1zaXplPSIxMSIgZm9udC13ZWlnaHQ9IjYwMCIgZmlsbD0iI2RjMjYyNiI+5LiN57u05oqkPC90ZXh0PgogIDx0ZXh0IHg9IjczMCIgeT0iMTA1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjExIiBmb250LXdlaWdodD0iNjAwIiBmaWxsPSIjZGMyNjI2Ij4x5Liq5pyIPC90ZXh0PgogIDx0ZXh0IHg9IjczMCIgeT0iMTMwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LXNpemU9IjIyIiBmb250LXdlaWdodD0iODAwIiBmaWxsPSIjZGMyNjI2Ij42NSU8L3RleHQ+Cjwvc3ZnPg==" alt="准确率提升路径">
+<figcaption>图 3：从裸 Claude 到维护良好的 Skill 系统，准确率的变化路径</figcaption>
+</figure>
+
+<p>没有 skill，准确率不超过 21%。加上 skill，稳定 95% 以上，部分领域接近 99%。</p>
+
+<p>他们设计了成对的 skill：一个知识 skill 做薄路由（"先查语义层，没有覆盖的话这里有 30 个参考文件"），一个 unbook skill 编码资深分析师的流程（澄清问题→找数据源→跑查询→对抗性审查子 agent 审查结果）。</p>
+
+<p><strong>维护是生死问题。</strong>Skill 描述的数据模型每天都在变，不维护几周就错。他们的解法：skill markdown 文件和数据模型放同一个 repo，改模型的 PR 必须包含 skill 变更（code review hook 强制），90% 的数据模型 PR 现在会带上 skill 变更。</p>
+
+<h3>第四层：Validation——怎么知道还在出错</h3>
+
+<p>离线 eval 套件。每个 domain 有几十道 QA 对，锚定快照日期防止数字漂移。每次跑结果存到仓库表里——skill 版本、git SHA、model ID、通过率全部记录。"那个改动有用吗"变成一个查询，可以看到准确率的时间序列。</p>
+
+<p>每个 domain 必须达到 ~90% 的离线准确率才能面向 stakeholder 上线。消融实验方法论值得一提：固定 eval set，每次只改一个变量，一小时跑完——用数据替代争论。</p>
+
+<h2>几个值得带回自己团队的洞察</h2>
+
+<p><strong>查询历史作为直接检索源几乎无用，但蒸馏后的参考文档价值巨大。</strong>这跟 RAG 领域"原始文档 vs 精加工知识"的争论完全一致。Raw retrieval 太嘈杂，structured reference 才是 agent 能用的知识形态。</p>
+
+<p><strong>让 LLM 自动生成元数据定义是危险的。</strong>它会把歧义编码成看起来合理的定义，让你以为问题解决了，实际上在系统里固化了错误。人类 ownership 不可替代。</p>
+
+<p><strong>Skill 和数据模型必须同 repo 同 PR。</strong>这个实践的成本极低（code review hook 一次搞定），但对防止陈旧性至关重要。一个月不维护准确率掉 30 个百分点。</p>
+
+<p><strong>Business context 是 agent 准确性的隐藏变量。</strong>纯技术方案把数据模型做到极致，但 agent 不理解"为什么问这个问题"和"这个指标在业务语境中意味着什么"，准确率天花板很低。</p>
+
+<p>这篇文章的定位不是" Claude 多厉害"，而是"我们花了多少工程力气才让 Claude 在数据分析场景里真正可靠"。对正在构建企业级 agent 系统的团队来说，这是目前公开的最完整的一套实战方法论。</p>
+
+</div>
+
+<footer>
+<p>原文：<a href="https://claude.com/blog/how-anthropic-enables-self-service-data-analytics-with-claude" target="_blank">How Anthropic enables self-service data analytics with Claude</a></p>
+<p>公众号：论文狗 PaperDog · paperdog.org</p>
+</footer>
+
+<script>
+window.addEventListener('scroll', function() {
+  var h = document.documentElement;
+  var pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+  document.getElementById('progress').style.width = pct + '%';
+});
+var btn = document.getElementById('theme-toggle');
+btn.addEventListener('click', function() {
+  var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+  document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  btn.textContent = isDark ? '\u2600\uFE0F' : '\uD83C\uDF19';
+});
+</script>
+</body>
+</html>
