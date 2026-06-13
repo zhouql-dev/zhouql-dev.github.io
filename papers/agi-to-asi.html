@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From AGI to ASI — DeepMind 重磅路线图报告解读</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f8f9fa;--text:#1a1a2e;--text-sec:#374151;--accent:#0f3460;--accent-lt:#1a4f8a;--surface:#fff;--border:#e5e7eb;--muted:#6b7280;--green:#16a34a;--red:#dc2626;--blue:#2563eb;--header-grad:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);--code-bg:#f1f3f5}
+[data-theme="dark"]{--bg:#0d1117;--text:#c9d1d9;--text-sec:#8b949e;--accent:#58a6ff;--accent-lt:#79c0ff;--surface:#161b22;--border:#30363d;--code-bg:#161b22;--header-grad:linear-gradient(135deg,#010409 0%,#0d1117 50%,#161b22 100%)}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#0f3460,#e94560,#0f3460);width:0;z-index:1000;transition:width .1s}
+#theme-toggle{position:fixed;top:16px;right:16px;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;z-index:999;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+header{background:var(--header-grad);padding:60px 20px;text-align:center;color:#fff}
+header h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;margin-bottom:12px;letter-spacing:-.02em}
+header .subtitle{font-size:1rem;opacity:.8;margin-bottom:20px}
+.tag{display:inline-block;background:rgba(255,255,255,.12);padding:4px 14px;border-radius:20px;font-size:.85rem;margin:3px;backdrop-filter:blur(4px)}
+.hl-box{max-width:800px;margin:30px auto;padding:20px 24px;background:var(--surface);border-left:4px solid #e94560;border-radius:0 8px 8px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);font-size:.95rem;color:var(--text-sec);line-height:1.9}
+.hl-box strong{color:var(--text)}
+main{max-width:800px;margin:0 auto;padding:30px 20px 60px}
+h2{font-size:1.4rem;margin:40px 0 16px;color:var(--accent);font-weight:700;border-bottom:2px solid var(--border);padding-bottom:8px}
+h3{font-size:1.15rem;margin:24px 0 10px;color:var(--accent-lt);font-weight:600}
+p{margin-bottom:14px;color:var(--text-sec);font-size:.95rem}
+.fig-block{text-align:center;margin:24px 0}
+.fig-block img{max-width:100%;border-radius:8px;box-shadow:0 2px 12px rgba(0,0,0,.1)}
+.fig-block .caption{font-size:.85rem;color:var(--muted);font-style:italic;margin-top:8px}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;background:var(--surface);border-radius:8px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+th{background:var(--accent);color:#fff;padding:10px 14px;text-align:left;font-weight:600}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-sec);vertical-align:top}
+tr:nth-child(even) td{background:var(--code-bg)}
+table.wrap{display:block;overflow-x:auto;white-space:normal}
+.pathway-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:16px 0;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.pathway-card h3{margin-top:0;color:var(--accent)}
+.pathway-card .uncertainty{font-size:.88rem;color:var(--muted);margin-top:8px;font-style:italic}
+.bottleneck-row{display:flex;gap:16px;margin:12px 0;padding:12px;background:var(--code-bg);border-radius:8px;flex-wrap:wrap}
+.bottleneck-row .label{font-weight:600;color:var(--accent);min-width:140px;flex-shrink:0}
+.bottleneck-row .desc{flex:1;min-width:200px}
+.bottleneck-row .counter{flex:1;min-width:200px;color:var(--green)}
+footer{text-align:center;padding:30px 20px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);max-width:800px;margin:0 auto}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+@media(max-width:640px){header{padding:40px 16px}main{padding:20px 16px}h2{font-size:1.2rem}.bottleneck-row{flex-direction:column}.bottleneck-row .label{min-width:auto}table{font-size:.8rem}td,th{padding:8px 10px}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button id="theme-toggle" title="切换主题">🌙</button>
+
+<header>
+  <h1>From AGI to ASI</h1>
+  <div class="subtitle">DeepMind 首次系统性描绘后 AGI 时代的技术路线图</div>
+  <div>
+    <span class="tag">Google DeepMind</span>
+    <span class="tag">AGI/ASI</span>
+    <span class="tag">技术路线图</span>
+    <span class="tag">arXiv 2606.12683</span>
+  </div>
+</header>
+
+<div class="hl-box">
+  <strong>核心判断：</strong>AI 进步不太可能精确停滞在人类水平。要么达不到 AGI，要么从 AGI 相对平滑地过渡到弱 ASI——除非递归自改进引发真正的智能爆炸。四条路径并行推进，每个瓶颈都有对应的反摩擦力因素。这不是乐观主义，是系统性的不确定性管理。
+</div>
+
+<main>
+<h2>为什么现在讨论 ASI 不再是科幻</h2>
+
+<p>过去十年，"构建人类水平的 AGI"从遥不可及的科幻变成了多家头部 AI 机构的明确十年目标。DeepMind 这篇 57 页报告的核心问题是：如果 AGI 真的实现了，之后会发生什么？</p>
+
+<p>报告引用 Epoch AI 的估计：有效算力的年复合增长率约为 <strong>10×</strong>。这个数字来自三个因子的叠加——硬件效率每年提升约 1.5 倍（摩尔定律及其延伸），对计算硬件的投资每年增长约 2.5 倍，算法效率每年改善 3 到 6 倍。算法效率的提升尤其值得关注：它不是来自少数突破性发明（如 Transformer），而是大量微小改进的系统性累积。</p>
+
+<p>三因子叠加意味着，即使不考虑任何范式转移或递归自改进效应，现有技术路线的 scaling 本身就可能把 AI 从人类水平推向超人类水平。这正是这篇报告的技术起点。</p>
+
+<h2>智能的连续体：AGI → ASI → UAI</h2>
+
+<p>报告的一个关键理论选择是使用 <strong>Legg-Hutter 智能量表</strong>作为框架基础。这个量表将"智能"定义为"智能体在所有可计算任务上的加权平均表现"（更简单的任务获得更高权重）。在这个框架下：</p>
+
+<table class="wrap">
+  <tr><th>概念</th><th>定义</th><th>类比</th></tr>
+  <tr><td><strong>AGI</strong></td><td>大致等于人类中位水平的通用智能</td><td>一个能力中等的普通人类</td></tr>
+  <tr><td><strong>ASI</strong></td><td>在几乎所有领域超越大规模人类专家集体</td><td>一个超越整个研究所/公司的人类团队</td></tr>
+  <tr><td><strong>UAI</strong></td><td>理论上的通用智能极限（AIXI 框架），不可计算</td><td>上帝视角的全知全能</td></tr>
+</table>
+
+<p>Legg-Hutter 智能量表的核心洞察在于：智能是一个<strong>连续谱</strong>。这意味着我们不需要精确定义 AGI 和 ASI 之间的边界线，只需要确认两者之间存在显著差距，就可以讨论从前者到后者的技术路径。这与 Shane Legg 本人 2007 年的博士论文一脉相承——这篇报告本质上是在回答：Legg-Hutter 理论框架在 2026 年的现实意义是什么。</p>
+
+<p>值得注意的是，报告特别强调 ASI 的门槛很高——不是超越单个专家，而是超越<strong>大规模人类专家集体</strong>。单个 ASI 可能由数百万个并行运行的实例组成，就像今天的 LLM 一样。</p>
+
+<h2>数字智能的结构性优势</h2>
+
+<p>在讨论从 AGI 到 ASI 的路径之前，报告系统梳理了数字智能相对于生物智能的<strong>结构性优势</strong>。这些优势不是线性增长的，而是随算力增加呈非线性放大：</p>
+
+<table class="wrap">
+  <tr><th style="width:28%">优势</th><th>说明</th></tr>
+  <tr><td><strong>输入/输出带宽</strong></td><td>AI 可以以极高的速度摄取和产出信息。今天的 LLM 能在几秒内"读完"多本书，如果接上合适的传感器和执行器，意味着极高带宽的世界交互。</td></tr>
+  <tr><td><strong>内部处理速度</strong></td><td>通过增加算力，"思考"和"推理"可以被加速——要么加快串行计算（深度），要么增加并行计算（广度）。即使存在边际递减，这也是相对于生物智能的巨大优势。</td></tr>
+  <tr><td><strong>工作记忆容量</strong></td><td>AI 的工作记忆大小和读写带宽远超人类。已经能"记住"大部分互联网内容的系统，显然还远未触及技术天花板。</td></tr>
+  <tr><td><strong>载体独立性</strong></td><td>AI 系统可以从一台计算机迁移到另一台，甚至在运行时切换——升级到更强大或更高效的硬件，或在异构分布式硬件上运行不同部分。</td></tr>
+  <tr><td><strong>无损复制</strong></td><td>不仅能复制源代码（"DNA"），还能复制记忆状态（"一生经验"）。意味着可以任意备份、恢复、启动、暂停实例。</td></tr>
+  <tr><td><strong>经验共享</strong></td><td>数字输入输出流可以被存储、共享和回放，用于训练或微调。大规模的经验共享是生物智能做不到的。</td></tr>
+</table>
+
+<p>但报告也列出了所有智能系统的<strong>根本限制</strong>：物理定律（光速、Landauer 原理、Bremermann 极限）、实时性约束（无法在有限时间内完成所有实验）、物理操作的非万能性、认知不确定性（不完整知识状态）、计算复杂性理论（P vs NP）、以及哥德尔不完备性。这些限制同时约束人类和 AI。</p>
+
+<h2>四条从 AGI 到 ASI 的技术路径</h2>
+
+<p>报告提出了四条可以并行推进的技术路径，这是整篇报告最核心的分析框架：</p>
+
+<div class="pathway-card">
+  <h3>路径一：持续 Scaling（算力、模型、数据）</h3>
+  <p>最"无聊"但最可预测的路径。硬件效率 × 投资增长 × 算法效率的复合效应可能足以把 AI 从 AGI 推向 ASI。这也是四条路径中唯一允许用历史数据拟合预测模型的——其他三条没有先例可循。</p>
+  <p class="uncertainty">主要不确定性：规模增长如何转化为真正的通用能力提升？会出现跳跃性的"涌现能力"，还是边际递减？</p>
+</div>
+
+<div class="pathway-card">
+  <h3>路径二：算法范式转移</h3>
+  <p>当前主流范式（大预训练 Transformer + log-loss 最小化 + RL 微调 + 简单的测试期 scaling）可能被新范式取代。报告列举了多个潜在方向：世界模型（如 JEPA、RLM）、神经符号系统、程序搜索、元学习等。历史上的经验表明，每隔一段时间就会出现范式级变革。</p>
+  <p class="uncertainty">主要不确定性：范式转移的时机和方向完全不可预测，且新范式本身可能引入新的瓶颈。</p>
+</div>
+
+<div class="pathway-card">
+  <h3>路径三：递归自改进（Recursive Self-Improvement）</h3>
+  <p>AI 系统参与自身的研发——发现更好的算法、设计更优的架构、优化训练流程，这些改进又让 AI 更擅长改进自身，形成正反馈循环。如果循环足够快且足够有效，就可能产生"智能爆炸"。但这条路径没有历史先例来校准其动态。</p>
+  <p class="uncertainty">主要不确定性：递归改进的动态曲线完全未知——可能是超指数级增长（爆炸），也可能很快边际递减（渐近），或介于两者之间。</p>
+</div>
+
+<div class="pathway-card">
+  <h3>路径四：多智能体涌现（Group Agent Formation）</h3>
+  <p>数百万个 AGI 实例通过市场机制、分工协作、自组织等方式形成超越个体的集体智慧。报告认为这可能是<strong>最被低估</strong>的一条路径——即使单个模型的能力停滞在 AGI 水平，足够大规模、良好组织的协作也可能突破人类集体智慧的天花板。</p>
+  <p class="uncertainty">主要不确定性：涌现现象在复杂动力学系统中研究不足；集体智慧如何随种群规模、算力预算、组织形式 scaling 尚不清楚。</p>
+</div>
+
+<h2>摩擦力与瓶颈：什么可能阻止 ASI</h2>
+
+<p>报告的另一个核心贡献是系统列举了可能阻碍 ASI 到达的摩擦力，以及对应的反摩擦力因素。关键在于：每个瓶颈都不是绝对的——都有可能被技术或经济力量克服。</p>
+
+<div class="bottleneck-row">
+  <div class="label">🧱 数据墙</div>
+  <div class="desc">高质量训练数据增长跟不上需求</div>
+  <div class="counter">✅ 合成数据、高保真仿真、自生成数据（交互、test-time scaling、self-play）</div>
+</div>
+
+<div class="bottleneck-row">
+  <div class="label">🧱 经济/资源约束</div>
+  <div class="desc">芯片、能源、数据中心、稀土等资源需求增长不可持续</div>
+  <div class="counter">✅ AI 部署带来的经济回报增长；AI 研究提升效率；大规模基础设施建设</div>
+</div>
+
+<div class="bottleneck-row">
+  <div class="label">🧱 神经范式不足</div>
+  <div class="desc">大预训练网络 + SGD 可能达不到 AGI</div>
+  <div class="counter">✅ 持续的 AI 研究推动范式演化；不够强的 AI 系统仍可加速研究</div>
+</div>
+
+<div class="bottleneck-row">
+  <div class="label">🧱 研究难度递增</div>
+  <div class="desc">低垂果实被摘完，后续进步需要指数级增长的研究投入</div>
+  <div class="counter">✅ AI 系统提升研究效率（更少实验、更优假设、更高效的假设空间搜索）</div>
+</div>
+
+<div class="bottleneck-row">
+  <div class="label">🧱 抽象壁垒</div>
+  <div class="desc">当前 AI 在抽象推理能力上存在上限，可能阻碍向更高智能水平过渡</div>
+  <div class="counter">✅ 新架构/训练方法、多智能体协作可能突破个体抽象极限</div>
+</div>
+
+<div class="bottleneck-row">
+  <div class="label">🧱 监管与治理</div>
+  <div class="desc">法规、伦理约束、国际分歧可能减缓发展</div>
+  <div class="counter">⚠️ 竞争性国家经济/军事博弈可能驱动"军事-经济适应主义"，削弱监管效力</div>
+</div>
+
+<h2>关键开放研究问题</h2>
+
+<p>报告在最后列出了 7 大类关键研究问题，这里列出与工程师和研究实践最相关的几个方向：</p>
+
+<p><strong>1. 多智能体智能 scaling 定律：</strong>集体智慧如何随种群规模、算力预算、组织形式增长？这是目前最缺乏实证研究的方向。如果你在做 multi-agent 系统，这就是在做 ASI 的基础设施。</p>
+
+<p><strong>2. 递归自改进的动态建模：</strong>没有历史先例的情况下，如何建模 AI 加速 AI 研究的正反馈动态？需要新颖的理论框架和早期实证研究。</p>
+
+<p><strong>3. 后 AGI 时代的 benchmarking：</strong>今天的评测体系在 AGI 之后会失效。如何在后 AGI 世界中继续有效评估 AI 进度？这不仅是技术问题，也是治理基础。</p>
+
+<p><strong>4. AI 辅助科研的 epistemic 规范：</strong>如果科学研究被自动化，知识的共识建立机制需要怎样适应海量科研产出？</p>
+
+<p><strong>5. 超人类 AI 的对齐：</strong>ASI 是更容易还是更难对齐？规模更大的智能是否意味着更复杂的价值对齐问题？</p>
+
+<h2>评价：这份报告意味着什么</h2>
+
+<p>这不是一篇实验论文——它没有提出新算法、没有跑实验、没有 state-of-the-art 结果。它是一份 <strong>landscape mapping</strong> 报告，价值在于框架而非结论。</p>
+
+<p>从方法论角度看，报告最值得称道的是它的"对偶分析"风格——每个瓶颈都配一个反摩擦力因素，不预设乐观或悲观立场，而是系统地呈现不确定性。这让报告避免了科幻式的预言（"ASI 将在 YYYY 年到来"），也避免了过度保守的否定（"我们永远不会达到 AGI"）。</p>
+
+<p>从实践角度看，报告传递了一个明确的信号：<strong>多智能体架构可能是当前最值得投入的研究方向之一</strong>。即使单个模型的能力增长放缓，大规模协作可能是突破人类集体智慧天花板的关键路径。对于在做 AI 系统设计的工程师而言，这可能是最有前瞻性的启示。</p>
+
+<p>最后，报告结尾引用了 Turing 1950 年的原话："We can only see a short distance ahead, but we can see plenty there that needs to be done." 在 AGI 即将到来的 2026 年，这句话比 76 年前更有分量。</p>
+
+</main>
+
+<footer>
+  <p>论文原文：<a href="https://arxiv.org/abs/2606.12683" target="_blank">arXiv:2606.12683 — From AGI to ASI</a></p>
+  <p>作者：Tim Genewein, Matija Franklin, Alexander Lerchner, Laurent Orseau, Samuel Albanie, Adam Bales, Cole Wyeth, Stephanie Chan, Iason Gabriel, Joel Z. Leibo, Allan Dafoe, Marcus Hutter, Thore Graepel, Shane Legg</p>
+  <p>机构：Google DeepMind · 2026年6月10日</p>
+</footer>
+
+<script>
+// Progress bar
+window.addEventListener('scroll',()=>{
+  const h=document.documentElement.scrollHeight-window.innerHeight;
+  const p=(window.scrollY/h)*100;
+  document.getElementById('progress').style.width=p+'%';
+});
+
+// Theme toggle
+const btn=document.getElementById('theme-toggle');
+const html=document.documentElement;
+const saved=localStorage.getItem('theme');
+if(saved==='dark'){html.setAttribute('data-theme','dark');btn.textContent='☀️'}
+btn.addEventListener('click',()=>{
+  const isDark=html.getAttribute('data-theme')==='dark';
+  html.setAttribute('data-theme',isDark?'light':'dark');
+  btn.textContent=isDark?'🌙':'☀️';
+  localStorage.setItem('theme',isDark?'light':'dark');
+});
+</script>
+</body>
+</html>
