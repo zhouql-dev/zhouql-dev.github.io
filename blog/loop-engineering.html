@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Loop Engineering：别再 Prompt Agent 了，去设计循环</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f8f9fa;--text:#1a1a2e;--text-sec:#374151;--accent:#0f3460;--accent-lt:#1a4f8a;--surface:#fff;--border:#e5e7eb;--muted:#6b7280;--green:#16a34a;--red:#dc2626;--blue:#2563eb;--header-grad:linear-gradient(135deg,#1a1a2e 0%,#16213e 50%,#0f3460 100%);--code-bg:#f1f3f5}
+[data-theme="dark"]{--bg:#0d1117;--text:#c9d1d9;--text-sec:#8b949e;--accent:#58a6ff;--accent-lt:#79c0ff;--surface:#161b22;--border:#30363d;--code-bg:#161b22;--header-grad:linear-gradient(135deg,#010409 0%,#0d1117 50%,#161b22 100%)}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;background:var(--bg);color:var(--text);line-height:1.8;transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#0f3460,#e94560,#0f3460);width:0;z-index:1000;transition:width .1s}
+#theme-toggle{position:fixed;top:16px;right:16px;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;z-index:999;font-size:18px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.1)}
+header{background:var(--header-grad);padding:60px 20px;text-align:center;color:#fff}
+header h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:700;margin-bottom:12px;letter-spacing:-.02em}
+header .subtitle{font-size:1rem;opacity:.8;margin-bottom:20px}
+.tag{display:inline-block;background:rgba(255,255,255,.12);padding:4px 14px;border-radius:20px;font-size:.85rem;margin:3px;backdrop-filter:blur(4px)}
+.hl-box{max-width:800px;margin:30px auto;padding:20px 24px;background:var(--surface);border-left:4px solid #e94560;border-radius:0 8px 8px 0;box-shadow:0 2px 12px rgba(0,0,0,.06);font-size:.95rem;color:var(--text-sec);line-height:1.9}
+.hl-box strong{color:var(--text)}
+main{max-width:800px;margin:0 auto;padding:30px 20px 60px}
+h2{font-size:1.4rem;margin:40px 0 16px;color:var(--accent);font-weight:700;border-bottom:2px solid var(--border);padding-bottom:8px}
+h3{font-size:1.15rem;margin:24px 0 10px;color:var(--accent-lt);font-weight:600}
+p{margin-bottom:14px;color:var(--text-sec);font-size:.95rem}
+blockquote{margin:20px 0;padding:16px 20px;border-left:4px solid var(--accent);background:var(--surface);border-radius:0 8px 8px 0;font-style:italic;color:var(--text-sec)}
+blockquote cite{display:block;margin-top:8px;font-size:.85rem;color:var(--muted);font-style:normal}
+.principle{margin:20px 0;padding:16px 20px;background:var(--surface);border-radius:8px;border:1px solid var(--border);box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.principle strong{color:var(--accent);display:block;margin-bottom:6px;font-size:1rem}
+.principle p{margin-bottom:0;font-size:.93rem}
+.components{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin:24px 0}
+.comp-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:18px;box-shadow:0 1px 6px rgba(0,0,0,.04);transition:transform .2s,box-shadow .2s}
+.comp-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.08)}
+.comp-card .icon{font-size:1.5rem;margin-bottom:8px}
+.comp-card h3{margin:0 0 6px;font-size:1.05rem;border:none;padding:0;color:var(--accent)}
+.comp-card p{font-size:.88rem;margin-bottom:0;color:var(--muted)}
+table{width:100%;border-collapse:collapse;margin:20px 0;font-size:.9rem;background:var(--surface);border-radius:8px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+th{background:var(--accent);color:#fff;padding:10px 14px;text-align:left;font-weight:600}
+td{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-sec);vertical-align:top}
+tr:nth-child(even) td{background:var(--code-bg)}
+footer{text-align:center;padding:30px 20px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--border);max-width:800px;margin:0 auto}
+footer a{color:var(--accent);text-decoration:none}
+footer a:hover{text-decoration:underline}
+@media(max-width:640px){header{padding:40px 16px}main{padding:20px 16px}h2{font-size:1.2rem}.components{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button id="theme-toggle" title="切换主题">🌙</button>
+
+<header>
+  <h1>Loop Engineering</h1>
+  <div class="subtitle">别再 Prompt Agent 了，去设计循环</div>
+  <div>
+    <span class="tag">Agent 架构</span>
+    <span class="tag">自动化循环</span>
+    <span class="tag">Addy Osmani</span>
+  </div>
+</header>
+
+<div class="hl-box">
+  <strong>"You shouldn't be prompting coding agents anymore. You should be designing loops that prompt your agents."</strong><br>
+  <em>— @steipete</em><br><br>
+  <strong>"I don't prompt Claude anymore. I have loops running that prompt Claude and figuring out what to do. My job is to write loops."</strong><br>
+  <em>— @bcherny, Head of Claude Code, Anthropic</em>
+</div>
+
+<main>
+
+<h2>从手动编排到自动循环</h2>
+
+<p>过去两年，人跟 coding agent 的交互模式基本一致：你写一句，看一眼结果，再写一句，逐轮推进。agent 是工具，你是操作者，整个过程是同步的，你全程在场。</p>
+
+<p>这个模式的问题不是效率低，而是<strong>不可扩展</strong>。你的注意力带宽是固定上限——同时盯着三个 agent 就到极限了，不管工具多好。三以上，质量开始崩，因为 review 跟不上。</p>
+
+<p>Loop Engineering 的思路是把"你"从循环里摘出来。不再是人驱动 agent，而是系统驱动 agent。你设计系统，系统驱动 agent，agent 干活，系统检查，写入记忆，触发下一轮。</p>
+
+<p>听起来像是 agent harness 或 multi-agent orchestration 换了个名字。某种程度是的。但 Osmani 的观察有价值：这些组件不再是需要你自己拼 bash 脚本搭的东西了——Claude Code 和 Codex 已经把五个核心原语内建到了产品里。这意味着 loop engineering 正在从一个手工活变成一个<strong>有标准构件的工程学科</strong>。</p>
+
+<h2>五个构件 + 一块记忆</h2>
+
+<p>一个完整的 loop 需要五样东西，加一个外部记忆。</p>
+
+<div class="components">
+  <div class="comp-card">
+    <div class="icon">⏱️</div>
+    <h3>自动化（心跳）</h3>
+    <p>没有 cron，它不是 loop，只是一次性任务。/goal 让 agent 持续工作直到可验证的停止条件成立，每轮由另一个小模型打分。</p>
+  </div>
+  <div class="comp-card">
+    <div class="icon">🌳</div>
+    <h3>Worktree（隔离）</h3>
+    <p>给每个 agent 独立的 working directory 和独立分支，物理上不可能互踩。工具解决机械冲突，review 带宽才是真天花板。</p>
+  </div>
+  <div class="comp-card">
+    <div class="icon">📋</div>
+    <h3>Skill（意图持久化）</h3>
+    <p>agent 每次冷启动都是空白的。Skill 是外部化的项目知识——约定、构建步骤、踩过的坑，写一次，每轮都读，知识复利。</p>
+  </div>
+  <div class="comp-card">
+    <div class="icon">🔌</div>
+    <h3>Connector（触达）</h3>
+    <p>MCP 协议让 agent 能读 issue tracker、查数据库、调 API、发消息。只能在文件系统里打转的 agent 是个 tiny loop。</p>
+  </div>
+  <div class="comp-card">
+    <div class="icon">🔍</div>
+    <h3>Sub-agent（质量控制）</h3>
+    <p>写代码的和审代码的不应该是同一个模型。拆成 maker 和 checker，用不同的指令甚至不同的模型，防止自我合理化。</p>
+  </div>
+  <div class="comp-card">
+    <div class="icon">💾</div>
+    <h3>外部记忆</h3>
+    <p>markdown 文件、Linear board，任何存活在对话之外的持久状态。模型在运行之间会忘记一切，记忆必须在磁盘上。</p>
+  </div>
+</div>
+
+<h2>杠杆移动了，不等于工作变简单了</h2>
+
+<p>Osmani 文章最后那段，才是整篇的刀刃。</p>
+
+<blockquote>
+  两个人可以搭完全相同的 loop，得到完全相反的结果。一个用它加速自己已经深入理解的工作，另一个用它逃避理解工作本身。Loop 分不清区别。你自己分得清。
+  <cite>— Addy Osmani</cite>
+</blockquote>
+
+<p>这就是为什么 loop design 比 prompt design 难，不是更容易。prompt 的杠杆点在你的脑子里——你理解什么就写什么，理解浅就 output 浅。loop 的杠杆点移到了系统设计里，但<strong>系统产出的上限仍然是你对自己工作的理解深度</strong>。</p>
+
+<p>Cherny 的本意不是说工作变轻松了。他的意思是杠杆点换了位置。从"你能写多好的 prompt"换成了"你能设计多好的循环"。</p>
+
+<p>如果你对工作的理解是清晰的——论文筛选的标准、交易风控的阈值、代码 review 的红线——你的 loop 会忠实地放大这些判断。如果你自己都说不清什么是好的产出，loop 就会忠实地放大这种模糊。Loop 不会替你思考。它只会放大你已有的思考，或者放大你已有的偷懒。</p>
+
+<h2>不只是代码的事</h2>
+
+<p>Osmani 的文章聚焦在 coding agent 场景（Codex 和 Claude Code），但 loop 的结构是通用的。</p>
+
+<p>我自己现在跑的 cron 定时任务就是一个简单的 loop：每天早上 8 点拉 AI 日报，6:30 生成论文播客，内容写入 markdown 文件推送到飞书。每个任务有明确的触发条件、执行脚本和输出规范。Skill 文件里存着数据源、输出格式、fallback 链——这些就是意图持久化。飞书 API 就是 connector。</p>
+
+<p>交易巡检曾经也是一个 loop：每天三次定时抓市场数据，对照风控规则检查持仓，生成报告推送。后来停了，不是因为 loop 有问题，是因为数据源不稳定导致信噪比太低。这是另一个教训——<strong>loop 的价值取决于它喂进去的数据质量</strong>。</p>
+
+<p>更复杂的 loop 可以是这样的：agent 自己去 arxiv 扫新论文，用 embedding 做相关性筛选，对命中的论文自动生成解读初稿，存入待审队列，人在晨间花十分钟过一遍，确认的自动推送公众号。这个 loop 里有自动化触发（cron）、skill（论文解读模板和筛选标准）、connector（arxiv API + 公众号 API）、sub-agent（初稿 agent + review agent 分离）、外部记忆（待审队列 markdown）。五个构件齐全。</p>
+
+<table>
+  <tr><th>Loop 构件</th><th>Coding 场景</th><th>论文解读场景</th><th>交易巡检场景</th></tr>
+  <tr><td><strong>自动化</strong></td><td>cron + /goal</td><td>arxiv 定时扫描</td><td>盘前/盘中/盘后 cron</td></tr>
+  <tr><td><strong>Worktree</strong></td><td>git worktree 隔离</td><td>/tmp 目录隔离</td><td>N/A</td></tr>
+  <tr><td><strong>Skill</strong></td><td>构建步骤 + 代码规范</td><td>解读模板 + 筛选标准</td><td>风控规则 + 输出格式</td></tr>
+  <tr><td><strong>Connector</strong></td><td>GitHub + CI + Slack</td><td>arxiv API + 公众号 API</td><td>CNBC + akshare + 飞书</td></tr>
+  <tr><td><strong>Sub-agent</strong></td><td>maker + reviewer</td><td>初稿 agent + review agent</td><td>数据采集 + 信号判断</td></tr>
+  <tr><td><strong>外部记忆</strong></td><td>CLAUDE.md / Codex skill</td><td>待审队列 markdown</td><td>持仓记录 + 信号日志</td></tr>
+</table>
+
+<h2>设计 Loop 的原则</h2>
+
+<div class="principle">
+  <strong>🔴 高频重复且标准化的任务优先</strong>
+  <p>日报、巡检、格式转换——这些天然适合 loop，因为输入输出模式稳定，人工编排没有增量价值。</p>
+</div>
+
+<div class="principle">
+  <strong>🟡 需要人判断的环节不要自动化</strong>
+  <p>论文是否值得解读、交易信号是否执行——这些决策点的质量取决于理解深度，不是自动化能提升的。Loop 应该把候选推到人面前，而不是替人做决定。</p>
+</div>
+
+<div class="principle">
+  <strong>🔵 Maker/checker 分离是必须的，不是可选的</strong>
+  <p>任何 loop 里，执行者和验证者必须是独立的。这不只是工程最佳实践，是防止自欺的结构性约束。</p>
+</div>
+
+<div class="principle">
+  <strong>🟢 记忆设计决定 loop 的上限</strong>
+  <p>外部记忆存什么、怎么组织、怎么在轮次之间传递，直接决定了 loop 能累积多深的理解。一个没有好记忆设计的 loop，每轮都是原地踏步。</p>
+</div>
+
+<blockquote>
+  Build the loop. But build it like someone who intends to stay the engineer, not just the person who presses go.
+  <cite>— Addy Osmani</cite>
+</blockquote>
+
+<p>你不是在设计一个按下去就不管的系统。你是在设计一个放大你判断力的工具。如果你不理解自己要什么，loop 会以更大的规模帮你产出你不想要的东西。</p>
+
+<p>Loop engineering 的本质不是"把工作交给 AI"。是<strong>把你已经理解透的工作，封装成可自动执行的系统</strong>，然后你腾出精力去理解下一个问题。</p>
+
+</main>
+
+<footer>
+  <p>基于 Addy Osmani 的文章 "Loop Engineering" 撰写 · 2026-06-15</p>
+  <p><a href="https://x.com/addyosmani" target="_blank">@addyosmani</a></p>
+</footer>
+
+<script>
+// Reading progress
+window.addEventListener('scroll',()=>{const p=document.getElementById('progress');const h=document.documentElement.scrollHeight-document.documentElement.clientHeight;p.style.width=(window.scrollY/h*100)+'%'});
+// Theme toggle
+const toggle=document.getElementById('theme-toggle');
+const saved=localStorage.getItem('theme');
+if(saved==='dark'||(!saved&&matchMedia('(prefers-color-scheme:dark)').matches)){document.documentElement.setAttribute('data-theme','dark');toggle.textContent='☀️'}
+toggle.addEventListener('click',()=>{const dark=document.documentElement.getAttribute('data-theme')==='dark';document.documentElement.setAttribute('data-theme',dark?'':'dark');toggle.textContent=dark?'🌙':'☀️';localStorage.setItem('theme',dark?'light':'dark')});
+</script>
+</body>
+</html>
