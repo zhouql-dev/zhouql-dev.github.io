@@ -628,14 +628,15 @@
       paginateList(paperItems, PER_PAGE);
       showPage(filteredItems, currentPage, PER_PAGE);
 
-      // Paginate blog items (always page 1)
+      // Paginate blog items (sync with papers currentPage)
       var blogTotal = Math.max(1, Math.ceil(filteredBlog.length / BLOG_PER_PAGE));
       paginateList(blogItems, BLOG_PER_PAGE);
-      showPage(filteredBlog, 1, BLOG_PER_PAGE);
+      showPage(filteredBlog, currentPage, BLOG_PER_PAGE);
 
-      // Paginate tutorial items (always page 1)
+      // Paginate tutorial items (sync with papers currentPage)
+      var tutorialTotal = Math.max(1, Math.ceil(filteredTutorial.length / TUTORIAL_PER_PAGE));
       paginateList(tutorialItems, TUTORIAL_PER_PAGE);
-      showPage(filteredTutorial, 1, TUTORIAL_PER_PAGE);
+      showPage(filteredTutorial, currentPage, TUTORIAL_PER_PAGE);
 
       // Blog pagination
       var blogPg = document.getElementById('blog-pagination');
@@ -647,7 +648,20 @@
           blogPg.className = 'pagination';
           blogList.parentNode.insertBefore(blogPg, tutorialLabel);
         }
-        blogPg.innerHTML = '<span class="page-info">' + Math.ceil(filteredBlog.length / BLOG_PER_PAGE) + ' / ' + Math.ceil(blogItems.length / BLOG_PER_PAGE) + '</span>';
+        blogPg.innerHTML = '<span class="page-info">' + currentPage + ' / ' + blogTotal + '</span>';
+      }
+
+      // Tutorial pagination
+      var tutPg = document.getElementById('tutorial-pagination');
+      if (tutorialTotal <= 1 && tutPg) { tutPg.innerHTML = ''; }
+      else if (tutorialTotal > 1) {
+        if (!tutPg) {
+          tutPg = document.createElement('div');
+          tutPg.id = 'tutorial-pagination';
+          tutPg.className = 'pagination';
+          tutorialList.parentNode.insertBefore(tutPg, tutorialList.nextSibling);
+        }
+        tutPg.innerHTML = '<span class="page-info">' + currentPage + ' / ' + tutorialTotal + '</span>';
       }
 
       // No results
