@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+          <h2><a href="papers/variable-width-transformer.html">Variable-Width Transformers：不是所有层都该一样宽</a></h2>
+          <div class="article-meta">2026-06-18<span class="sep">模型架构</span><span class="sep">非均匀宽度</span><span class="sep">Scaling Laws</span></div>
+          <div class="article-desc">系统研究 Transformer 层间宽度分配。× 形（两头宽中间窄）轮廓一致优于等宽 baseline：perplexity 低 ~3%，训练 FLOPs 省 22%，KV cache 省 15%。固定 residual slice 机制零参数开销。</div>
+        </li>
+        <li class="article-item">
           <h2><a href="papers/nextlat.html">NextLat：让 Transformer 学会压缩世界</a></h2>
           <div class="article-meta">2026-06-15<span class="sep">World Model</span><span class="sep">Belief State</span><span class="sep">Speculative Decoding</span><span class="sep">MIT · Microsoft</span></div>
           <div class="article-desc">给 next-token prediction 加辅助目标——预测模型的下一个隐状态。理论上证明隐状态收敛到 belief states，推理速度 3.3× 且零额外开销。不改架构、不改推理流程，只改训练目标。</div>
