@@ -554,6 +554,7 @@
   <script>
   (function() {
     var PER_PAGE = 5;
+    var BLOG_PER_PAGE = 3;
 
     // Collect featured items (always visible) and paper items (paginated)
     var sectionLabels = document.querySelectorAll('.section-label');
@@ -627,9 +628,9 @@
       showPage(filteredItems, currentPage, PER_PAGE);
 
       // Paginate blog items (always page 1)
-      var blogTotal = Math.max(1, Math.ceil(filteredBlog.length / PER_PAGE));
-      paginateList(blogItems, PER_PAGE);
-      showPage(filteredBlog, 1, PER_PAGE);
+      var blogTotal = Math.max(1, Math.ceil(filteredBlog.length / BLOG_PER_PAGE));
+      paginateList(blogItems, BLOG_PER_PAGE);
+      showPage(filteredBlog, 1, BLOG_PER_PAGE);
 
       // Paginate tutorial items (always page 1)
       paginateList(tutorialItems, PER_PAGE);
@@ -645,7 +646,7 @@
           blogPg.className = 'pagination';
           blogList.parentNode.insertBefore(blogPg, tutorialLabel);
         }
-        blogPg.innerHTML = '<span class="page-info">' + Math.ceil(filteredBlog.length / PER_PAGE) + ' / ' + Math.ceil(blogItems.length / PER_PAGE) + '</span>';
+        blogPg.innerHTML = '<span class="page-info">' + Math.ceil(filteredBlog.length / BLOG_PER_PAGE) + ' / ' + Math.ceil(blogItems.length / BLOG_PER_PAGE) + '</span>';
       }
 
       // No results
