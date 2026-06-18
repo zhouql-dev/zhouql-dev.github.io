@@ -555,6 +555,7 @@
   (function() {
     var PER_PAGE = 5;
     var BLOG_PER_PAGE = 3;
+    var TUTORIAL_PER_PAGE = 3;
 
     // Collect featured items (always visible) and paper items (paginated)
     var sectionLabels = document.querySelectorAll('.section-label');
@@ -633,8 +634,8 @@
       showPage(filteredBlog, 1, BLOG_PER_PAGE);
 
       // Paginate tutorial items (always page 1)
-      paginateList(tutorialItems, PER_PAGE);
-      showPage(filteredTutorial, 1, PER_PAGE);
+      paginateList(tutorialItems, TUTORIAL_PER_PAGE);
+      showPage(filteredTutorial, 1, TUTORIAL_PER_PAGE);
 
       // Blog pagination
       var blogPg = document.getElementById('blog-pagination');
