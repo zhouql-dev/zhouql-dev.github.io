@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
         <li class="article-item">
+          <h2><a href="papers/tapered-language-models.html">Tapered Language Models：MLP 宽度单调递减，免费的性能提升</a></h2>
+          <div class="article-meta">2026-06-23<span class="sep">模型架构</span><span class="sep">MLP Tapering</span><span class="sep">深度感知容量分配</span><span class="sep">Mila · Cornell</span></div>
+          <div class="article-desc">让 MLP 中间层宽度沿深度 cosine 递减，总参数量和 FLOPs 完全不变。440M Transformer ppl 从 16.28 降到 14.44。跨四种架构（Transformer、Gated Attention、Hope-attention、Titans）、三种规模全部提升。层新颖度分析揭示深层 MLP 越来越冗余，前宽后窄是自然匹配。</div>
+        </li>
+        <li class="article-item">
           <h2><a href="papers/spatial-ttt.html">Spatial-TTT：用 Test-Time Training 给 MLLM 装上空间记忆</a></h2>
           <div class="article-meta">2026-06-22<span class="sep">Test-Time Training</span><span class="sep">Spatial Intelligence</span><span class="sep">流式视频</span><span class="sep">清华 · 腾讯混元</span></div>
           <div class="article-desc">用 fast weights 做流式压缩的空间记忆，以线性复杂度处理任意长度空间视频流。混合 TTT 架构保护预训练知识，空间预测机制注入 3D 时空归纳偏置。2B 模型在 VSI-Bench 上超越 GPT-5 和 Gemini-3-Pro。</div>
