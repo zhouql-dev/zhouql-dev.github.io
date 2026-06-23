@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>禅与机器学习研究艺术 — PaperDog</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Noto Serif SC', 'Source Han Serif', 'PingFang SC', Georgia, serif;
+      background: #FDF8F0;
+      color: #2C2418;
+      line-height: 1.8;
+      font-size: 17px;
+      -webkit-font-smoothing: antialiased;
+    }
+    .page { max-width: 680px; margin: 0 auto; padding: 0 24px; }
+    a { color: #C0552D; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    header {
+      padding: 72px 0 48px;
+      border-bottom: 1px solid #D4C9B8;
+      margin-bottom: 48px;
+    }
+    .back {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8rem;
+      color: #8B7E6A;
+      margin-bottom: 24px;
+      display: inline-block;
+    }
+    .back:hover { color: #C0552D; }
+    h1 {
+      font-size: 1.55rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      color: #1A1410;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+    .meta {
+      font-family: 'Inter', sans-serif;
+      font-size: 0.82rem;
+      color: #8B7E6A;
+    }
+    .meta .tag {
+      display: inline-block;
+      border: 1px solid #D4C9B8;
+      padding: 1px 8px;
+      border-radius: 3px;
+      margin-left: 6px;
+      font-size: 0.75rem;
+    }
+
+    h2 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: #1A1410;
+      margin: 3em 0 1em;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #D4C9B8;
+    }
+    p {
+      margin: 1.2em 0;
+      text-align: justify;
+    }
+    strong { color: #C0552D; }
+
+    .highlight {
+      background: #F5EDE0;
+      border-left: 3px solid #C0552D;
+      padding: 16px 20px;
+      margin: 1.5em 0;
+      font-style: italic;
+    }
+
+    footer {
+      margin-top: 56px;
+      padding-top: 24px;
+      border-top: 1px solid #D4C9B8;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.78rem;
+      color: #A09686;
+      text-align: center;
+    }
+    footer a { color: #8B7E6A; }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <a href="/" class="back">← 返回首页</a>
+      <h1>禅与机器学习研究艺术</h1>
+      <div class="meta">
+        2026-06-23
+        <span class="tag">研究方法论</span>
+        <span class="tag">Jordan Mass</span>
+        <span class="tag">Zen</span>
+      </div>
+    </header>
+
+    <article>
+      <p>最近读到一篇在硅谷AI圈流传甚广的短文，作者是 Jordan Mass（化名 jxmnop），一位活跃在前沿大模型研究一线的工程师。文章标题叫《Zen and the Art of Machine Learning Research》，用禅宗公案的框架，把AI研究的底层方法论串成了一条清晰的线。</p>
+
+      <p>这篇文章不教你具体技术，它讲的是更底层的东西——做研究的"心法"。在当下人人都在追AI热点、三个月一个新范式的节奏里，这种慢下来讲基本功和心态的文字反而稀缺。</p>
+
+      <p>我从中提炼出几个最硬的洞察，加上自己的解读。</p>
+
+      <h2>好结果大概率是 bug</h2>
+
+      <div class="highlight">大多数好结果的诞生，不是因为你的 idea 真的好，而是因为你的评测代码写错了。</div>
+
+      <p>原文引了 Collin Raffel（著名ML研究者）的观点：很多 idea 最终失败，不是 idea 本身有问题，而是代码里藏着一个你永远没找到的 bug。在 LLM 时代这个问题被放大了——一个现代深度学习软件栈极其复杂，bug 可能藏在训练逻辑里、推理代码里、评测 harness 里、数据预处理 pipeline 里，任何一个环节出问题都会让结果失真。</p>
+
+      <p>做实验的人都有这种经历：跑到一个特别漂亮的结果，兴奋了半天，后来发现是 metric 计算有误、数据有泄漏、或者 config 拼错了。作者的建议是培养一种"健康的偏执"（healthy paranoia）——任何看起来不对的指标，都不能放过，必须查清楚为什么。一个真正优秀的研究者，面对好结果的第一反应不是庆祝，而是怀疑。</p>
+
+      <p>这个洞察为什么重要？因为它戳中了 AI 研究最大的信息不对称：外部看到的是论文里的漂亮数字，内部经历的是无数次"好结果 → 发现 bug → 重新跑"的循环。理解这一点，你就不会被 ArXiv 上的高分吓到，也不会轻易被自己的初步结果欺骗。</p>
+
+      <h2>别读太多论文</h2>
+
+      <p>这个建议听起来反直觉，但细想很有道理。作者的观点是：如果你想解决一个问题，正确路径是先自己尝试、动手做、撞墙，等到自己真的想不出办法了，再去翻文献。而不是先读一百篇论文再开始。</p>
+
+      <p>被动消费论文会制造一种"我懂了"的假象。真正的理解来自挣扎的过程——你自己设计了方案，发现行不通，思考为什么，这时候去查文献，信息才能真正嵌进你的认知结构。如果一开始就被别人的框架框住，你很难产生原创性的想法。</p>
+
+      <p>这跟武侠小说里"先忘掉所有招式才能悟道"是一个道理。过早接触前人的解决方案，反而会限制你的思路空间。</p>
+
+      <h2>别追热点，学底座</h2>
+
+      <p>作者特别警告：不要选那些流行不到半个月的领域。AI 发展快，但底层思想四十年没变。与其追 2026 年的热词（harness、agents、context engineering 这些），不如回去搞透基本功。</p>
+
+      <p>他给的具体建议是：手算一个小分布的 cross-entropy；把 SVD 理解到能在脑子里可视化的程度；不要死磕"RL for coding"，而是搞清楚 policy gradient 为什么有用、为什么流行了几十年。</p>
+
+      <p>这个判断大体正确。工具层半年一换，但底座知识不过时。唯一值得商榷的是，作者可能低估了 agent 作为研究范式的持久性——agent 不会像某些技巧那样快速过时，它更接近一种新的软件架构范式，和"某个具体的 loss function 技巧"不是同一个层面的东西。</p>
+
+      <h2>实验结果的平等心</h2>
+
+      <p>这是文章最禅意的一段。作者借用禅宗的"平等心"概念，提出一个实验心态：实验跑好了，很好；跑砸了，同样很好。两种结果给你的信息量是一样的。</p>
+
+      <p>实际上，一连串负面结果往往比单个正面结果教会你更多。"哇，还是不行——太好了！"这才是健康的研究心态。反过来，如果对好结果过于兴奋，恰恰说明你对失败的恐惧大于对真相的好奇——而科学不需要这种偏见。</p>
+
+      <p>这个心态在 AI 研究里特别重要，因为这个领域迭代快、变量多，失败的实验远多于成功的。如果每次失败都情绪化，很快就撑不住了。把失败当成数据，把异常当成线索——这不仅是研究方法，也是一种心理韧性。</p>
+
+      <h2>Coding Agent 的陷阱</h2>
+
+      <p>这是全文最实用的一段，直接命中当下 AI 辅助编程的现实。</p>
+
+      <p>作者指出：用 Codex（或其他 coding agent）跑实验会让你更快，但会制造两个问题——你对底层细节的理解变浅，而且你更容易频繁切换上下文。</p>
+
+      <p>具体场景是这样的：你让 agent 写训练脚本、执行、监控、解读结果、甚至把结果邮件发给你。但 agent 可能在执行过程中默默做了一些你不知道的修改——缩短了 system prompt、减少了序列长度、跑了错误的配置。从工程角度看这些都是小问题，修一下就好；但从科学角度看，这些"小修改"可能实质性地改变论文的核心结论。</p>
+
+      <div class="highlight">即使你没写代码，如果你想理解你的结果，你就必须理解产生结果的系统。</div>
+
+      <p>这句话值得贴在显示器边上。把理解外包给机器是很诱人的，对于很多应用场景也确实更快。但做科学不能这样——你必须知道系统的每一层在干什么，才能确信你观察到的现象是真实的。</p>
+
+      <h2>一些不那么硬的部分</h2>
+
+      <p>公平地说，文章也有水分。第一段关于"坐禅"的类比偏修辞，实际信息量不高。关于灵感来源的例子（苯环结构来自梦、Ozempic 来自蜥蜴毒液）是科学史的经典轶事，读过的人会觉得老套。关于不要跟同行攀比的那段也比较套路化，鸡汤味偏重。</p>
+
+      <p>另外，文章整体偏向学院派研究场景，对工业界做 AI 产品或系统的从业者来说，有些原则需要做调整。比如"别追热点"在学术界成立，但在工业界如果你不做最新的 agent 框架，可能就出局了。</p>
+
+      <h2>结语</h2>
+
+      <p>这篇文章的本质是一本 ML 研究的"field manual"——不告诉你做什么，而是告诉你怎么对待你做的事。技术会变，框架会更替，但好研究者的特质是稳定的：好奇心、偏执、对真相的敬畏、对失败的无感。</p>
+
+      <p>作者最后一句话说得好：成为优秀的研究者，天赋不是全部，性情（temperament）被严重低估了。保持好奇和坚持，保持深思和严谨，ideas 自然会来。</p>
+
+      <p>对于身处 AI 浪潮中的我们，不管做研究还是做产品，这种回到本质的提醒都值得记住。少追热点，多搞透原理；少信好结果，多查为什么；少外包理解，多亲手验证。说到底，没有什么捷径。</p>
+    </article>
+
+    <footer>
+      <p>PaperDog · <a href="https://paperdog.org">paperdog.org</a> · 公众号：论文狗</p>
+    </footer>
+  </div>
+</body>
+</html>
