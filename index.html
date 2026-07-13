@@ -264,6 +264,16 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+          <h2><a href="papers/sleep-paradigm.html">大模型需要"睡觉"：从人类记忆巩固机制到LLM持续学习新范式</a></h2>
+          <div class="article-meta">2026-07-14<span class="sep">Continual Learning</span><span class="sep">Memory Consolidation</span><span class="sep">Neuroscience</span></div>
+          <div class="article-desc">LLM有和人类顺行性遗忘症相似的缺陷——只有短期记忆（上下文）和凝固的长期记忆（预训练参数），中间没有巩固机制。Google Research提出"睡眠"范式：NREM式记忆巩固（参数扩展+向上蒸馏+突触修剪）+ REM式做梦（自生成合成数据+MoE混合知识域）。Qwen3-8B上AIME-24达79.2%，ARC抽象推理80%，达到同等性能比SFT快4.3-4.8倍。</div>
+        </li>
+<li class="article-item">
+          <h2><a href="papers/proactive-memory-agent.html">Agent的"健忘症"该怎么治？Meta提出主动记忆Agent，让长程任务不再丢状态</a></h2>
+          <div class="article-meta">2026-07-14<span class="sep">Proactive Memory</span><span class="sep">Meta-Learning</span><span class="sep">Agent</span></div>
+          <div class="article-desc">Meta提出Proactive Memory框架——Agent在推理间隙自动执行记忆维护（记忆选择→检索→更新→写入），用元学习训练记忆策略网络替代规则型memory模块。AiderHumanEval 94.4%完成率、ALFWorld 95%成功率、WebArena 60.9%，全面超越ReAct/RAG/COT等基线。</div>
+        </li>
+<li class="article-item">
           <h2><a href="papers/llm-as-a-verifier.html">LLM-as-a-Verifier：把验证本身变成可扩展的新轴</a></h2>
           <div class="article-meta">2026-07-13<span class="sep">Verification Scaling</span><span class="sep">Agent</span><span class="sep">Logprobs</span></div>
           <div class="article-desc">验证和生成一样，是可以被系统化扩展的维度。从离散 argmax 分数换成 logprob 分布期望，三个扩展轴（粒度/重复/分解）互不冲突、可叠加，zero-shot 跨域 SOTA——Terminal-Bench 86.5%、SWE-Bench 78.2%、机器人 87.4%。</div>
