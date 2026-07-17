@@ -265,20 +265,20 @@
         <ul class="article-list">
         <li class="article-item">
           <h2><a href="papers/genception.html">GenCeption：视频生成模型的真正使命——通用视觉智能</a></h2>
-          <div class="item-meta"><span class="item-date">2026-07-17</span><span class="sep">视频生成</span><span class="sep">通用视觉模型</span><span class="sep">扩散模型</span><span class="sep">Google DeepMind</span></div>
-          <div class="item-description">DeepMind提出视觉基础模型第三条道路：文本到视频生成预训练同时覆盖空间-时间-语言三维度，3B规模匹配DepthAnything V3/SAM3等专用SOTA，数据少7-500倍，纯合成训练zero-shot泛化到真实世界。</div>
+          <div class="article-meta">2026-07-17<span class="sep">Video Generation</span><span class="sep">Vision Foundation Model</span><span class="sep">Diffusion</span></div>
+          <div class="article-desc">Google DeepMind提出视觉基础模型第三条道路：文本到视频生成预训练同时覆盖空间-时间-语言三维度，扩散backbone改造为单步前馈感知模型，3B规模匹配DepthAnything V3/SAM3/VGGT-Ω等专用SOTA，训练数据少7-500倍；纯合成人体视频训练即可zero-shot泛化到真实世界和未见类别（动物、机器人）。</div>
         </li>
 
 <li class="article-item">
           <h2><a href="papers/lotus.html">LOTUS：用循环Transformer弥合隐式推理与显式推理的鸿沟</a></h2>
-          <div class="item-meta"><span class="item-date">2026-07-17</span><span class="sep">Latent CoT</span><span class="sep">循环Transformer</span><span class="sep">推理加速</span><span class="sep">Microsoft Research</span></div>
-          <div class="item-description">隐式推理首次在3B规模匹配显式CoT：循环backbone并行打磨隐向量破解序列瓶颈，gold CoT token直接监督破解对齐缺失，推理快2.5-6.9倍，隐空间还编码了未见过的等价推理路径。</div>
+          <div class="article-meta">2026-07-17<span class="sep">Latent CoT</span><span class="sep">Looped Transformer</span><span class="sep">Inference Efficiency</span></div>
+          <div class="article-desc">Microsoft Research联合ETH提出LOTUS：循环backbone并行打磨隐向量破解序列生成瓶颈，gold CoT token直接交叉熵监督破解对齐信号缺失——隐式推理首次在3B规模匹配显式CoT准确率，推理快2.5-6.9倍；隐空间可被LM head直接解码出推理步骤，还编码了训练中未见的等价推理路径。</div>
         </li>
 
 <li class="article-item">
           <h2><a href="papers/when-cl-requires-learning.html">持续学习到底什么时候需要"真学习"？</a></h2>
-          <div class="item-meta"><span class="item-date">2026-07-15</span></div>
-          <div class="item-description">UC Berkeley统一评测八种持续学习方法，证明没有银弹——关键在分清楚"改prompt就够了"vs"得学进权重"。</div>
+          <div class="article-meta">2026-07-15<span class="sep">Continual Learning</span><span class="sep">Benchmark</span><span class="sep">Prompt vs Weights</span></div>
+          <div class="article-desc">UC Berkeley统一评测八种持续学习方法，证明没有银弹——真正的分水岭在于任务需要"改prompt就够了"还是"必须学进权重"：上下文可容纳的知识用检索/prompt方案更稳，超出上下文或需要技能内化时参数更新不可替代。</div>
         </li>
 
 <li class="article-item">
