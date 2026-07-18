@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Schema：一个让 AI 像物理学家一样思考的 Harness</title>
+<style>*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#FDF8F0;--text:#2C2418;--text-secondary:#6B6358;--accent:#C0552D;--accent-light:#D4714E;--surface:#FFFFFF;--border:#D4C9B8;--muted:#8B7E6A;--highlight-bg:#F5EDE0;--highlight-border:#C0552D}
+[data-theme="dark"]{--bg:#1a1815;--text:#e8e0d0;--text-secondary:#a09888;--surface:#252220;--border:#3d3830;--highlight-bg:#2a2520;--muted:#8B8070}
+body{font-family:"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);line-height:1.8;transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-light));z-index:1000;transition:width .1s}
+.theme-toggle{position:fixed;top:20px;right:20px;width:42px;height:42px;border-radius:50%;border:2px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-size:18px;z-index:999;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.08);transition:all .3s}
+.theme-toggle:hover{transform:scale(1.05);box-shadow:0 4px 12px rgba(0,0,0,.12)}
+.header{background:linear-gradient(135deg,#2C2418,#4A3F30);padding:80px 24px 60px;text-align:center;color:#fff}
+.header h1{font-size:1.7rem;font-weight:700;max-width:800px;margin:0 auto 16px;line-height:1.4}
+.header .meta{font-size:.9rem;opacity:.8;color:#D4C9B8}
+.highlight-box{max-width:680px;margin:32px auto;padding:24px 28px;background:var(--highlight-bg);border-left:4px solid var(--highlight-border);border-radius:0 8px 8px 0;font-size:.95rem;color:var(--text)}
+.highlight-box strong{color:var(--accent)}
+main{max-width:680px;margin:0 auto;padding:0 24px 60px}
+h2{font-size:1.35rem;font-weight:700;margin:36px 0 16px;padding-bottom:8px;border-bottom:2px solid var(--border);color:var(--text)}
+h3{font-size:1.1rem;font-weight:600;margin:24px 0 12px;color:var(--accent)}
+p{margin-bottom:16px;font-size:17px}
+blockquote{background:var(--highlight-bg);padding:18px 24px;margin:20px 0;border-left:4px solid var(--accent);font-style:italic;color:var(--text-secondary);border-radius:0 6px 6px 0}
+.punch{font-size:1.05rem;font-weight:600;color:var(--accent);margin:24px 0;padding:0 8px}
+.note{background:#fff;border:1px solid var(--border);border-radius:8px;padding:20px 24px;margin:20px 0;font-size:.92rem;color:var(--text-secondary)}
+.note strong{color:var(--text)}
+.footer{text-align:center;padding:40px 24px;border-top:1px solid var(--border);margin-top:40px}
+.footer a{color:var(--accent);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+
+.table-wrap{overflow-x:auto;margin:24px 0;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:separate;border-spacing:0;font-size:.9rem;border-radius:6px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.06)}
+th{background:#2C2418;color:#FDF8F0;padding:10px 14px;text-align:left;font-weight:600;font-size:.85rem;letter-spacing:.02em}
+td{padding:10px 14px;border-bottom:1px solid var(--border);background:var(--surface);vertical-align:top}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(193,85,45,.04)}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+@media(max-width:680px){.header h1{font-size:1.3rem}td,th{padding:8px 10px;font-size:.8rem}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button class="theme-toggle" id="themeBtn" title="Toggle dark mode">☾</button>
+
+<div class="header">
+  <h1>Schema：一个让 AI 像物理学家一样思考的 Harness</h1>
+  <div class="meta">2026-07-18 · schema-harness.github.io · ARC-AGI-3 Public 98.98% RHAE</div>
+</div>
+
+<main>
+<div class="highlight-box">
+  <strong>核心洞察</strong>：Schema 不改变模型权重，而是改变模型周围的过程——如何从原始观测中构建世界模型、如何用交互历史检验预测、如何执行和修正计划。其核心将 State Grounding 和 Mechanism Discovery 合并为同一个可编辑程序，实现了从像素到物理法则的端到端推理。
+</div>
+
+<h2>背景：ARC-AGI-3 为什么这么难？</h2>
+
+<p>ARC-AGI-3 给 agent 一个游戏环境，但不告诉它规则。每一步，agent 收到一个 64×64 网格（16 色）和一组合法动作。没有物体列表、没有规则说明书、没有目标描述、没有奖励函数。</p>
+
+<p>只有一条路：<strong>科学家之路</strong>。agent 必须在世界模型尚不完备的状态下行动——先形成假说（网格代表什么？动作如何改变它？什么算成功？），然后在收集新观测的过程中不断修正自己的模型和计划。</p>
+
+<p>这个 benchmark 自 2026 年 3 月发布以来，一直极其困难。其官方指标 RHAE（Relative Human Action Efficiency）将 agent 的动作效率与人类首次尝试对比。截至 7 月，前沿模型在 Semi-Private 集上的最佳验证成绩仅为 GPT-5.6 Sol 的 <strong>7.78%</strong>，Public 集上 13.33%。</p>
+
+<div class="punch">而 Schema 在 Public 集上达到了 98.98%——用 Claude Opus 4.8 + Fable 5，不改变任何模型权重。</div>
+
+<h2>物理学家式的思考</h2>
+
+<p>Schema 的设计哲学来自物理学方法论。物理学家在写定律之前，必须先决定这个定律是关于什么的——哪些观测是"物体"？哪些性质定义了"状态"？只有回答了这些问题，才能问"状态如何变化"。</p>
+
+<p>Schema 把这两个问题形式化为两级抽象：</p>
+
+<div class="note">
+<p><strong>Level 1 · State Grounding（状态奠基）</strong></p>
+<p>从原始像素中发明物体、量、名称。没有人告诉你哪些像素是"玩家"、是"墙"、是"计数器"——agent 必须自己构造。</p>
+<p style="margin-top:12px"><strong>Level 2 · Mechanism Discovery（机制发现）</strong></p>
+<p>在奠基后的状态上，找到变化规律：(state, action) → state′，并将其写为可执行的程序 step()。</p>
+</div>
+
+<p>这两层不能独立解决。一个看似合理的状态表示，可能在后来的实验中被证伪——因为找不到一个一致的 transition rule 能解释所有结果。Schema 将状态表示和 transition rule 共同编码在<strong>同一个可编辑程序</strong>中。当观察与预测冲突时，agent 可以修改表示，也可以修改规则，然后更新另一方以恢复一致性。</p>
+
+<p>论文用了一个绝妙的类比：Michelson-Morley 实验。Lorentz 保住了以太（level 1 不改），给规则打补丁（contraction hypotheses）来吸收零结果。Einstein 直接丢弃以太（改 level 1），让同时性变为相对，得到了更简洁的电动力学。ARC-AGI-3 要求 agent 在两个层面都能做这件事——而 Schema 做到了。</p>
+
+<h2>Schema 控制循环</h2>
+
+<p>Schema 的设计围绕一个四阶段循环展开：</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>阶段</th><th>操作</th><th>说明</th></tr>
+  <tr><td>Observe</td><td>接收原始网格</td><td>64×64 像素——其中每个"物体"都是 agent 自己发明的</td></tr>
+  <tr><td>Deliberate</td><td>开放推理环节</td><td>内层循环：theorize → certify → plan → commit，以提交动作队列结束</td></tr>
+  <tr><td>Execute</td><td>执行动作队列</td><td>每步用世界模型的预测做自检</td></tr>
+  <tr><td>Record</td><td>追加到 Timeline</td><td>append-only，每条真实 transition 都永久留存</td></tr>
+</table>
+</div>
+
+<p>在 Deliberate 的内部循环中：</p>
+<ul style="margin:12px 0 16px 24px;font-size:17px">
+  <li><strong>theorize / write_code</strong>：编辑对游戏的"理论"——写 step(state, action)</li>
+  <li><strong>certify / run_backtest</strong>：回放每一条已记录的 transition——完全匹配，或精确指出 bug</li>
+  <li><strong>plan / run_bfs</strong>：在认证后的程序内部搜索——<strong>零真实成本</strong></li>
+  <li><strong>commit / commit_actions</strong>：从思维到行动的唯一通道</li>
+</ul>
+
+<p>核心思想：<strong>latent world representation 是程序，不是向量</strong>。它是可解释的（纯文本文件，可读可 diff）、可验证的（对照记录的现实逐条回放）、可搜索的（程序即模拟器，内部规划零成本）。</p>
+
+<h2>效果：不是刷榜，是范式验证</h2>
+
+<p>Schema 在 Public 集 25 个游戏上的表现：</p>
+
+<div class="table-wrap">
+<table>
+  <tr><th>配置</th><th>RHAE</th><th>满分游戏数</th><th>中位游戏分</th></tr>
+  <tr><td>Claude Opus 4.8 + Fable 5</td><td class="num">98.98%</td><td class="num">19/25</td><td class="num">100</td></tr>
+  <tr><td>GPT-5.6 Sol xhigh + max</td><td class="num">95.35%</td><td class="num">20/25</td><td class="num">100</td></tr>
+  <tr style="color:var(--muted)"><td>Claude Code 基线（同模型）</td><td class="num">42.83%</td><td class="num">—</td><td class="num">—</td></tr>
+  <tr style="color:var(--muted)"><td>GPT-5.6 Sol 官方最佳单 variant</td><td class="num">13.33%</td><td class="num">—</td><td class="num">—</td></tr>
+</table>
+</div>
+
+<p>固定 Claude 模型不变，Schema harness 相对 Claude Code 基线提升了 <strong>+56.15 个百分点</strong>。这个数字说明：<strong>怎么用模型，比用什么模型，重要得多</strong>。</p>
+
+<h2>关键观察：让程序替你做实验</h2>
+
+<p>论文中最漂亮的发现：在 25 个游戏中的 14 个里，agent 诱导出的程序世界模型精确再现了其历史记录。在这些游戏中，<strong>agent 动作用量是人类的 1.6–5.0 分之一</strong>。</p>
+
+<p>原因是一个质的转变——agent 只在"发现机制"这一步花真实动作，之后的所有规划都在模型内部零成本完成。这依赖两个能力：</p>
+
+<ol style="margin:12px 0 16px 24px;font-size:17px">
+  <li><strong>对照完整历史做验证</strong>：每条真实 transition 都记录在 append-only Timeline 中。run_backtest 用全部历史检验每个候选规则，而非依赖记忆。因为记录不受上下文窗口限制，认证后的模型可以信任，无需再花动作做真实环境测试。</li>
+  <li><strong>在可复用的模拟器内部做规划</strong>：一旦 step() 和 is_goal() 被认证，BFS 可以探索 10³–10⁴ 个建模状态而不花一个环境动作。而且模型以代码形式持久存在，这个"免费规划"在后续每个 level 都继续有效。</li>
+</ol>
+
+<p>最极端的案例是 M0R0 Level 4：agent 用 42 步完成，人类基线是 500 步——恰好符合"为发现机制付一次成本，之后所有计划在模型内重算"的模式。</p>
+
+<h2>为什么叫 Schema？</h2>
+
+<p>Schema 这个名字暗含了它的设计哲学——认知心理学中的"图式"概念。图式不只是知识，更是<strong>组织经验的框架</strong>。Schema harness 做的事情本质上就是让 agent 在交互中构建一个可操作的世界图式：这不是从训练数据中蒸馏出来的统计模式，而是从交互中<strong>归纳出来的、可执行、可验证、可修正的程序</strong>。</p>
+
+<p>这跟 MemoHarness（同属 harness 优化路线）形成了有趣的对比：MemoHarness 是从执行经验中优化 harness 本身的配置，而 Schema 是让 harness 引导 agent 构建一个可编程的世界模型。两者都指向同一个方向——<strong>harness 工程正在成为 agent 能力的关键分水岭</strong>。</p>
+
+<h2>坦诚的局限</h2>
+
+<p>Schema 团队非常坦率地声明了当前状态的限制：</p>
+<ul style="margin:12px 0 16px 24px;font-size:17px">
+  <li>98.98% 和 95.35% 是<strong>自报成绩</strong>（Public 集），未经 ARC Prize 独立验证</li>
+  <li>Public 集的得分不能直接外推到 Semi-Private 集——Sol Max 在两者间的差异（13.33% vs 7.78%）足以说明问题</li>
+  <li>目前只公开了 Public 集的运行 artifact，未在 Semi-Private 集上做 frozen-harness 验证</li>
+</ul>
+
+<p>但他们说得很对：如何在一个挑战性的 benchmark 上获得接近人类水平的成绩，本身就是有价值的——即使它是在公开子集上达成的。方法论的意义不取决于验证集的保密性。</p>
+
+</main>
+
+<div class="footer">
+  <p><a href="https://schema-harness.github.io/">schema-harness.github.io</a> · <a href="https://huggingface.co/datasets/schema-harness/arc-agi-3-schema-traces">HuggingFace Traces</a></p>
+  <p style="margin-top:8px;font-size:.85rem;color:var(--muted)">PaperDog · 论文狗</p>
+</div>
+
+<script>
+(function(){
+  let p=document.getElementById('progress');
+  window.addEventListener('scroll',()=>{let s=window.scrollY,d=document.documentElement.scrollHeight-window.innerHeight;p.style.width=d>0?(s/d*100)+'%':'0'});
+  let b=document.getElementById('themeBtn'),d=document.documentElement,t=localStorage.getItem('theme');
+  if(t==='dark'){d.setAttribute('data-theme','dark');b.textContent='☀️';}
+  b.addEventListener('click',()=>{let c=d.getAttribute('data-theme')==='dark'?'':'dark';
+  if(c){d.setAttribute('data-theme','dark');b.textContent='☀️';}
+  else{d.removeAttribute('data-theme');b.textContent='☾';}
+  localStorage.setItem('theme',c);});
+})();
+</script>
+</body>
+</html>
