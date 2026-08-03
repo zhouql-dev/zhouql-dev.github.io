@@ -264,6 +264,18 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+                <h2><a href="papers/skillsmith.html">SkillSmith：让 LLM 把"文本知识"和"模型权重"当作同一种东西来推理</a></h2>
+                <div class="article-meta">2026-08-04<span class="sep">·</span>Model Merging<span class="sep">·</span>Prefix Tuning<span class="sep">·</span>Google DeepMind</div>
+                <p>把模型权重当作 LLM 可以原生推理的模态——同时接收文本描述和 KV-cache 权重，直接输出融合两者新 prefix。Agent 的"knowing"和"doing"不再隔离，zero-shot 超越所有 weight-space baseline，fine-tuning 下成为最强初始化。</p>
+              </li>
+
+<li class="article-item">
+                <h2><a href="papers/areal.html">自进化 Agent 的系统瓶颈：不在算法，在基础设施</a></h2>
+                <div class="article-meta">2026-08-04<span class="sep">·</span>Agentic RL<span class="sep">·</span>Self-Evolving Agent<span class="sep">·</span>Ant Group</div>
+                <p>蚂蚁集团提出自进化企业级 Agent 需要三个协同设计的系统支柱：标准化轨迹数据协议（ATDP）、企业级数据代理、统一进化控制面。AREAL2.0 原型验证在线策略权重更新分支。</p>
+              </li>
+
+<li class="article-item">
                 <h2><a href="papers/gsme.html">GSME：自进化 Agent Harness，核心不是改 prompt 而是诊断病理</a></h2>
                 <div class="article-meta">2026-08-02<span class="sep">·</span>Agent Self-Evolution<span class="sep">·</span>Quality-Diversity<span class="sep">·</span>AAAI 2027</div>
                 <p>把"提案"和"信用"彻底分开——LLM 诊断失败写补丁，确定性代码做三道门控 + sealed test + paired 2σ。七个领域 sealed test +9~+15.5pp，揭示"病理→补丁匹配定律"：不同模型病理不同，同病理跨家族吸引同类型补丁。</p>
