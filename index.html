@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
           <li class="article-item">
+    <h2><a href="papers/lopd.html">LOPD：让 Agent 的经验不再是人工设计的 Artifact</a></h2>
+    <div class="meta">2026-08-18 · <span class="tag">On-Policy Distillation</span> <span class="tag">Self-Improving Agent</span> <span class="tag">Latent Context</span></div>
+    <p>不需要设计特权信息的格式，让模型自己从轨迹中学出 latent representation 作为 teacher 的特权上下文。冻结目标网络、梯度仅在 latent context 参数上流动——干净的自蒸馏循环，零人工特征工程。</p>
+</li>
+          <li class="article-item">
     <h2><a href="papers/darwinx.html">DarwinX：通过自然选择进化 Agent 架构</a></h2>
     <div class="meta">2026-08-18 · <span class="tag">Self-Evolving Agent</span> <span class="tag">Natural Selection</span> <span class="tag">Harness</span> <span class="tag">Salesforce</span></div>
     <p>冻结模型权重，只通过进化 harness（prompt/工具/技能/控制流）获得大幅能力提升。保真扩展契约（只能进不能退）、种群档案与重组（保留输家，合并互补专家），四个基准平均 +17 点，WAI audit-clean 43.5%→93.0%。</p>
