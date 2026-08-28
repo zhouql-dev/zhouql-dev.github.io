@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visual General Intelligence：CV 界的独立宣言</title>
+<style>
+:root{--bg:#FDF8F0;--text:#2C2418;--text-2:#6B6358;--accent:#C0552D;--accent-light:#D4714E;--surface:#FFFFFF;--border:#D4C9B8;--muted:#8B7E6A;--hl-bg:#F5EDE0}
+[data-theme="dark"]{--bg:#1E1B16;--text:#E8E0D2;--text-2:#A89C88;--accent:#E07A4F;--accent-light:#E89A78;--surface:#2A251E;--border:#4A4235;--muted:#8B7E6A;--hl-bg:#332C22}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.85;font-size:17px;transition:background .3s,color .3s}
+#progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent-light));width:0;z-index:99;transition:width .1s}
+#themeBtn{position:fixed;top:18px;right:18px;width:40px;height:40px;border-radius:50%;border:1px solid var(--border);background:var(--surface);cursor:pointer;font-size:18px;z-index:99;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.container{max-width:720px;margin:0 auto;padding:0 22px}
+header{background:var(--hl-bg);border-bottom:1px solid var(--border);padding:56px 0 44px;margin-bottom:40px}
+h1{font-size:1.9em;line-height:1.35;margin-bottom:16px;letter-spacing:-.01em}
+.meta{color:var(--text-2);font-size:.88em;margin-bottom:14px}
+.tags{display:flex;flex-wrap:wrap;gap:8px}
+.tag{border:1px solid var(--accent);color:var(--accent);border-radius:99px;padding:2px 12px;font-size:.78em}
+main{padding-bottom:30px}
+p{margin-bottom:1.15em}
+.hook{font-size:1.06em}
+.hook strong{color:var(--accent)}
+h2{font-size:1.42em;margin:2.2em 0 .9em;padding-left:14px;border-left:4px solid var(--accent);letter-spacing:-.01em}
+h3{font-size:1.12em;margin:1.8em 0 .6em;color:var(--accent)}
+blockquote{border-left:3px solid var(--accent);background:var(--hl-bg);padding:14px 20px;margin:1.5em 0;border-radius:0 8px 8px 0;font-style:italic;color:var(--text-2)}
+.highlight{background:var(--hl-bg);border-left:4px solid var(--accent);padding:18px 22px;border-radius:0 10px 10px 0;margin:1.8em 0}
+.highlight p{margin-bottom:.4em}
+figure{margin:1.8em 0;text-align:center}
+figcaption{font-size:.84em;color:var(--muted);font-style:italic;margin-top:10px}
+.tblwrap{overflow-x:auto;margin:1.5em 0;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.9em;background:var(--surface)}
+th{background:var(--accent);color:#fff;text-align:left;padding:10px 14px;font-weight:600}
+td{padding:9px 14px;border-top:1px solid var(--border);vertical-align:top}
+tbody tr:nth-child(even){background:var(--hl-bg)}
+td:first-child{white-space:nowrap;font-weight:600;color:var(--accent)}
+strong{color:var(--text)}
+footer{border-top:1px solid var(--border);margin-top:50px;padding:28px 0 46px;color:var(--text-2);font-size:.86em;text-align:center}
+footer a{color:var(--accent);text-decoration:none}
+@media(max-width:600px){body{font-size:16px}header{padding:40px 0 32px}h1{font-size:1.5em}h2{font-size:1.25em}}
+</style>
+</head>
+<body>
+<div id="progress"></div>
+<button id="themeBtn" title="切换明暗">🌙</button>
+<div class="container">
+<header>
+<h1>Visual General Intelligence：CV 界的独立宣言</h1>
+<div class="meta">白皮书解读 · arXiv 2608.25924 · 2026-08-26 提交 · PaperDog</div>
+<div class="tags"><span class="tag">立场白皮书</span><span class="tag">视觉智能</span><span class="tag">世界模型</span><span class="tag">CVPR 2026 VGI Workshop</span></div>
+</header>
+<main>
+
+<p class="hook"><strong>GPT 证明了文字里能长出智能。现在，21 位 CV 场最有分量的人联名问了一个相反的问题：不靠语言，纯靠视觉经验，智能能不能独立长出来？</strong></p>
+
+<p>这份《Visual General Intelligence: A White Paper》8月26日挂上 arXiv，作者阵容在 CV 论文里罕见：AIST 牵头，Oxford VGG（Rupprecht）、OpenAI、Google DeepMind（Geirhos）、CMU（Raghunathan、Ramanan）、Stanford（Jiajun Wu）、Harvard（Yilun Du）、Princeton（Zhuang Liu）、Cambridge、Imperial（Davison，SLAM 鼻祖级人物）、NYU 全部到场。它源自 CVPR 2026 的 VGI Workshop，21 页无一张图、无一个实验——因为它是立场文件，是 CV 社区对自身命运的一次集体表态。</p>
+
+<div class="highlight">
+<p><strong>核心命题</strong>：视觉不是 LLM 的输入通道，而是智能的独立来源。相机式眼睛存在了 5 亿年，寒武纪生命大爆发可能就是视觉驱动的；而人类语言、文字在生命史尺度上只是最近的一瞬。深度、运动、遮挡、可供性——大部分世界结构在被命名之前就存在。</p>
+</div>
+
+<p>白皮书自己把问题定义得很克制：不追求给出 VGI 的单一定义，而是把"计算机视觉在 AGI 时代应该追求什么原则、什么模态、什么基准、什么学习范式、视觉与其他模态是什么关系"这五个问题摊开。十个视角各说各话，但共同敌人一致：<strong>把视觉降格为语言系统的附件</strong>。</p>
+
+<h2>十个视角：同一面旗帜下的十条路线</h2>
+
+<h3>1 · 生成视频模型就是视觉基础模型（Geirhos，DeepMind）</h3>
+<p>论据链很硬：在 ImageNet 上训练分类器太容易，模型靠纹理和背景就能作弊——看到灰色皮革纹理就喊大象，看到草地就喊牛。但生成目标没有作弊空间：你必须把物体、背景、纹理、形状、光影、阴影全部做对，否则训练目标就惩罚你。任务够难，学到的才够真。</p>
+<p>他们实测了这条路线的下限：为娱乐训练的视频模型 Veo 3，零任务微调就能通过图生视频完成边缘检测、分割、关键点定位、超分、风格迁移，甚至走迷宫和图遍历——像极了 GPT-2 时代语言基础模型的"意外能力"。视频是静态图像的超集，生成视频因此是许多视觉任务的最通用框架。</p>
+
+<h3>2 · 创造力是 VGI 的试金石（Raghunathan，CMU）</h3>
+<p>智能不止于唯一正确答案的任务。她把创造力拆成两类：组合式（在熟悉元素间发现意外连接）和探索式（在约束下构造新模式），并提出可测的三维标准：<strong>连贯</strong>（满足物理/几何/语义约束）、<strong>结构多样性</strong>（不是换汤不换药的纹理变体）、<strong>原创性</strong>（不是训练集复现）。实验发现 teacherless 多 token 训练和扩散目标比 next-token 更有创意——因为创造性规划要求序列各部分全局协调。另一个漂亮设计是 seed-conditioning：把随机性放在输入端，让不同种子选中不同"高层方案"，而非在解码时引入局部抖动。</p>
+
+<h3>3 · 终身学习的视觉大脑（Asano，Nuremberg）</h3>
+<p>今天的视觉模型训练一次就冻结，而真正的视觉智能应该像婴儿：在持续的视觉经验流中学习，不靠标签、不打乱重放、不预设任务。他给出的"人工视觉脑"架构清单——感知系统（流→物体/表面/运动）、带假设的时空世界模型（区分观察者自身移动与世界变化）、多时间尺度记忆、面向机器人/仪器/人的任务接口——明显是模块化世界观，且强调各模块应有不同的更新规则和时间尺度。结尾那句话很扎心：理想系统更新权重只需要一个灯泡的能量，不是一座城市的。</p>
+
+<h3>4 · 多模态、生成、高效三大赌注（Ramanan 等，CMU）</h3>
+<p>三个"赌注"：智能不会只是视觉的（多模态信号建模是核心，不同模态提供条件独立的视图，能大幅提升学习效率）；生成模型将接管表征学习（DINO、JEPA 式显式表征空间可能被生成式监督取代）；效率是创新的基石——Sora 被 OpenAI 关停的流传原因是推理成本。技术路径上主张把循环、3D、多尺度这些"经典"结构重新纳入生成建模：长视频生成的本质需求是一个不随时间增长的状态表征，而在线 3D 重建正是这样的空间记忆。最后是最挑衅的观点：<strong>数据多样性而非规模才是学习的关键驱动，而 RL 是唯一把数据采集责任交给学习者的框架</strong>。</p>
+
+<h3>5 · 为科学发现而视觉（Fouhey，NYU）</h3>
+<p>他把视角带进和科学家合作的现场，暴露了 CV 惯例在真实科学问题上的错配：气候变化对动物形态的影响，1970 年的标本不可能重新采集（数据不可增）；太阳物理只有光子没有雨量计（无 ground truth，验证靠与既有知识调和，占比远超 CVPR 惯例）；仪器有 systematics——模型对真信号和伪信号一视同仁地忠实模仿，太阳 11 年和 5 分钟的振荡是真的，160 分钟和 24 小时的是假的，分不开就是灾难。核心论点：很多视觉问题靠数据暴力就能解决，真正稀缺的是对齐领域能力的方法论。</p>
+
+<h3>6 · Spatial AI：SLAM 的进化方向（Davison，Imperial）</h3>
+<p>SLAM 是 AI 里少有的还没被机器学习完全统治的领域——定位和稀疏建图的最优方法仍是手工设计的几何与概率状态估计。他的关注点不在"端到端神经网络会不会取代 SLAM"，而在<strong>整个系统的存储与计算结构</strong>：高效、可组合、可共享。硬件侧的判断很具体：AI 处理器将走向细粒度并行、分布式片上记忆、稀疏通信、异步事件驱动甚至模拟量表征——把算法的图结构"地理式"铺到芯片上，信念传播是匹配这种硬件的最强候选。效率驱动的模块化，最终可能让空间 AI 系统越来越像生物脑。</p>
+
+<h3>7 · 视觉智能即具身智能（Du，Harvard）</h3>
+<p>他把具身性从"下游应用"提升为"认识手段"：通过选择视点和干预世界，智能体能揭示被动观察无法推断的属性。框架是 analysis-by-synthesis——感知即对"什么样的潜在场景能生成这个观察"做推断。文中引用了经典生物学证据：Held & Hein 的小猫实验里，只有自己运动控制视觉输入的那组小猫发育出正常视觉行为。他们组的自我改进闭环（SILVR 用自身交互轨迹改进视频规划器、WAV 用预测失败引导定向数据收集）加上 wake-sleep 式的在线交互/离线巩固分离，是我读到的对"持续学习+世界模型+行动"闭环最完整的表述。</p>
+
+<h3>8 · 用代码看见物理世界（Wu & Jiajun Wu，Cambridge / Stanford）</h3>
+<p>这是全文哲学味最浓也最锋利的一章。看见 = 逆推产生图像的那个物理场景。关键是恢复五种结构：实体、内在属性（几何/材质/关节）、外在因素（姿态/光照/相机）、关系、动力学。恢复这些的意义在于反事实推理能力：知道杯子的形状材质，就能回答"桌子倾斜会怎样"——只学过"桌上杯子长什么样"的系统没有理由答对。</p>
+<blockquote>视频模型渲染出逼真的坠落杯子，只说明它知道坠落长什么样，不说明质量、接触或摩擦存在于它内部的任何地方。</blockquote>
+<p>他们的解法是把结构写成程序：物体层级→程序嵌套，部件重复→循环，关节限位→参数与断言。程序能编译、能运行、能报错重试——这正是当代 coding agent 被验证的能力。Scene Language 就是这个思路的落地：程序给层级结构，词给语义类，embedding 给视觉身份。他们留的问题也最尖锐：agent 现在的建模能力高度依赖 LLM 先验喂给它的抽象，能否<strong>从观察中自己提取抽象</strong>而非接受供给，才是真正的问题。</p>
+
+<h3>9 · Vision-Native：知道何时看、看哪里、看多细（Liu，Princeton）</h3>
+<p>ResNet 作者的视角聚焦一个被忽视的结构性困难：语言有词→短语→句→篇的符号层级，而视觉没有对应物——像素太低级，patch 是工程便利不是感知基元，bounding box 和 mask 的表达力不能与词句类比。人类的视觉理解是对象中心、层级化的，但没人知道那个层级长什么样。他估计视觉可能需要比语言预训练多 1000 到 10000 倍的有效算力，才能让正确的抽象自然涌现——但他不主张手工设计视觉词表，而是相信规模+正确的数据与目标。最好的一句是 VGI 的操作性测试：<strong>视觉系统能否学会何时看、看哪里、需要多少细节？</strong></p>
+
+<h3>10 · 三目标收敛假设（Kataoka 等，AIST，一作团队）</h3>
+<p>压轴章节给出编者的综合假设：视觉智能经由三个互补学习目标的收敛而涌现——<strong>序列预测</strong>（预演下一步，自回归）、<strong>开放生成</strong>（想象可能之物，扩散）、<strong>重构</strong>（从不完整观察推断隐藏结构，3D/复原）。分别对应智能的三种基本操作：预测、想象、结构理解。单拎出来各自强大，合在一起才可能定义从 VFM 到 VGI 再到通用智能的路径。两个关键判断：人类视觉不是 VGI 的上限（机器可以接触超人类的视觉信息规模与精度）；如果模型对世界理解够深，很多能力已潜在模型内，剩下的问题是怎么<strong>唤起</strong>它们——视觉版 ICL：看几个视觉样例，推断任务结构，零参数更新解决新任务。</p>
+
+<h2>十立场速查表（Table 1 重建）</h2>
+<div class="tblwrap">
+<table>
+<thead><tr><th>作者</th><th>核心立场</th></tr></thead>
+<tbody>
+<tr><td>Robert Geirhos</td><td>生成式视频模型将成为视觉基础模型</td></tr>
+<tr><td>Aditi Raghunathan</td><td>创造力（连贯性/结构多样性/原创性/实用性）应成为 VGI 的核心测试</td></tr>
+<tr><td>Yuki M. Asano</td><td>VGI 应从视觉经验中持续自主学习，而非预训练后冻结</td></tr>
+<tr><td>Deva Ramanan 等</td><td>视觉智能应多模态、生成式、计算高效，融合触觉/音频/本体感觉</td></tr>
+<tr><td>David Fouhey</td><td>视觉智能应支持在有限专业观测上做科学发现，依托物理知识与其他仪器验证</td></tr>
+<tr><td>Andrew J. Davison</td><td>Spatial AI 需要融合状态估计、学习、实时计算与高效硬件的持久世界表征</td></tr>
+<tr><td>Yilun Du</td><td>视觉智能即具身智能：连接感知、生成式世界模型、行动、主动探索与持续适应</td></tr>
+<tr><td>Shangzhe Wu &amp; Jiajun Wu</td><td>视觉智能应恢复组合式物理结构，使表征支持编辑、仿真、验证与行动</td></tr>
+<tr><td>Zhuang Liu</td><td>VGI 应是 vision-native 的：学会何时看、看哪里、看多细</td></tr>
+<tr><td>Hirokatsu Kataoka 等</td><td>预测+想象+结构理解（自回归/生成/重构学习）提供从视觉经验到通用智能的路径</td></tr>
+</tbody>
+</table>
+</div>
+<figcaption>Table 1：白皮书原文的立场汇总，此处按原文重建</figcaption>
+
+<h2>真正的看点：生成派与结构派的战争</h2>
+<p>这份白皮书最大的价值不在任何单一观点，而在立场之间压不住的张力。生成派（Geirhos、Ramanan、Kataoka）相信：生成任务足够难，学会了生成就是理解了世界，表征会作为副产品出现。结构派（Wu &amp; Wu、Davison，以及强调可编辑性的 Fouhey）反驳：外观逼真与物理理解是两回事，"看起来对"的判据对"能否干预、编辑、验证"保持沉默。</p>
+<p>这个分歧不是学院式口角，它直接决定 CV 未来十年的资源投向：是把算力堆给更大的视频生成模型等涌现，还是投资于可读、可编辑、可验证的结构化世界表征。有意思的是，Kataoka 团队作为编者给出的三目标收敛假设，恰好是自回归（GPT 路线）、扩散（生成路线）、重构（JEPA 式路线）三大技术路线的和解方案——三种损失函数不再互斥，而是智能的三种基本操作。</p>
+
+<h2>评价：立场文件的天职与局限</h2>
+<p>先说局限，免得显得被名人堂晃了眼：无实验、无定义收敛、十个视角互相对立且作者们显然无意调和；"视觉 ICL"目前是 hope 而非 evidence；多篇视角引用的自家工作让白皮书带点"各家陈述书"的味道。你完全可以说它什么都没证明。</p>
+<p>但立场文件的天职本来就不是证明，而是<strong>立议程</strong>。在 CV 社区集体焦虑"会不会被 LLM 吸并成附件"的当下，这份文件把视觉中心主义的研究纲领正式化了：VGI 基准应该测迁移、持续适应、主动观察、持久世界知识、创造力、物理一致性、效率——静态单任务榜单通通不够用。它还留下了一个比"怎么建"更重要的问题：什么样的证据能说服我们，智能已经开始从视觉中涌现？</p>
+<blockquote>计算机视觉正在进入一个新阶段：研究对象从"单个视觉功能"扩展为"视觉经验的智能涌现"。识别、重建、生成、建图、行动，将成为同一个系统访问自身知识的不同方式。</blockquote>
+
+<p>对做视频理解、世界模型、持续学习的人来说，这是方向图：生成式视频模型的零样本工具属性（Veo 3 做边缘检测和分割）、具身闭环的自我改进机制、三目标收敛假设，都值得逐条对照自己的技术路线。对其他人，这是 CV 界对"Bitter Lesson 是否适用于视觉"的集体回答：不知道，但我们决定亲自试一遍。</p>
+
+</main>
+<footer>
+<p>论文：<a href="https://arxiv.org/abs/2608.25924">arXiv 2608.25924</a> · Visual General Intelligence: A White Paper</p>
+<p style="margin-top:8px">PaperDog · 论文狗 · AI 论文解读</p>
+</footer>
+</div>
+<script>
+const bar=document.getElementById('progress');
+addEventListener('scroll',()=>{const h=document.documentElement;bar.style.width=(h.scrollTop/(h.scrollHeight-h.clientHeight)*100)+'%'});
+const btn=document.getElementById('themeBtn'),root=document.documentElement;
+if(localStorage.getItem('vgi-theme')==='dark'){root.dataset.theme='dark';btn.textContent='☀️'}
+btn.onclick=()=>{const d=root.dataset.theme==='dark';root.dataset.theme=d?'':'dark';btn.textContent=d?'🌙':'☀️';localStorage.setItem('vgi-theme',d?'light':'dark')};
+</script>
+</body>
+</html>
