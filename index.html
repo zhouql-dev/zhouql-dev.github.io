@@ -265,6 +265,12 @@
         <ul class="article-list">
 
               <li class="article-item">
+    <h2><a href="papers/falcon-fast-weight.html">把状态更新写成一条学习规则：Falcon 家族重新对齐 fast-weight 记忆</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-01</span><span class="article-sep">·</span><span class="article-tag">Linear Attention · Fast Weight · 可学习状态更新 · ByteDance Seed</span></div>
+      <p>Falcon 家族把注意力状态更新写成一条显式学习规则：per-channel 可塑率取代统一衰减，递归、并行、分块三种视角数学等价。124–130M 参数下，recall 类任务逼平甚至反超全注意力 Transformer——而同尺寸线性基线在 associative recall 上崩到接近随机。对安防场景的流式视频记忆有直接借鉴价值。</p>
+    </li>
+
+<li class="article-item">
     <h2><a href="papers/wikiskill.html">WikiSkill：给 Agent 技能进化补上一本"永不回滚"的 Wiki</a></h2>
       <div class="article-meta"><span class="article-date">2026-08-29</span><span class="article-sep">·</span><span class="article-tag">Skill 进化 · 持久化知识 · Self-Improving · Google Research</span></div>
       <p>Google Research 给 skill 进化加了一本只累积、永不回滚的 Wiki：经验只写、知识只增、技能可逆，三种生命周期三层架构。五 benchmark 五模型全面 SOTA，消融显示持久化知识值 +15 分——而给执行者开 wiki 权限反而让进化信号流失，这条反直觉结论值得写进设计守则。</p>
