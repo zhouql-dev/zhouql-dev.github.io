@@ -265,6 +265,12 @@
         <ul class="article-list">
 
               <li class="article-item">
+    <h2><a href="papers/whale.html">WHALE：模型和脚手架，别再单练了</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-04</span><span class="article-sep">·</span><span class="article-tag">Agent · Harness 优化 · RSFT · KRAFTON × Stanford</span></div>
+      <p>Agent 性能是模型权重与可执行 harness 的乘积，只优化一半会被冻住的另一半卡住。WHALE 用「RSFT 权重更新 ⇄ Meta-Harness 搜索」小步交替循环联合优化两者：Qwen3.5-2B/4B 三域全面领先单组件基线 7.7–10 个百分点，patience 规则自适应切换拿全场最佳还省 23% rollouts。对 agent harness 设计：先跑便宜的 harness 搜索做瓶颈诊断，再决定训练投入。</p>
+    </li>
+
+<li class="article-item">
     <h2><a href="papers/falcon-fast-weight.html">把状态更新写成一条学习规则：Falcon 家族重新对齐 fast-weight 记忆</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-01</span><span class="article-sep">·</span><span class="article-tag">Linear Attention · Fast Weight · 可学习状态更新 · ByteDance Seed</span></div>
       <p>Falcon 家族把注意力状态更新写成一条显式学习规则：per-channel 可塑率取代统一衰减，递归、并行、分块三种视角数学等价。124–130M 参数下，recall 类任务逼平甚至反超全注意力 Transformer——而同尺寸线性基线在 associative recall 上崩到接近随机。对安防场景的流式视频记忆有直接借鉴价值。</p>
