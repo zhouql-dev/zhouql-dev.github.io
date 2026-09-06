@@ -1064,6 +1064,16 @@
     render();
   })();
   </script>
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+  <script async src="https://events.vercount.one/js"></script>
+  <script>
+  // Vercount（不蒜子兼容层）加载失败时优雅隐藏访问计数，避免显示空白
+  setTimeout(function() {
+    var v = document.getElementById('busuanzi_value_site_pv');
+    var c = document.getElementById('busuanzi_container_site_pv');
+    if (v && c && (!v.textContent || !v.textContent.trim())) {
+      c.style.display = 'none';
+    }
+  }, 6000);
+  </script>
 </body>
 </html>
