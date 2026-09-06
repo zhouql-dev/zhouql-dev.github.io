@@ -265,6 +265,16 @@
         <ul class="article-list">
 
               <li class="article-item">
+    <h2><a href="papers/environment-evolution.html">环境进化：不碰模型，把 RL 环境按代拉难</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-06</span><span class="article-sep">·</span><span class="article-tag">Agent RL · Environment Scaling · Tencent Hunyuan</span></div>
+      <p>难度是环境的属性，不是模型的属性。混元从多轮学习目标反推出 off-policy 难度度量——场景新颖性 × 技能稀有度 × 执行长度，用双循环 harness 沿三轴零 rollout 逐代进化环境，EL Scheduler 控投放节奏。Qwen3.6-27B / 35B-A3B 在 Terminal-Bench 2.1 上峰值 71.5% / 64.9%，甩开 agent–环境协同进化 8.6 / 9.8 个点。自改进的宿主从模型搬到了环境。</p>
+    </li>
+              <li class="article-item">
+    <h2><a href="papers/repo-to-skill.html">Repo-To-Skill：给 Agent 补上第三层</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-05</span><span class="article-sep">·</span><span class="article-tag">Agent Skills · AI4AI · BAAI × USTC × RUC × PolyU</span></div>
+      <p>权重改不起、prompt 装不下的知识往哪放？BAAI 把 1000 个 GitHub 仓库蒸馏成 5353 个可执行技能，只补上知识层就让 Codex 的 MLE-bench 成绩翻 2.3 倍。技能 = 检索、可执行、可验证的第三层知识，和权重、上下文三分天下。</p>
+    </li>
+              <li class="article-item">
     <h2><a href="papers/whale.html">WHALE：模型和脚手架，别再单练了</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-04</span><span class="article-sep">·</span><span class="article-tag">Agent · Harness 优化 · RSFT · KRAFTON × Stanford</span></div>
       <p>Agent 性能是模型权重与可执行 harness 的乘积，只优化一半会被冻住的另一半卡住。WHALE 用「RSFT 权重更新 ⇄ Meta-Harness 搜索」小步交替循环联合优化两者：Qwen3.5-2B/4B 三域全面领先单组件基线 7.7–10 个百分点，patience 规则自适应切换拿全场最佳还省 23% rollouts。对 agent harness 设计：先跑便宜的 harness 搜索做瓶颈诊断，再决定训练投入。</p>
