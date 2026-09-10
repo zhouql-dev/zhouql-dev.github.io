@@ -265,6 +265,18 @@
         <ul class="article-list">
 
               <li class="article-item">
+    <h2><a href="papers/neohorse.html">NeoHorse-1：递归自我改进的第一块实体，是把路由日志变成训练数据</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-10</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · Agentic Post-Training · 路由 Harness</span></div>
+      <p>你线上跑着的路由 harness，本身就是 RSI 缺的那块机制：执行轨迹、路由分数、任务结果三类被浪费的信号，拼成观测能力→转化证据→下一轮学习的完整管道。结构校验与六维语义评估入库，路由分数当排序代理调度三阶段课程与 OPD，评估缺陷画像回流下一轮数据配比——不引入新损失函数，只改数据组成。4B 后训练 64.87 追平 9B 底座（65.60），9B 的 69.04 直接压过 30B 的 Muse-Glimmer。</p>
+    </li>
+
+    <li class="article-item">
+    <h2><a href="papers/trace-as-state.html">推理轨迹放前面还是后面？这个顺序差，价值 38 个百分点</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-10</span><span class="article-sep">·</span><span class="article-tag">长上下文 · 推理轨迹 · 状态前置 · 清华</span></div>
+      <p>同一模型、同一份 25 万 token 上下文、同一条推理轨迹，唯一变量是轨迹放前面还是后面：放后面 GraphWalks Parents 从 29.2% 到 43.0%，放前面直接 81.8%。自回归因果处理器存在顺序错配——任务状态必须先于上下文进入模型，最坏情况下两种顺序的内存需求差一个 2<sup>b</sup> 因子。27 个模型-任务组合里前置赢 26 个，GLM-5.2 Parents 任务打满 100%。方法只有三步：生成轨迹、序列化、前置重读。</p>
+    </li>
+
+    <li class="article-item">
     <h2><a href="papers/declarative-attention.html">模型自己管注意力：一句话声明，KV cache 读取量减半</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-06</span><span class="article-sep">·</span><span class="article-tag">稀疏注意力 · KV Cache · 长上下文 · KAIST × Google DeepMind</span></div>
       <p>与其让引擎猜模型的心思，不如让模型亲口说出来。Declarative Attention 让模型在思维链里用 &lt;global&gt;/&lt;focus&gt;/&lt;local&gt; 三种标签声明注意力去向，推理引擎像解析工具调用一样解析声明、动态构造段级掩码、跳过 KV 读取——零训练、零辅助打分器，Gemma-4-31B 注意 token −52.0%、精度仅 −1.27pp，且差距随模型规模收敛到 99%。与 KV 量化正交可堆叠，"声明式"是 tool use 范式向推理内核的渗透。</p>
