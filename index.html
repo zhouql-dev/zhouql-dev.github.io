@@ -265,6 +265,12 @@
         <ul class="article-list">
 
               <li class="article-item">
+    <h2><a href="papers/rlt.html">Recurrent Looped Transformer：把"思考深度"从架构常量变成序列变量</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-13</span><span class="article-sep">·</span><span class="article-tag">潜推理 · 递归深度 · RL Replay 契约 · 技术报告</span></div>
+      <p>每个 token 的计算深度是架构常数——RLT 把这个假设掀了：decoder 最终隐状态跨 token 传递，t 个 token 后计算路径已穿过 t × L<sub>D</sub> 个块，"无限深度"由序列本身定义而非架构。并行因果 encoder 做 System 1 感知，递归 decoder 做 System 2 状态演化，prompt/response 边界不重置状态。最值钱的是第 5.3 节的 RL replay 契约：采样与训练的计算方式一旦不一致，算出的 log-prob 就不对应采样时的策略——这对所有带状态/记忆的架构都成立。零实验的规格书，但把三个真问题讲透了。</p>
+    </li>
+
+    <li class="article-item">
     <h2><a href="papers/neohorse.html">NeoHorse-1：递归自我改进的第一块实体，是把路由日志变成训练数据</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-10</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · Agentic Post-Training · 路由 Harness</span></div>
       <p>你线上跑着的路由 harness，本身就是 RSI 缺的那块机制：执行轨迹、路由分数、任务结果三类被浪费的信号，拼成观测能力→转化证据→下一轮学习的完整管道。结构校验与六维语义评估入库，路由分数当排序代理调度三阶段课程与 OPD，评估缺陷画像回流下一轮数据配比——不引入新损失函数，只改数据组成。4B 后训练 64.87 追平 9B 底座（65.60），9B 的 69.04 直接压过 30B 的 Muse-Glimmer。</p>
