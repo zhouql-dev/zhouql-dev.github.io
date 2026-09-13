@@ -282,9 +282,9 @@
       <p>与其让引擎猜模型的心思，不如让模型亲口说出来。Declarative Attention 让模型在思维链里用 &lt;global&gt;/&lt;focus&gt;/&lt;local&gt; 三种标签声明注意力去向，推理引擎像解析工具调用一样解析声明、动态构造段级掩码、跳过 KV 读取——零训练、零辅助打分器，Gemma-4-31B 注意 token −52.0%、精度仅 −1.27pp，且差距随模型规模收敛到 99%。与 KV 量化正交可堆叠，"声明式"是 tool use 范式向推理内核的渗透。</p>
     </li>
 <li class="article-item">
-    <h2><a href="papers/environment-evolution.html">环境进化：不碰模型，把 RL 环境按代拉难</a></h2>
+    <h2><a href="papers/environment-evolution.html">别让模型决定环境难度：腾讯混元把 Terminal 环境做成代际进化的可再生资源</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-06</span><span class="article-sep">·</span><span class="article-tag">Agent RL · Environment Scaling · Tencent Hunyuan</span></div>
-      <p>难度是环境的属性，不是模型的属性。混元从多轮学习目标反推出 off-policy 难度度量——场景新颖性 × 技能稀有度 × 执行长度，用双循环 harness 沿三轴零 rollout 逐代进化环境，EL Scheduler 控投放节奏。Qwen3.6-27B / 35B-A3B 在 Terminal-Bench 2.1 上峰值 71.5% / 64.9%，甩开 agent–环境协同进化 8.6 / 9.8 个点。自改进的宿主从模型搬到了环境。</p>
+      <p>难度是环境的属性，不是模型的属性——把「难度」和「弱点」拆开后，混元用基于世界知识的参考分布做 off-policy 难度度量，双循环 harness 沿三轴逐代进化环境，EL Scheduler 按 6/8 成功率门槛发放课程。Qwen3.6-27B / 35B-A3B 在 Terminal-Bench 2.1 峰值 71.5% / 64.9%，甩开 agent–环境协同进化 8.6 / 9.8 个点。Agentic 训练的下一步竞争在资源工程。</p>
     </li>
               <li class="article-item">
     <h2><a href="papers/repo-to-skill.html">Repo-To-Skill：给 Agent 补上第三层</a></h2>
