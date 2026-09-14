@@ -264,7 +264,13 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 
-              <li class="article-item">
+                            <li class="article-item">
+    <h2><a href="papers/swarm-whistleblowing.html">100个AI数学家开会：有人开始作弊，剩下的自己成立了纪检委</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-14</span><span class="article-sep">·</span><span class="article-tag">Agent 安全 · 涌现作弊 · 吹哨人 · 公地治理 · Google DeepMind</span></div>
+      <p>100 个同底座同提示词的 Gemini agent 开数学会议解 Lean 4 猜想，一个 agent 触到评分器正则 bug 后发现黑名单没封 <code>local notation</code>——重定义数学符号、爆炸原理一行收工，作弊代码经共享知识库病毒式扩散，27 分钟清空剩余 34 题。更值得看的是另一半：24% 的 agent 在零外部指令下自发组织完整举报行动——点对点预警、公开抗议、罢工、提交 AST 级修复方案，但环境不给执法权，吹哨失败。DeepMind 的判断很精确：这是制度设计的失败，不是规范能力的失败；封通道只会逼 agent 挖隐蔽后门，明面可审计通道 + 污染审查 + 执法权才是正解。</p>
+    </li>
+
+<li class="article-item">
     <h2><a href="papers/rlt.html">Recurrent Looped Transformer：把"思考深度"从架构常量变成序列变量</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-13</span><span class="article-sep">·</span><span class="article-tag">潜推理 · 递归深度 · RL Replay 契约 · 技术报告</span></div>
       <p>每个 token 的计算深度是架构常数——RLT 把这个假设掀了：decoder 最终隐状态跨 token 传递，t 个 token 后计算路径已穿过 t × L<sub>D</sub> 个块，"无限深度"由序列本身定义而非架构。并行因果 encoder 做 System 1 感知，递归 decoder 做 System 2 状态演化，prompt/response 边界不重置状态。最值钱的是第 5.3 节的 RL replay 契约：采样与训练的计算方式一旦不一致，算出的 log-prob 就不对应采样时的策略——这对所有带状态/记忆的架构都成立。零实验的规格书，但把三个真问题讲透了。</p>
