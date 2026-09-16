@@ -265,6 +265,12 @@
         <ul class="article-list">
 
                             <li class="article-item">
+    <h2><a href="papers/dream-rsi.html">AI 在梦里进化自己：Google 把递归自我改进跑成了闭环</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-17</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · 探索策略 · 重放模拟器 · Agent</span></div>
+      <p>Google 与 DeepMind 的技术报告，把 RSI 从立场变成系统：agent 探索留下的发现树本身就是已到达搜索空间的精确模拟器——免费副产品，而非学出来的 world model。在模拟器里"做梦"：上千个候选策略零成本重放评估，胜出者上线，每圈多一个世界，递归闭环。三个域八个任务：Lasso 求解器 317 次调用 vs SimpleTES 51,200 代（162×），6/6 held-out 数据集击败 sklearn；数学优化 1000 代内追平 AlphaEvolve 系，预算省 50×+；GPU kernel 2.43× 少代数同等性能。两个反直觉发现：历史作为 prompt 指导反而有害——语义先验过度约束搜索、杀死多样性；学出的策略会自适应调节探索力度——进展期省算力（110→50 次），平台期加注。设计严格停在 L2：只改探索策略代码，模型与接口冻结，随时可回滚。RSI 不需要等到 L5 才开始。</p>
+    </li>
+
+<li class="article-item">
     <h2><a href="papers/last-ai-rsi.html">人类构建的最后一个 AI？——把递归自我改进变成工程问题</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-16</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · RSI · AI 安全 · 立场论文</span></div>
       <p>75 页立场论文把 RSI 从哲学辩论变成工程问题：B0/B1 划界——自我指涉≠自我改造，改自己的输出是 B0，把自身代码/权重/提示词当改进对象才是真 RSI；L0-L5 五级自治阶梯，每级定义循环对象、人类角色与升级证据；实证部分追踪 18 个前沿系统 2016-2025 的 HCI 轨迹，外推出 AI 反馈超越人类反馈的交点 T*，中位数约 8.2 年——「最后一个人类构建的 AI」不是日期，是收敛曲线上的区间。四条赛道（代码/数据/算法/基础设施）已跑在 L2-L4，规律是验证信号越便宜的赛道自动化越快；风险随级别质变，L2 的失误是产品事故，L5 的失误是系统性事件，治理粒度必须与自治级别对齐。</p>
