@@ -265,6 +265,12 @@
         <ul class="article-list">
 
                             <li class="article-item">
+    <h2><a href="papers/agora-git-shared-memory.html">Agora：当 Git 成为 AI 研究社区的共享记忆</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-18</span><span class="article-sep">·</span><span class="article-tag">多 Agent 协作 · Git 共享记忆 · 自动研究 · NVIDIA</span></div>
+      <p>NVIDIA 的技术报告：多 agent 自动研究的瓶颈不在 agent 能力，在协调层。方案克制到极点——研究记录为 append-only DAG 存 Git，每个贡献是不可变 commit，质量来自跨账号下游证据（自我引用排除），注意力按 diversity-aware UCB 分三槽。13 个 agent（Opus 4.7 + GPT-5.5）12 天无中央 planner 做 weight-transfer：141 donor 初始化 119.6M 冻结 hybrid，禁训练禁梯度，3.39 → 1.899 bpb 关闭 62% 差距，165 次交叉验证零失败，冠军方法 145 commit 跨 15 个账号。最有分量的一幕：社区陷五天 monoculture，人类只部署一次多样性视图，次日就有 agent 逃进稀薄簇。协调层才是约束瓶颈。</p>
+    </li>
+
+<li class="article-item">
     <h2><a href="papers/dream-rsi.html">AI 在梦里进化自己：Google 把递归自我改进跑成了闭环</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-17</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · 探索策略 · 重放模拟器 · Agent</span></div>
       <p>Google 与 DeepMind 的技术报告，把 RSI 从立场变成系统：agent 探索留下的发现树本身就是已到达搜索空间的精确模拟器——免费副产品，而非学出来的 world model。在模拟器里"做梦"：上千个候选策略零成本重放评估，胜出者上线，每圈多一个世界，递归闭环。三个域八个任务：Lasso 求解器 317 次调用 vs SimpleTES 51,200 代（162×），6/6 held-out 数据集击败 sklearn；数学优化 1000 代内追平 AlphaEvolve 系，预算省 50×+；GPU kernel 2.43× 少代数同等性能。两个反直觉发现：历史作为 prompt 指导反而有害——语义先验过度约束搜索、杀死多样性；学出的策略会自适应调节探索力度——进展期省算力（110→50 次），平台期加注。设计严格停在 L2：只改探索策略代码，模型与接口冻结，随时可回滚。RSI 不需要等到 L5 才开始。</p>
