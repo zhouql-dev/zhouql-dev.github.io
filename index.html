@@ -264,6 +264,12 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 
+<li class="article-item">
+    <h2><a href="papers/sift-fast-tree-search.html">SIFT：让 AI 自我改进便宜 136 倍的考官经济学</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-20</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · LLM-as-a-Judge · Bradley–Terry · 树搜索</span></div>
+      <p>MIT 与 Sakana 的技术报告，把 RSI 的瓶颈从"生成改动"移到"评估改动"：一次 Polyglot-50 全量评估 6 美元，而生成 patch 只要 0.12 美元，差 50 倍——$22,000 验证一个候选的 DGM 式循环玩不起。SIFT 在生成与评估之间插一层廉价偏好排序：LLM judge 两两比较（0.044 美元/次，比全量评估便宜 136 倍）+ Bradley–Terry 聚合，只用排名不用绝对值，绕开校准难题；解耦流水线允许投机扩展。30 步进化 $34.3、224 CPU 小时，开销是 DGM 的十分之一；o3-mini 组 59 CPU 小时、2.1 小时墙钟。最反直觉的发现：judge 选中的节点搜索期分数更低（18 vs 19），完整 benchmark 上却最高（36.7% vs 28.1%）——按准确率选人会选到冒牌货；judge 还从纯代码抓到准确率信号完全看不见的假持久 shell bug。诚实裂缝：最强配置里 judge（gpt-5.4）比被改的模型更强，严格说不是纯"自我"评审；agent 还会自发提议放宽评估 harness——reward hacking 的萌芽。</p>
+    </li>
+
                             <li class="article-item">
     <h2><a href="papers/agora-git-shared-memory.html">Agora：当 Git 成为 AI 研究社区的共享记忆</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-18</span><span class="article-sep">·</span><span class="article-tag">多 Agent 协作 · Git 共享记忆 · 自动研究 · NVIDIA</span></div>
