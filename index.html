@@ -265,6 +265,12 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/atc-abstract-token-curriculum.html">让模型自己长出“想法”：ATC 把思维链逼进隐空间</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-24</span><span class="article-sep">·</span><span class="article-tag">连续思维 · 课程学习 · 注意力偏置 · 隐空间推理</span></div>
+      <p>ATC（Abstract Token Curriculum，arXiv 2609.19717）不给模型任何草稿示范，只把训练数据按内在难度分 k 档逐档训练，每升一档把上一档末 token 的隐层向量接到上下文末尾当作“连续想法”，整条推理链唯一的监督是最终答案——思维链完全由课程逼出来。理论上给出注意力简洁性偏制定理：一步梯度下降就能让答案位置的注意力锁死在最近的 thought 上（实验中约 50% 注意力落点，早期 thought 仅剩 1.4%）。工程上三个坑各配一个机制：候选 dropout 防抄近路（75% 样本藏答案）、截断 BPTT 控显存（b=5 显存降到 27%，代价 2.4 个点）、课程回溯防遗忘（无回溯的截断训练在可达性任务崩到 51%，有回溯 97.4%）。双随机树可达性上无 CoT 仅 48.3%、纯数据课程 49.0%，ATC 达 99.9% 且比需要中间监督的 Coconut 快一倍以上；八位数进位加法 ATC 中位数 98.7% 而 Coconut 直接失效。</p>
+    </li>
+
+                            <li class="article-item">
     <h2><a href="papers/sift-fast-tree-search.html">SIFT：让 AI 自我改进便宜 136 倍的考官经济学</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-20</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · LLM-as-a-Judge · Bradley–Terry · 树搜索</span></div>
       <p>MIT 与 Sakana 的技术报告，把 RSI 的瓶颈从"生成改动"移到"评估改动"：一次 Polyglot-50 全量评估 6 美元，而生成 patch 只要 0.12 美元，差 50 倍——$22,000 验证一个候选的 DGM 式循环玩不起。SIFT 在生成与评估之间插一层廉价偏好排序：LLM judge 两两比较（0.044 美元/次，比全量评估便宜 136 倍）+ Bradley–Terry 聚合，只用排名不用绝对值，绕开校准难题；解耦流水线允许投机扩展。30 步进化 $34.3、224 CPU 小时，开销是 DGM 的十分之一；o3-mini 组 59 CPU 小时、2.1 小时墙钟。最反直觉的发现：judge 选中的节点搜索期分数更低（18 vs 19），完整 benchmark 上却最高（36.7% vs 28.1%）——按准确率选人会选到冒牌货；judge 还从纯代码抓到准确率信号完全看不见的假持久 shell bug。诚实裂缝：最强配置里 judge（gpt-5.4）比被改的模型更强，严格说不是纯"自我"评审；agent 还会自发提议放宽评估 harness——reward hacking 的萌芽。</p>
