@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/retnet.html">RetNet，三年后回看：判决书没生效，但基因已经量产</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-25</span><span class="article-sep">·</span><span class="article-tag">架构回顾 · 线性注意力 · O(1) 状态 · 长序列推理</span></div>
+      <p>把 softmax 换成指数衰减，一个递归式就同时拿到训练并行、O(1) 推理和好性能：8k 序列推理延迟 8.4 倍、显存 97% 是权重本身。它没登基——规模停在 6.7B、五个月后 Mamba 接旗——但逐头衰减、分块递归这套基因已经量产进 Qwen3-Next 的混合层里。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/jev.html">裁判的成本曲线：一个不写理由的判官，如何保住 99% 精度、省掉一半的钱</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-25</span><span class="article-sep">·</span><span class="article-tag">LLM-as-a-Judge · 评测经济学 · 置信度级联 · CMU</span></div>
       <p>判定难度是长尾的，小判官的概率分布免费告诉你每一单落在长尾哪里——q 够高就接受，q 低才升级给 GPT-6：99.6% 精度、47% 费用。真正值钱的是论文拆台自己的部分：阈值不跨负载迁移、风格对抗区置信度会瞎、无效输出要算错误。</p>
