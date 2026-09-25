@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/art-genomic-vision.html">AI 的“基因视觉”：Claude 如何在 19 亿蛋白簇里看见一个没人见过的酶系统</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-24</span><span class="article-sep">·</span><span class="article-tag">Claude Code · 多智能体 · 生物发现 · 自动化科学</span></div>
+      <p>949 个 agent 会话连跑 21.5 小时、烧掉 2.2 亿 token，在宏基因组数据库里找到一个没人描述过的逆转录酶系统。真正有意思的是：10 次重跑只有 1 次成功，而两次独立实验指向同一个解释——模型把原始 DNA “看见”了。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/atc-abstract-token-curriculum.html">让模型自己长出“想法”：ATC 把思维链逼进隐空间</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-24</span><span class="article-sep">·</span><span class="article-tag">连续思维 · 课程学习 · 注意力偏置 · 隐空间推理</span></div>
       <p>ATC（Abstract Token Curriculum，arXiv 2609.19717）不给模型任何草稿示范，只把训练数据按内在难度分 k 档逐档训练，每升一档把上一档末 token 的隐层向量接到上下文末尾当作“连续想法”，整条推理链唯一的监督是最终答案——思维链完全由课程逼出来。理论上给出注意力简洁性偏制定理：一步梯度下降就能让答案位置的注意力锁死在最近的 thought 上（实验中约 50% 注意力落点，早期 thought 仅剩 1.4%）。工程上三个坑各配一个机制：候选 dropout 防抄近路（75% 样本藏答案）、截断 BPTT 控显存（b=5 显存降到 27%，代价 2.4 个点）、课程回溯防遗忘（无回溯的截断训练在可达性任务崩到 51%，有回溯 97.4%）。双随机树可达性上无 CoT 仅 48.3%、纯数据课程 49.0%，ATC 达 99.9% 且比需要中间监督的 Coconut 快一倍以上；八位数进位加法 ATC 中位数 98.7% 而 Coconut 直接失效。</p>
