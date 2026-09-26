@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/self-play-zero-data.html">无中生有：零数据自博弈预训练跑出了 scaling law</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-26</span><span class="article-sep">·</span><span class="article-tag">自博弈 · 预训练数据 · Scaling Law · Solomonoff 归纳</span></div>
+      <p>Generator 给通用图灵机写程序产出训练字节，Learner 做 next-token；奖励不是"越难越好"，而是梯度与学习器进步方向的对齐度——把维果茨基最近发展区写成损失函数。零自然数据跑出与直训同量级的 scaling 指数，Generator 自己发现了 Fibonacci，ICL 与零样本迁移全部涌现。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/retnet.html">RetNet，三年后回看：判决书没生效，但基因已经量产</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-25</span><span class="article-sep">·</span><span class="article-tag">架构回顾 · 线性注意力 · O(1) 状态 · 长序列推理</span></div>
       <p>把 softmax 换成指数衰减，一个递归式就同时拿到训练并行、O(1) 推理和好性能：8k 序列推理延迟 8.4 倍、显存 97% 是权重本身。它没登基——规模停在 6.7B、五个月后 Mamba 接旗——但逐头衰减、分块递归这套基因已经量产进 Qwen3-Next 的混合层里。</p>
