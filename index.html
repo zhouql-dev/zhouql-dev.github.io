@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/clm.html">不开口的判官：Stanford 把 Agent 的“系统一”做成了点积</a></h2>
+      <div class="article-meta"><span class="article-date">2026-09-26</span><span class="article-sep">·</span><span class="article-tag">对比学习 · System One · Agent 决策 · Verifier · Stanford</span></div>
+      <p>决策可能根本不需要生成文字：CLM-8B 收到状态和候选动作只返回概率——冻结 Qwen3-8B 加两个 20M 对比头。零样本对齐 Jev、最快快 9 倍，1000 候选时 13×；verifier 场景微调后 DeepSWE 81.6%、Terminal-Bench 2.1 87.6% 双刷新 SOTA，还快 4–5.7 倍。决策层整个才 75MB。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/self-play-zero-data.html">无中生有：零数据自博弈预训练跑出了 scaling law</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-26</span><span class="article-sep">·</span><span class="article-tag">自博弈 · 预训练数据 · Scaling Law · Solomonoff 归纳</span></div>
       <p>Generator 给通用图灵机写程序产出训练字节，Learner 做 next-token；奖励不是"越难越好"，而是梯度与学习器进步方向的对齐度——把维果茨基最近发展区写成损失函数。零自然数据跑出与直训同量级的 scaling 指数，Generator 自己发现了 Fibonacci，ICL 与零样本迁移全部涌现。</p>
