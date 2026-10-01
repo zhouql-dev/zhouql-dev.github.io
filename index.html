@@ -265,6 +265,12 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/looped-dit.html">260M 打穿 1.7B：Looped-DiT 把“循环”变成图像生成的新 scaling 轴</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-02</span><span class="article-sep">·</span><span class="article-tag">循环深度 · Test-time Scaling · Diffusion Transformer · 商汤+清华</span></div>
+      <p>参数一份不加，中间块每个去噪步内循环 N 次：计算深度与去噪步数彻底解耦，推理时想开几圈开几圈。260M 的 B/16 六榜平均 71.5 超 6.5 倍大的 1.7B InternVL-U，单图算力省 4.9 倍。先做失败分析再下药：朴素循环逐步擦除空间信息（坐标 R² 0.865→0.562），Deep Supervision + XSA 对症修复——同样的推理预算，加循环深度比加去噪步数收益更高，循环深度是更高效的 test-time scaling 轴，且与文字 CoT 互补。</p>
+  </li>
+
+<li class="article-item">
       <h2><a href="papers/pc-alm.html">不用反向传播，训练 1000 层网络：Sakana AI 想动深度学习的地基</a></h2>
       <div class="article-meta"><span class="article-date">2026-09-28</span><span class="article-sep">·</span><span class="article-tag">预测编码 · 增广拉格朗日 · 局部学习 · 生物合理学习</span></div>
       <p>二次惩罚升级成"真约束"，每层一个 PI 控制器：纯局部更新在 1000 层深度上精确重建 BP 梯度流。PC 在 24 层就崩塌的地方，PC-ALM 与 BP 差距仅约 2 个百分点——扩散的信用信号变成弹道式，深度学习的第二个引擎有了数学轮廓。</p>
