@@ -265,6 +265,12 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/vista.html">VISTA：同一个模型，从 13 分到 100 分，中间只隔一个 Harness</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-06</span><span class="article-sep">·</span><span class="article-tag">视觉Harness · Agent记忆 · 交互式推理 · ARC-AGI-3 · MIT</span></div>
+      <p>模型权重一行不动，只换 harness：无损保存每一帧 + 让模型随时回看任意历史画面任意区域。Opus 5.0 在 ARC-AGI-3 从 40.68 干到 100.00 满分，GPT-5.6 Sol 从 13.33 到 99.00，动作数比人类新手少 57.4%，首个不靠程序合成的满分方案。何恺明组用干净消融证明：harness 设计的贡献远大于模型差异。</p>
+  </li>
+
+<li class="article-item">
     <h2><a href="papers/loopcd.html">循环模型的中间步不是废料：LoopCD 免训练白捡 11 个点</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-03</span><span class="article-sep">·</span><span class="article-tag">循环 Transformer · 对比解码 · 免训练 · 推理优化 · Apple</span></div>
       <p>循环 Transformer 迭代到一半的中间状态，经共享输出头解码就是合法 token 分布——LoopCD 拿它当对比解码的免费弱参考，免辅助模型、免训练：Ouro AIME 61.88→73.33，Huginn HumanEval 22.56→31.71，Hidden 形态在 coda 前混隐状态零额外开销。自适应强度按 top-2 margin 门控，增益全部集中在"拿不准的决策"上（最不自信 1/5 +6.4~13.3 点）。循环轮数砍半 + LoopCD 打平甚至超过全轮数基线，前向 FLOPs 省 22.5%–48.2%。</p>
