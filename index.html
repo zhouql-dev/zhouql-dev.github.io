@@ -265,6 +265,16 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/vera.html">VERA：自进化 Agent 的真正瓶颈，不是算法，而是环境</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-08</span><span class="article-sep">·</span><span class="article-tag">自进化 · 可验证环境 · 协同进化 · GRPO · Harness · NVIDIA</span></div>
+      <p>把评测轨迹批量转成带二元 rubric 的可重启沙盒（9,000+ 开源），模型权重与 harness 交替冻结、配对验证式协同进化。9B 反超最强单轴基线 10+ 分，27B 办公域超过 Claude Opus 4.8；可执行检查覆盖 LLM 评委，环境工程占总成本 54.7%。</p>
+  </li>
+  <li class="article-item">
+    <h2><a href="papers/workforge.html">工作区即考题：WorkForge 如何把 Agent 训练环境做得又真实又可验证</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-08</span><span class="article-sep">·</span><span class="article-tag">可验证环境 · 数据合成 · 长程Agent · SFT · 腾讯 × 复旦</span></div>
+      <p>专家 Blueprint → 采集真实资源组织工作区 → rubric 锚定事实锚点、程序化与 LLM 双路验证 → 16,665 环境、40 个专业领域。GDPval 45.5 提到 73.6，混合验证比单路打分高 7 分，harness 使用习惯会泄漏进模型权重。</p>
+  </li>
+  <li class="article-item">
     <h2><a href="papers/vista.html">VISTA：同一个模型，从 13 分到 100 分，中间只隔一个 Harness</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-06</span><span class="article-sep">·</span><span class="article-tag">视觉Harness · Agent记忆 · 交互式推理 · ARC-AGI-3 · MIT</span></div>
       <p>模型权重一行不动，只换 harness：无损保存每一帧 + 让模型随时回看任意历史画面任意区域。Opus 5.0 在 ARC-AGI-3 从 40.68 干到 100.00 满分，GPT-5.6 Sol 从 13.33 到 99.00，动作数比人类新手少 57.4%，首个不靠程序合成的满分方案。何恺明组用干净消融证明：harness 设计的贡献远大于模型差异。</p>
