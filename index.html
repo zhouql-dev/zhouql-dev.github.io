@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/trc2.html">TRC²：把海马体和丘脑塞进 Transformer，持续学习不再是外挂</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-10</span><span class="article-sep">·</span><span class="article-tag">持续学习 · 丘脑路由 · 海马体回放 · MoE · 神经形态架构</span></div>
+      <p>把皮层柱、丘脑路由、海马体记忆三个子系统焊进 decoder-only 主干：丘脑只调制 query 不碰 KV，海马体严格先读后写、回放永不碰当前 batch，PI 控制器按测得的遗忘量实时调回放强度。PPL 遗忘面积 0.44 对基线 1.1–1.6；消融里拆掉丘脑+海马体终点 PPL 反而更好但 AUFC 翻倍——最强终点检查点 ≠ 最强持续学习方案。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/vera.html">VERA：自进化 Agent 的真正瓶颈，不是算法，而是环境</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-08</span><span class="article-sep">·</span><span class="article-tag">自进化 · 可验证环境 · 协同进化 · GRPO · Harness · NVIDIA</span></div>
       <p>把评测轨迹批量转成带二元 rubric 的可重启沙盒（9,000+ 开源），模型权重与 harness 交替冻结、配对验证式协同进化。9B 反超最强单轴基线 10+ 分，27B 办公域超过 Claude Opus 4.8；可执行检查覆盖 LLM 评委，环境工程占总成本 54.7%。</p>
