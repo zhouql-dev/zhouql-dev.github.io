@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/mass.html">MASS：自己出题、自己组队、自己进化——把多智能体协作焊进权重</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-12</span><span class="article-sep">·</span><span class="article-tag">自进化 · 多智能体 · 工作流进化搜索 · LoRA 内化 · Berkeley · Sakana AI</span></div>
+      <p>同一个 Qwen3.6-27B 分饰 agent/optimizer/evaluator 三角：内环对多智能体工作流（hop 顺序 + 子代理契约）做进化搜索，外环把最优轨迹 LoRA 内化，两轮循环对基座胜率 53.9%→69.9%。多智能体轨迹蒸馏比单智能体省 31% token 且胜率 +4.3 点；裸提示委派率 1/110→87/110——协作经验第一次从提示词搬进参数，而瓶颈在 optimizer 不在 evaluator。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/trc2.html">TRC²：把海马体和丘脑塞进 Transformer，持续学习不再是外挂</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-10</span><span class="article-sep">·</span><span class="article-tag">持续学习 · 丘脑路由 · 海马体回放 · MoE · 神经形态架构</span></div>
       <p>把皮层柱、丘脑路由、海马体记忆三个子系统焊进 decoder-only 主干：丘脑只调制 query 不碰 KV，海马体严格先读后写、回放永不碰当前 batch，PI 控制器按测得的遗忘量实时调回放强度。PPL 遗忘面积 0.44 对基线 1.1–1.6；消融里拆掉丘脑+海马体终点 PPL 反而更好但 AUFC 翻倍——最强终点检查点 ≠ 最强持续学习方案。</p>
