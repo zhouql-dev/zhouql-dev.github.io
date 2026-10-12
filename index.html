@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/msar.html">MSAR：残差连接的“多头深度注意力”时代</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-12</span><span class="article-sep">·</span><span class="article-tag">大模型架构 · 残差连接 · 深度注意力 · 上交大 · 小红书 Dots Studio</span></div>
+      <p>残差连接正在从"加法"进化成"检索"：序列轴走过的路，深度轴正在逐帧重演。MSAR 用多尺度因果卷积从序列轴借上下文，把 AttnRes 的单头深度注意力升级成多头——18B/28B MoE 上 12 项 benchmark 全胜，iso-loss 算力加速 1.58×（Vanilla 基线），代价只有 +0.5% FLOPs。最关键的消融：去掉卷积只留多 query 就掉回原形——多头的关键是多样的 key，不是多个 query，多样性要从数据里长，不是从参数里切。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/tokenrouter.html">TokenRouter：token 级路由的算法红利，卡在系统上</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-12</span><span class="article-sep">·</span><span class="article-tag">推理服务 · token 级路由 · Serving 系统 · 清华 · CMU · NeurIPS 2026</span></div>
       <p>R2R 证明只需 5% 的 token 交给 32B 就能对齐其效果，而 query 级路由要 40% 请求走大模型——但算法画出的帕累托前沿系统够不着，官方实现 batch=4 时 77 token/s 比裸跑大模型还慢。清华×CMU 的 TokenRouter 用 request-centric programming / model-centric execution 把编程与执行解耦：route/send/receive 三个函数描述路由语义，运行时以三循环解耦 + delayed batching 兜住跨模型切换，批阈值用马尔可夫链解析求解而非手调。对最强基线 R2R 官方实现吞吐提升 2–3.2×，并发 1→16 吞吐涨 8.61× 还保住 51.7% 的单用户速度——系统补齐后，token 级路由对 query 级路由从"理论更优"变成"实际全面占优"。</p>
