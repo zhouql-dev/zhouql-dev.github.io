@@ -265,6 +265,16 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/evo2.html">Evo²：进化的过程，本身也该被进化</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-15</span><span class="article-sep">·</span><span class="article-tag">自进化 Agent · 权重-Harness 协同进化 · 双角色 GRPO · Google DeepMind × UIUC</span></div>
+      <p>自进化的两条路——改权重、改 harness——历来各走各的。Evo² 把 harness 演化产生的成败经验反过来训练"进化器"本身的权重：Proposer/Reflector 双角色共享参数、交替 GRPO 互相抬高，crossover 让好想法不困死在分支里，EvoTIDE 用编辑抽取和前缀续写把残缺轨迹抢救成训练数据。Polyglot 82.1%、SWE-bench Verified 48.3%、LiveCodeBench 58.0% 三项全第一；GPT-5-mini 权重冻死，纯靠双角色搜索 + crossover 从 24.4% 拉到 48.3% 近翻倍——harness 搜索本身就能吃掉一大块收益，而且进化后的 agent 每任务只用 3.6K token、10.2 次调用，比基线省一半还更高分。进化不只提分，还教会 agent 更省地干活。</p>
+  </li>
+<li class="article-item">
+    <h2><a href="papers/reharness.html">ReHarness：agent 的记忆不该只进不出</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-14</span><span class="article-sep">·</span><span class="article-tag">Agent 记忆 · 经验反向修订 · Lifelong Learning · MIT × Meta MRS × Yale</span></div>
+      <p>agent 的记忆系统都在管"写入"，没人管"已写进去的旧经验过时了怎么办"。ReHarness 加一条反向通道：新经验积累到阈值后，回头修订存量旧反思，grounding 约束保证修订只锚定原始轨迹（grounded rate >95%，无信息泄漏）。3 个 benchmark × 3 个 backbone，平均归一化增益 0.240、九组合八第一（Wilcoxon p<0.05），并且是少数打赢 raw context 的结构化记忆方法——说明"加结构"不是没用，是之前的结构没解决"经验会过时"这个核心矛盾。修订后的旧经验还会教记忆 agent 写出更好的新反思，一鱼两吃。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/msar.html">MSAR：残差连接的“多头深度注意力”时代</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-12</span><span class="article-sep">·</span><span class="article-tag">大模型架构 · 残差连接 · 深度注意力 · 上交大 · 小红书 Dots Studio</span></div>
       <p>残差连接正在从"加法"进化成"检索"：序列轴走过的路，深度轴正在逐帧重演。MSAR 用多尺度因果卷积从序列轴借上下文，把 AttnRes 的单头深度注意力升级成多头——18B/28B MoE 上 12 项 benchmark 全胜，iso-loss 算力加速 1.58×（Vanilla 基线），代价只有 +0.5% FLOPs。最关键的消融：去掉卷积只留多 query 就掉回原形——多头的关键是多样的 key，不是多个 query，多样性要从数据里长，不是从参数里切。</p>
