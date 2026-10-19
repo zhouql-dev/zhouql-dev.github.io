@@ -265,6 +265,16 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/terminal-rsi.html">Terminal-RSI：递归自我改进的终端 Agent，连"裁判"也一起进化</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-19</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · 终端 Agent · Actor-Critic · TB-GAE · 奖励演化</span></div>
+      <p>自我改进 agent 大多在任务侧递归（生成更多任务和轨迹），这篇盯住了更隐蔽的死循环：actor 换代了，critic 还活在旧世界里打分。Terminal-RSI 用三招破局——critic 权重在 actor 换代时继承而非重置，每个 RPR 相位先冻结 actor 做 4 次 critic-only 更新再联合训练（先让裁判适应新世界，再让选手上场）；TB-GAE 把折扣时钟从文本空间搬到决策空间，turn 内单位时钟、跨 turn 才衰减，credit 跟随决策轮次而非 token 数；奖励随相位演化，FDR+SPR 把失败轨迹的奖励份额从 50.09% 压到 28.72%。Qwen3.8-27B 五阶段课程，四套件平均 20.68% → 50.58%。难得的是论文诚实暴露非单调分支和验证缺口——这份坦诚比数字值钱。</p>
+  </li>
+<li class="article-item">
+    <h2><a href="papers/groundanything.html">GroundAnything：把视觉定位从"逐字生成"里解放出来</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-19</span><span class="article-sep">·</span><span class="article-tag">视觉定位 · 块级掩码扩散 · 并行解码 · 自投机 · 4B</span></div>
+      <p>定位任务的输出本无内在顺序——图里 20 个框谁也不依赖谁，"下一个 token 预测"是我们硬加的枷锁。GroundAnything（4B）把任务重构为结构化视觉证据抽取：块级掩码扩散联合生成、迭代去噪，并从训好的 AR 模型做 AR→Diffusion 转换（ℒ = 0.5ℒ_MDM + 0.5ℒ_AR），一套权重两种解码模式。30 个 benchmark、11 类能力、44 个基线横评：VLM 变体 72.42% 同规模新 SOTA、打平 GPT-6 Astra，纯扩散版 61.75% 超前前 SOTA 8 个点还快 2 倍；COCO 平均每框只花 7.6 个 token（对照 148.8），输出本身压缩 20 倍；H800 自投机解码 223.8 TPS，AR 的 4.51 倍。熵引导解码的阈值 τ 是个"思考力度"旋钮——不是所有 token 都值得顺序生成，这个哲学对所有生成任务都成立。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/evo2.html">Evo²：进化的过程，本身也该被进化</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-15</span><span class="article-sep">·</span><span class="article-tag">自进化 Agent · 权重-Harness 协同进化 · 双角色 GRPO · Google DeepMind × UIUC</span></div>
       <p>自进化的两条路——改权重、改 harness——历来各走各的。Evo² 把 harness 演化产生的成败经验反过来训练"进化器"本身的权重：Proposer/Reflector 双角色共享参数、交替 GRPO 互相抬高，crossover 让好想法不困死在分支里，EvoTIDE 用编辑抽取和前缀续写把残缺轨迹抢救成训练数据。Polyglot 82.1%、SWE-bench Verified 48.3%、LiveCodeBench 58.0% 三项全第一；GPT-5-mini 权重冻死，纯靠双角色搜索 + crossover 从 24.4% 拉到 48.3% 近翻倍——harness 搜索本身就能吃掉一大块收益，而且进化后的 agent 每任务只用 3.6K token、10.2 次调用，比基线省一半还更高分。进化不只提分，还教会 agent 更省地干活。</p>
