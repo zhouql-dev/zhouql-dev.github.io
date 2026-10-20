@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/ktp.html">会画出来，不代表说得出来：视觉生成能扩展多模态模型的知识吗？</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-21</span><span class="article-sep">·</span><span class="article-tag">视觉生成 · 知识注入 · 统一多模态 · Visual CoT · 清华 × Z.AI</span></div>
+      <p>统一多模态模型的训练里藏着一条少有人正视的知识通道：文生图监督——caption 只说"球衣"，号码 10 只存在于像素里。KTP 协议在虚构世界 MagicWorld 造 350 个实体、8,552 张图，把"生成训练注入了多少知识、语言能取回多少"变成可测量的实验。结果很扎心：知识确实学到了（视觉可及最高 88%），文本可及却平均只有 8.9%–20%，BAGEL 甚至低于瞎猜基线——"能生成 ≠ 能检索"的量化版本。交错图文对齐能开门（GLM-Omni 形状 12%→64%），Visual CoT 把生成变成推理草稿纸再涨一截；但即便对齐后 Pr(会说|会画) 仍低于 50%。文生图训练是被低估的知识注入通道，而监督的组织方式本身是超参数。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/terminal-rsi.html">Terminal-RSI：递归自我改进的终端 Agent，连"裁判"也一起进化</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-19</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · 终端 Agent · Actor-Critic · TB-GAE · 奖励演化</span></div>
       <p>自我改进 agent 大多在任务侧递归（生成更多任务和轨迹），这篇盯住了更隐蔽的死循环：actor 换代了，critic 还活在旧世界里打分。Terminal-RSI 用三招破局——critic 权重在 actor 换代时继承而非重置，每个 RPR 相位先冻结 actor 做 4 次 critic-only 更新再联合训练（先让裁判适应新世界，再让选手上场）；TB-GAE 把折扣时钟从文本空间搬到决策空间，turn 内单位时钟、跨 turn 才衰减，credit 跟随决策轮次而非 token 数；奖励随相位演化，FDR+SPR 把失败轨迹的奖励份额从 50.09% 压到 28.72%。Qwen3.8-27B 五阶段课程，四套件平均 20.68% → 50.58%。难得的是论文诚实暴露非单调分支和验证缺口——这份坦诚比数字值钱。</p>
