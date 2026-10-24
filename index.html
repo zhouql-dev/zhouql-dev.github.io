@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/softmax-fix.html">Softmax 用了十几年，其实一直是错的</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-25</span><span class="article-sep">·</span><span class="article-tag">数值稳定性 · 交叉熵 · 蒸馏 · Grokking · Google DeepMind</span></div>
+      <p>Google DeepMind 把深度学习里被执行次数最多的代码——softmax——的祖传数值实现翻出来修了一遍。减最大值的"稳定技巧"在各精度下各有一道悬崖：越自信目标梯度越假（collapse），学生 logits 无限逼近老师梯度却不为零（cancellation，bf16 下噪声比 Adam 的 ε 大五个数量级，被归一化成满步长）。修完顺带把 grokking 文献的 Slingshot 之谜统一解释成一个数值 bug 的社会效应。修复只需三行代码，全程留在 log 空间。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/self-evolving-continual.html">会进化，不代表学得会：Self-Evolving Agent 是合格的持续学习者吗？</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-21</span><span class="article-sep">·</span><span class="article-tag">持续学习 · 自我进化 Agent · 灾难性遗忘 · P-S 权衡 · Agent 评测</span></div>
       <p>GEPA、ReasoningBank、Meta-Harness 三个自我进化 agent 同上四条漂移任务流，成绩单是一张教科书级的 P-S 负相关散点图：最会学的最不稳（GEPA +6.2/-4.3），最稳的最不学（ReasoningBank +3.3/-1.9）。改 prompt 有两种死法——全局规则祸及无辜（BFCL-Miss 没见面先跌 6.8 点）、后块覆写（BIRD-F1 份额 59.5%→5.8%，增益抹成 0）；攒 memory 也有两种死法——无阈值检索来者不拒、Miss/Base 相似度 0.835 vs 0.834 数学上不可分。附录还藏了两刀：好的防护行为靠涌现等于没有防护，Meta-Harness 的"稳定"是 gate 冻结装出来的假稳定。自我进化的尽头不是更激进的进化，是 harness 的架构。</p>
