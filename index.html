@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/wevisone-vl.html">一个特殊 token，让 VLM 学会"抠像素"和"说没有"</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-25</span><span class="article-sep">·</span><span class="article-tag">VLM · 指代定位 · Alpha Matting · 拒绝样本 · 腾讯微信视觉</span></div>
+      <p>腾讯微信视觉团队开源的 WeVisOne-VL 把"目标不存在时敢说没有"做成一等公民能力：无目标样本只有模型仍强行预测时才升级为 hard negative，RefCOCOg-Rej 拒绝率 67.4%（基线不足 2%），自建 WeRef-Bench 拒绝率 96.4% 且 F1 仍比最好基线高 27 个点。感知粒度用一个 &lt;OBJ&gt; token 推到像素级——VLM 出语义和框，9.6M 的轻量 decoder 吃 hidden state 出 mask 和发丝级 alpha，不挂 SAM。1 亿图 36 亿框的数据引擎 WDE 撑起密集小目标，Dense200 F1 71.3 对最好专用基线 58.3，30 个 benchmark 无明显短板，代码权重全开源。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/softmax-fix.html">Softmax 用了十几年，其实一直是错的</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-25</span><span class="article-sep">·</span><span class="article-tag">数值稳定性 · 交叉熵 · 蒸馏 · Grokking · Google DeepMind</span></div>
       <p>Google DeepMind 把深度学习里被执行次数最多的代码——softmax——的祖传数值实现翻出来修了一遍。减最大值的"稳定技巧"在各精度下各有一道悬崖：越自信目标梯度越假（collapse），学生 logits 无限逼近老师梯度却不为零（cancellation，bf16 下噪声比 Adam 的 ε 大五个数量级，被归一化成满步长）。修完顺带把 grokking 文献的 Slingshot 之谜统一解释成一个数值 bug 的社会效应。修复只需三行代码，全程留在 log 空间。</p>
