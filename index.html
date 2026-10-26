@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/harness2.html">Harness²：让 Agent 自己改自己的 Harness，而且越改越会改</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-26</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · Agent Harness · 无验证器学习 · Google Cloud AI</span></div>
+      <p class="article-desc">模型冻结，让 Agent 自己改那层壳：任务级递归用行为对比代替对错判断，harnessing 级不继承答案、继承方法论。GLM-5 一次改进 +11.5 分反超 Gemini 3.5 Flash；同模型自改，五个模型全部提升。</p>
+  </li>
+  <li class="article-item">
     <h2><a href="papers/wevisone-vl.html">一个特殊 token，让 VLM 学会"抠像素"和"说没有"</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-25</span><span class="article-sep">·</span><span class="article-tag">VLM · 指代定位 · Alpha Matting · 拒绝样本 · 腾讯微信视觉</span></div>
       <p>腾讯微信视觉团队开源的 WeVisOne-VL 把"目标不存在时敢说没有"做成一等公民能力：无目标样本只有模型仍强行预测时才升级为 hard negative，RefCOCOg-Rej 拒绝率 67.4%（基线不足 2%），自建 WeRef-Bench 拒绝率 96.4% 且 F1 仍比最好基线高 27 个点。感知粒度用一个 &lt;OBJ&gt; token 推到像素级——VLM 出语义和框，9.6M 的轻量 decoder 吃 hidden state 出 mask 和发丝级 alpha，不挂 SAM。1 亿图 36 亿框的数据引擎 WDE 撑起密集小目标，Dense200 F1 71.3 对最好专用基线 58.3，30 个 benchmark 无明显短板，代码权重全开源。</p>
