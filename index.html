@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/dust.html">Dust：不用反向传播，把 Transformer 预训练出来</a></h2>
+      <div class="article-meta"><span class="article-date">2026-10-28</span><span class="article-sep">·</span><span class="article-tag">零阶优化 · 进化策略 · 预训练 · Q Labs Research</span></div>
+      <p class="article-desc">激活空间扰动 + per-token 虚拟种群，一次前向传播顶几千次种群评估：纯搜索首次在 transformer 预训练上压过 backprop，比权重空间 ES 高效三个数量级。模型越大搜索效率越高，population 够大时梯度估计与链式法则余弦过 0.9。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/harness2.html">Harness²：让 Agent 自己改自己的 Harness，而且越改越会改</a></h2>
       <div class="article-meta"><span class="article-date">2026-10-26</span><span class="article-sep">·</span><span class="article-tag">递归自我改进 · Agent Harness · 无验证器学习 · Google Cloud AI</span></div>
       <p class="article-desc">模型冻结，让 Agent 自己改那层壳：任务级递归用行为对比代替对错判断，harnessing 级不继承答案、继承方法论。GLM-5 一次改进 +11.5 分反超 Gemini 3.5 Flash；同模型自改，五个模型全部提升。</p>
