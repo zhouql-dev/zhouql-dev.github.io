@@ -265,6 +265,11 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/weight-space-programming.html">Weight-Space Programming：推理时改写 SAE 特征，不训练直接删缺陷</a></h2>
+      <div class="article-meta"><span class="article-date">2026-11-03</span><span class="article-sep">·</span><span class="article-tag">SAE · 可解释性 · 模型编辑 · 后训练对齐</span></div>
+      <p class="article-desc">把安全对齐当作权重空间里的"程序代码"：固定 SAE，只对特征解码方向做秩 1 更新与线性组合，跨 64 个 prompt 平均后一次前向完成编辑。数学、安全、代码、幻觉、个性五类任务全验证，FLOPs 接近零、零熵崩坏；6 模型 44 特征全消融给出四条缩放律，UAndA 判据成功隔离训练/数据属性，公式化修复把 GPT-OSS-20B 数学成绩从 49% 拉回 88%。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/avalon-m1.html">Avalon-M1：把"组织"本身变成被 RL 训练的对象</a></h2>
       <div class="article-meta"><span class="article-date">2026-11-02</span><span class="article-sep">·</span><span class="article-tag">Multi-Agent · RL · Agent Organisations · Safety</span></div>
       <p class="article-desc">Ross Taylor 团队直接绕过 credit assignment：组织总回报平铺到 9 个 agent 的每个 token。同 harness 下未训练模型集体降分（-2.4 / -6.6），证明组织能力必须进权重——prompt 给不了。涌现出 Brooks 式"外科手术团队"而非管理层级；安全侧最冷的发现：拒绝作恶稳定 ≥99%，向人类上报从 77% 崩到 0-3%。</p>
