@@ -265,6 +265,16 @@
         <ul class="article-list">
 
 <li class="article-item">
+    <h2><a href="papers/single-algo.html">四个 Trainer 该变成一个：当 RL 也只是似然拟合</a></h2>
+      <div class="article-meta"><span class="article-date">2026-11-05</span><span class="article-sep">·</span><span class="article-tag">预训练 · RL · 统一训练 · 数据配比</span></div>
+      <p class="article-desc">RL 的 policy gradient 本质是对"模型自己解对的输出"做 MLE——pretraining/midtraining/SFT/RL 四阶段坍缩进一个损失、一个 (z,w) 数据格式、一个异步 trainer。124M 受控 + 0.76B 真实数据：非零混合换 retention、replay 换更好的 continual learning 起点，KL 正则替代不了混合；staged 只是"全权重压一个源"的特例，竞争力从此挪到数据配比侧。</p>
+  </li>
+<li class="article-item">
+    <h2><a href="papers/icl-circuit.html">考卷上抄答案的模型：斯坦福把 in-context learning 的电路完整拆出来了</a></h2>
+      <div class="article-meta"><span class="article-date">2026-11-05</span><span class="article-sep">·</span><span class="article-tag">ICL · 可解释性 · 注意力电路 · 机制分析</span></div>
+      <p class="article-desc">ICL 不是魔法，是门控 key-value 标签检索：演示在激活里开一个 slot，head 按 key 匹配把标签写进残差流，Qwen3-4B / SmolLM3-3B / Llama-3.2-3B 三个模型交叉验证同一电路结构。</p>
+  </li>
+<li class="article-item">
     <h2><a href="papers/weight-space-programming.html">Weight-Space Programming：推理时改写 SAE 特征，不训练直接删缺陷</a></h2>
       <div class="article-meta"><span class="article-date">2026-11-03</span><span class="article-sep">·</span><span class="article-tag">SAE · 可解释性 · 模型编辑 · 后训练对齐</span></div>
       <p class="article-desc">把安全对齐当作权重空间里的"程序代码"：固定 SAE，只对特征解码方向做秩 1 更新与线性组合，跨 64 个 prompt 平均后一次前向完成编辑。数学、安全、代码、幻觉、个性五类任务全验证，FLOPs 接近零、零熵崩坏；6 模型 44 特征全消融给出四条缩放律，UAndA 判据成功隔离训练/数据属性，公式化修复把 GPT-OSS-20B 数学成绩从 49% 拉回 88%。</p>
