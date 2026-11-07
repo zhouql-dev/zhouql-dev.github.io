@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/memorilla-paperdog.html">16 个 token，凭什么赢过 6300 个 token 的上下文？</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-07</span><span class="article-sep">·</span><span class="article-tag">大模型记忆 · 隐空间压缩 · RAG · Pareto 前沿 · Stanford</span></div>
+<p class="article-desc">冻结的 LLM 只有上下文窗口一条通道，于是所有记忆系统都在抢这块地方。Memorilla 换了个做法：不塞文本，把整库文档压成 16 个软 token 直接注入嵌入空间。8 个 benchmark 平均 49.68 分登顶，full context 用了 394 倍 token 才拿到 45.4。FactKG 84.33% vs 80.43%，LaMP-4 18.15 vs 14.21。更值得看的是拆解：压缩擅长因果推理、输给逐字召回；TextWorld 里只训记忆模块，avg@3 从 0.186 到 0.242。</p>
+</li>
+<li class="article-item">
     <h2><a href="papers/memorilla.html">16 个 token，凭什么赢过 6300 个 token 的上下文？</a></h2>
       <div class="article-meta"><span class="article-date">2026-11-07</span><span class="article-sep">·</span><span class="article-tag">大模型记忆 · 隐空间压缩 · RAG · Pareto 前沿 · Stanford</span></div>
       <p class="article-desc">冻结的 LLM 只有上下文窗口一条通道，于是所有记忆系统都在抢这块地方。Memorilla 换了个做法：不塞文本，把整库文档压成 16 个软 token 直接注入嵌入空间。8 个 benchmark 平均 49.68 分登顶，full context 用了 394 倍 token 才拿到 45.4。FactKG 84.33% vs 80.43%，LaMP-4 18.15 vs 14.21。更值得看的是拆解：压缩擅长因果推理、输给逐字召回；TextWorld 里只训记忆模块，avg@3 从 0.186 到 0.242。</p>
