@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/emeans.html">e-means：Faiss 团队亲手把 k-means 加速了 10 倍以上</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-10</span><span class="article-sep">·</span><span class="article-tag">聚类 · k-means · EMA · Faiss · Meta FAIR</span></div>
+<p class="article-desc">k-means 是 60 岁的老算法，视频库 IVF 索引、KV cache 压缩、数据集筛选底层全是它，默认姿势却是跑 25 个 epoch 等几天。Faiss 缔造者 Jégou、Douze、Touvron 把 VQ-VAE 的 EMA 优化器搬回来：1.4-2.6 个 epoch 干完 Lloyd 25 个 epoch 的活，GPU 实测加速 9.5-45.5 倍，loss 收敛更低，代码已合入 Faiss 主仓库。本质是把深度学习的在线优化机制（EMA + 退火 + scaling law）搬回经典统计问题，调参直接被 scaling law 消灭。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/self-improving.html">自提升不是微调技巧，是训练全程的方法论</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-10</span><span class="article-sep">·</span><span class="article-tag">自提升 · 预训练 · mid-training · 安全对齐 · Meta FAIR</span></div>
 <p class="article-desc">模型改进自己时谁当考官？FAIR（Jason Weston 组）的回答：让强 post-trained 模型同时当改稿人和 judge，把自提升从 post-training 技巧扩展成覆盖预训练、mid-training、post-thinking 的完整方法论。持续预训练 factuality 42.3→57.6，思考地基打在 mid-training 拿到 3.2 倍差距，SPoT 安全基准 +21.3%，自判 PoT@8 安全率 98.2%，距离 86 倍大的外部考官只差 1.2 个百分点。</p>
