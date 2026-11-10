@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/deletion-tuning.html">不写一个新值，也能学会新能力——Deletion Tuning 用删权重追平全量微调</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-11</span><span class="article-sep">·</span><span class="article-tag">剪枝 · 稀疏化 · Post-Training · 持续学习</span></div>
+<p class="article-desc">微调的本质可能不是写入新知识，而是关掉不需要的 gate。NYU Mengye Ren 组 + Calgary 的 Deletion Tuning 只学 gate projection 的删留 mask：把不到 0.05% 的权重置零、一个新值都不写，RLVR/SFT/蒸馏三种 post-training 全部追平全量微调（最大测到 30B MoE），adapter 8.4MB 比 LoRA r=1 还小三千倍，旧任务遗忘不到 1 个点而 FFT/LoRA 掉到 5.4——"只删不写"对策略分布的扰动天然有界，更新几何三项指标全贴着 FFT 走，且模型越大删除越有效。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/emeans.html">e-means：Faiss 团队亲手把 k-means 加速了 10 倍以上</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-10</span><span class="article-sep">·</span><span class="article-tag">聚类 · k-means · EMA · Faiss · Meta FAIR</span></div>
 <p class="article-desc">k-means 是 60 岁的老算法，视频库 IVF 索引、KV cache 压缩、数据集筛选底层全是它，默认姿势却是跑 25 个 epoch 等几天。Faiss 缔造者 Jégou、Douze、Touvron 把 VQ-VAE 的 EMA 优化器搬回来：1.4-2.6 个 epoch 干完 Lloyd 25 个 epoch 的活，GPU 实测加速 9.5-45.5 倍，loss 收敛更低，代码已合入 Faiss 主仓库。本质是把深度学习的在线优化机制（EMA + 退火 + scaling law）搬回经典统计问题，调参直接被 scaling law 消灭。</p>
