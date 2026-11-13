@@ -264,6 +264,16 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/anthropic-agent-memory.html">Anthropic 拆解 Agent 记忆：四层结构，和一个叫 Dreaming 的后台进程</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-13</span><span class="article-sep">·</span><span class="article-tag">Agent Memory · Anthropic · 记忆巩固 · Dreaming</span></div>
+<p class="article-desc">Anthropic 首次系统公开 Claude 的 agent 记忆设计：Transcripts / Notes / Representations / Injected 四层，加一个利用会话间空闲算力的 dreaming 后台进程——回放 transcript 修正错误笔记、构建 wiki、决定什么浮上注入层。三组实验证据：CL-Bench 上先读记忆再验证假设让 Sonnet 4.6 从 0.330 翻倍到 0.641；宝可梦 Red 里 Fable 5 用 9 个文件打赢 Sonnet 3.7 的 413 个文件（徽章 4:1），原则是只记屏幕上读不到的策略与规则；35 万文件 Stainless 语料上 128 轮 dreaming 把 25 题得分从 13% 拉到 48%，wiki+搜索 61% 是互补不是替代。附三个生产级教训：错误记忆会被未来会话无条件信任（Mt. Moon 掉三次山）、wiki 长得比源文档集还大等于什么都没记、共享记忆写入需要单写者纪律。对自建 agent 系统的人这篇等于官方背书：强模型给自由比给规则好，显著性判断留给模型，框架只管把 transcript 存全、注入层控小。</p>
+</li>
+<li class="article-item">
+<h2><a href="papers/evolving-infra.html">Agent 把 LLM 集群的假设打碎了——Evolving Infra 让推理基础设施跟着 Agent 演化</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-12</span><span class="article-sep">·</span><span class="article-tag">推理基础设施 · Serving · Agent 系统 · PD 分离</span></div>
+<p class="article-desc">PD 分离架构的隐含假设——负载统计均匀、KV 驱逐看热度——被 agent 负载打得粉碎：Putnam 是 2P7D、OSWorld 是 6P3D，负载构成还随人手/自动触发全天漂移，静态配比最多丢 24% 吞吐；LRU 恰好把还在等工具返回的分支 KV 挤出去（359 秒 sub-agent 调用后 98% 仍能命中），把该扔的压缩旧历史留下（compaction 后只剩 14%）。Evolving Infra（GT×UIUC×Berkeley×NVIDIA×OpenAI×MIT）的两刀：对称引擎让节点原地换角色，KV 进共享宿主内存池，切换 6.2 秒对比 Dynamo 重启 681 秒；在线迭代时间模型加统计检验做切换决策，整个运行平均只切 2 次。36 张 GB300 上 GLM-5.2/Kimi K2.6：对生产级 Dynamo 延迟最高 4.1×、P95 TTFT 13.9×、吞吐 2.7×，KV 复用损失减 81–95%，开在线自适应只赔 0.3% 吞吐——对应的离线 profiling 要烧 10752 GPU 小时。本质转变：serving 层的服务对象从「一个请求」变成「一个 agent 的生命周期」，branch/fork/compaction 第一次成为基础设施的调度信号。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/deletion-tuning.html">不写一个新值，也能学会新能力——Deletion Tuning 用删权重追平全量微调</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-11</span><span class="article-sep">·</span><span class="article-tag">剪枝 · 稀疏化 · Post-Training · 持续学习</span></div>
 <p class="article-desc">微调的本质可能不是写入新知识，而是关掉不需要的 gate。NYU Mengye Ren 组 + Calgary 的 Deletion Tuning 只学 gate projection 的删留 mask：把不到 0.05% 的权重置零、一个新值都不写，RLVR/SFT/蒸馏三种 post-training 全部追平全量微调（最大测到 30B MoE），adapter 8.4MB 比 LoRA r=1 还小三千倍，旧任务遗忘不到 1 个点而 FFT/LoRA 掉到 5.4——"只删不写"对策略分布的扰动天然有界，更新几何三项指标全贴着 FFT 走，且模型越大删除越有效。</p>
