@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/rime-memory-writing.html">把 MEMORY.md 变成可训练的动作：RIME 用两份奖励训练 agent 的记忆写入</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-14</span><span class="article-sep">·</span><span class="article-tag">Agent Memory · Continual Learning · RL · CMU</span></div>
+<p class="article-desc">CMU Aviral Kumar 组的 RIME 第一次把"写记忆"本身变成可梯度训练的动作：任务流上交替 ACT/WRITE，writer 拿 improvement reward（写入后 K 个任务均分减写入前），actor 在任务分外拿探索奖励（LLM judge 只读记忆前后两个版本，按新发现/修正错误认知/可用线索/非冗余四准则打分）。两个正交结论：能力≠持续学习能力——Opus 5.5 奖励最高但增益只有 +0.90，两个 Gemini 增益为负；harness 救不了——Codex 增益 −0.80 比底层 GPT-5.4 裸跑还差。Qwen3.5-4B 从 0.82 → 10.55 超过 GPT-5.4 和 Opus 4.7。re-solve 动态：ACT 100% 在吃老本（重做 +13%、新任务 +0.3%），砍到 50% 才开始迁移（+9%/+1.4%），记忆体积同步从 3KB 缩到 1.9KB——精炼是学出来的不是 prompt 要求的。最狠的两个消融：只训 writer 去掉探索奖励，增益变负；冻结 writer 单训 actor，actor 刷探索分同时弃用记忆，+0.72 崩到 +0.02——防线在 co-training 的动态里，不在损失函数里。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/anthropic-agent-memory.html">Anthropic 拆解 Agent 记忆：四层结构，和一个叫 Dreaming 的后台进程</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-13</span><span class="article-sep">·</span><span class="article-tag">Agent Memory · Anthropic · 记忆巩固 · Dreaming</span></div>
 <p class="article-desc">Anthropic 首次系统公开 Claude 的 agent 记忆设计：Transcripts / Notes / Representations / Injected 四层，加一个利用会话间空闲算力的 dreaming 后台进程——回放 transcript 修正错误笔记、构建 wiki、决定什么浮上注入层。三组实验证据：CL-Bench 上先读记忆再验证假设让 Sonnet 4.6 从 0.330 翻倍到 0.641；宝可梦 Red 里 Fable 5 用 9 个文件打赢 Sonnet 3.7 的 413 个文件（徽章 4:1），原则是只记屏幕上读不到的策略与规则；35 万文件 Stainless 语料上 128 轮 dreaming 把 25 题得分从 13% 拉到 48%，wiki+搜索 61% 是互补不是替代。附三个生产级教训：错误记忆会被未来会话无条件信任（Mt. Moon 掉三次山）、wiki 长得比源文档集还大等于什么都没记、共享记忆写入需要单写者纪律。对自建 agent 系统的人这篇等于官方背书：强模型给自由比给规则好，显著性判断留给模型，框架只管把 transcript 存全、注入层控小。</p>
