@@ -264,6 +264,17 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/weight-space-reading.html">不跑一次推理，模型能预判改权重的后果吗？</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-17</span><span class="article-sep">·</span><span class="article-tag">可解释性 · 权重空间 · 评测方法论 · Poindexter Labs</span></div>
+<p class="article-desc">Weight-Space Programming 的姊妹篇，这次测「读」的一半：CPU 沙箱里只给张量不给前向，预测手术式编辑对五个行为的方向。主结果 0.730 对看描述的 0.578（变化召回三分之二对四分之一），但三个冷发现更有分量：自读无优势（交叉对比含零，外人 0.615 反超自读 0.468）、40 个无效编辑没有一个读者发现（自读者 85% 假报）、破坏性编辑 benchmark 只是损毁检测（异家族 0.594 约等于本尊 0.593）。附四条评估军规，与 Cortex 的参数级写入互为前置。</p>
+</li>
+<li class="article-item">
+<h2><a href="papers/cortex-parametric-memory.html">Cortex：把上下文买断成参数记忆</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-17</span><span class="article-sep">·</span><span class="article-tag">Agent Memory · 参数化记忆 · 蒸馏 · 浙大 × 字节 Seed</span></div>
+<p class="article-desc">上下文一撤收益归零，RAG 又接不住间接相关的记忆——Cortex 走第三条路：冻结的 pre-update 模型生成「未来哪里用得上」的 query 做 prospective rehearsal，用 KL 加隐状态 MSE 把带上下文 teacher 的能力蒸馏进只占 0.74M 参数的 FFN 新通道，撤掉上下文收益还在。Synaptic 低秩增量与 Structural 新突触两种参数化都能折叠进标准 FFN/MoE 层，连续更新靠 query replay 防遗忘、源上下文永不存储。Memory Consolidation 形式化把知识编辑、技能学习、行为 steer、知识遗忘统一成一个学习问题。</p>
+</li>
+
+<li class="article-item">
 <h2><a href="papers/unbundling-vision-encoding.html">视觉编码器可以拆开卖：先验不值钱，容量才值钱</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-14</span><span class="article-sep">·</span><span class="article-tag">Multimodal Training · Controlled Experiments · NYU × Meta FAIR</span></div>
 <p class="article-desc">NYU × Meta FAIR 把"视觉编码器"这个打包惯例拆成三个独立选择——视觉先验、专属视觉容量、融合前放置——在统一数据、统一架构（Qwen3 式 1.7B/4B，0.4B 视觉容量）、总算力对齐的协议下逐个标价，另设 0.6B–6.4B 五档 ladder 验证规模效应。三个结论：先验免费都不值钱——scratch encoder 与 MetaCLIP/WebSSL/Cap/CapPa 预训练 encoder 打平，预训练份额 ≤15% 无所谓、60% 挤占多模态预算才掉分，免费翻 6 倍算力只涨 ImageNet（80.4%→84.4%）不涨 VQA；专属容量是硬需求——encoder-free 需 ~3× 算力追平，同样 0.4B 参数补进共享 backbone 只涨文本不涨视觉，OCR/图表差距最大，Shukor et al. 2025 的相反结论被定位到 encoder LR 过小 + 多任务平均损失淹没视觉信号两处 setup 缺陷；位置要早但不必前置——in-fusion 在 1–8 层加 vision-only 加性专家（ΔQKV/ΔO/ΔFFN，零初始化，注意力全局混合），与独立 encoder 全程打平且 TTFT 更低，放 21–28 层掉分。midtraining 场景同样成立：早层 MoT 可打平，全层 MoT 视觉参数多 3.5 倍反而掉队。边界：encoder 预训练与多模态训练共用图像池、224px、dense ≤6.4B，MoE 待验证。</p>
