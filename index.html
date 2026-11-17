@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/wsp-without-transformers.html">写权重不需要 Transformer：三个前沿 LLM 把架构投回了关联记忆</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-17</span><span class="article-sep">·</span><span class="article-tag">权重空间 · 关联记忆 · 架构设计 · POSTECH</span></div>
+<p class="article-desc">让 LLM 自由选架构，它还会选 Transformer 吗？POSTECH 的 Ok 与 Lee 给了干脆的答案：不会。Opus 5.5、GPT-6.1 Sol、GPT-6 Astra 在只给十道标注样例加执行沙盒的条件下，全部收敛到六十年代的老古董关联记忆——明文事实编译成 4,288 行稀疏表，固定程序读表匹配，没有 attention 没有 MLP。两条可写性公理实测成立：可追溯（每选项只留最匹配一行，50.8→49.1 几乎无损），可局部编辑（删一行重建平均只动 0.5–1.8 个答案，Transformer 同样写入平均搅动 4.8 个、最差 1350 个）；最有杀伤力的对照组——同样内容写进 Transformer 反而输给拿它写的文本跑一次 BM25，平均低 8 分，知识被稠密键的相互干扰稀释。三个 LLM 自设计的模型最高 54.4%，赢过它们自己写的十五种 released 架构，参数少 1800 倍——没有预训练的 ARC 上，手写权重首次系统性赢梯度下降；代价是慢，46 个设计模型只有一个快过同尺寸 Transformer，中位数慢 9.4 倍。作者顺手做了折中版：概念配对哈希直接寻址，单题只读 120 行，3,530 题 18 毫秒跑完，比同尺寸 Transformer 快 17 倍只让约 3 个点。边界冷静：只会检索不会推理（MMLU 近随机），像素不可写（CIFAR 21–28%）但接 DINOv2 语义 token 零标注 96.1%。与 WSR 恰成一对：WSR 管「写了之后怎么知道写对」，这篇管「怎么写才能写得对」——先保证每个权重有名字。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/weight-space-reading.html">不跑一次推理，模型能预判改权重的后果吗？</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-17</span><span class="article-sep">·</span><span class="article-tag">可解释性 · 权重空间 · 评测方法论 · Poindexter Labs</span></div>
 <p class="article-desc">Weight-Space Programming 的姊妹篇，这次测「读」的一半：CPU 沙箱里只给张量不给前向，预测手术式编辑对五个行为的方向。主结果 0.730 对看描述的 0.578（变化召回三分之二对四分之一），但三个冷发现更有分量：自读无优势（交叉对比含零，外人 0.615 反超自读 0.468）、40 个无效编辑没有一个读者发现（自读者 85% 假报）、破坏性编辑 benchmark 只是损毁检测（异家族 0.594 约等于本尊 0.593）。附四条评估军规，与 Cortex 的参数级写入互为前置。</p>
