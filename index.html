@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/sim-crsi.html">给自我改进的 Agent 配一本工程日志：SIM 把递归自我改进做成可持续的事</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-18</span><span class="article-sep">·</span><span class="article-tag">自我改进 · Agent 记忆 · 持续学习 · Google</span></div>
+<p class="article-desc">RSI 研究的默认前提是模型和 benchmark 不变，Google Cloud AI × DeepMind 把这个前提拆了：Opus 上进化好的 harness 搬去 Gemini，开局 68.41 比 seed 的 73.89 还低——沉默的代码会背叛你。SIM 的反转在于记忆对象：不是给执行 agent 的记忆，是给 harness 优化器的记忆。entry 按复发性问题（root cause）键控，记录诊断、修改、预测、观察、出处，预测在评估前写、评估后核对——把自改从玄学变成假设检验，失败也入账；几十个 entry 零检索全量读，是对 RAG 式记忆的工程反例。成绩单：跨数据集 6/6 全胜，跨模型 4/4 全胜（workspace 差 11.33），十组配对 9/10 胜（均值 +2.36，p=0.003），Gemini 代际链 3/4 胜，源域遗忘 3/225 对 6/225——迁移与保留兼得。最味道的细节是 completion gate 的跨域旅行：无 SIM 的优化器把继承来的门控当成自己第一轮发明的。元层面的 continual learning 回归：transfer、forgetting、interference 全员到齐，只是对象从模型权重换成了 harness 代码。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/wsp-without-transformers.html">写权重不需要 Transformer：三个前沿 LLM 把架构投回了关联记忆</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-17</span><span class="article-sep">·</span><span class="article-tag">权重空间 · 关联记忆 · 架构设计 · POSTECH</span></div>
 <p class="article-desc">让 LLM 自由选架构，它还会选 Transformer 吗？POSTECH 的 Ok 与 Lee 给了干脆的答案：不会。Opus 5.5、GPT-6.1 Sol、GPT-6 Astra 在只给十道标注样例加执行沙盒的条件下，全部收敛到六十年代的老古董关联记忆——明文事实编译成 4,288 行稀疏表，固定程序读表匹配，没有 attention 没有 MLP。两条可写性公理实测成立：可追溯（每选项只留最匹配一行，50.8→49.1 几乎无损），可局部编辑（删一行重建平均只动 0.5–1.8 个答案，Transformer 同样写入平均搅动 4.8 个、最差 1350 个）；最有杀伤力的对照组——同样内容写进 Transformer 反而输给拿它写的文本跑一次 BM25，平均低 8 分，知识被稠密键的相互干扰稀释。三个 LLM 自设计的模型最高 54.4%，赢过它们自己写的十五种 released 架构，参数少 1800 倍——没有预训练的 ARC 上，手写权重首次系统性赢梯度下降；代价是慢，46 个设计模型只有一个快过同尺寸 Transformer，中位数慢 9.4 倍。作者顺手做了折中版：概念配对哈希直接寻址，单题只读 120 行，3,530 题 18 毫秒跑完，比同尺寸 Transformer 快 17 倍只让约 3 个点。边界冷静：只会检索不会推理（MMLU 近随机），像素不可写（CIFAR 21–28%）但接 DINOv2 语义 token 零标注 96.1%。与 WSR 恰成一对：WSR 管「写了之后怎么知道写对」，这篇管「怎么写才能写得对」——先保证每个权重有名字。</p>
