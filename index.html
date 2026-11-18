@@ -264,6 +264,12 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/self-improving-memory.html">别再手写记忆 prompt：Meta 让 agent 自己搜出 56 分，再蒸馏进权重</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-18</span><span class="article-sep">·</span><span class="article-tag">自我改进 · Agent 记忆 · Harness 蒸馏 · Meta FAIR</span></div>
+<p class="article-desc">决定 agent 记什么、怎么读回的 LOAD/OFFLOAD prompt 一直是人写的，而四种人类设计在 CLB 三任务上没有一个全胜——Meta FAIR 的答案釜底抽薪：别写了。meta agent 读任务 agent 的轨迹与分数、归因失败模式、重写记忆指令、外循环保留最优，56.0 分超人类手写最好 11.4，Codebase 单任务高 20.6。更精巧的是 harness distillation：轨迹录完后把优化 prompt 换回通用版再做 SFT——优化版只规定记忆设计、行为天然兼容，无需纠正 agent；模型仅靠通用 prompt 拿到 43.1，比通用轨迹 SFT 高 5.5，约 35% 的 prompt 收益进了权重。冷数据 37/44：44 个修订提案 37 个没超过历史最优，元优化的胜负手在评估与选择。与 Google SIM（存在存储层的日志）合读正好构成一个栈：日志是权重的缓存，权重是日志的固化。</p>
+</li>
+
+<li class="article-item">
 <h2><a href="papers/sim-crsi.html">给自我改进的 Agent 配一本工程日志：SIM 把递归自我改进做成可持续的事</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-18</span><span class="article-sep">·</span><span class="article-tag">自我改进 · Agent 记忆 · 持续学习 · Google</span></div>
 <p class="article-desc">RSI 研究的默认前提是模型和 benchmark 不变，Google Cloud AI × DeepMind 把这个前提拆了：Opus 上进化好的 harness 搬去 Gemini，开局 68.41 比 seed 的 73.89 还低——沉默的代码会背叛你。SIM 的反转在于记忆对象：不是给执行 agent 的记忆，是给 harness 优化器的记忆。entry 按复发性问题（root cause）键控，记录诊断、修改、预测、观察、出处，预测在评估前写、评估后核对——把自改从玄学变成假设检验，失败也入账；几十个 entry 零检索全量读，是对 RAG 式记忆的工程反例。成绩单：跨数据集 6/6 全胜，跨模型 4/4 全胜（workspace 差 11.33），十组配对 9/10 胜（均值 +2.36，p=0.003），Gemini 代际链 3/4 胜，源域遗忘 3/225 对 6/225——迁移与保留兼得。最味道的细节是 completion gate 的跨域旅行：无 SIM 的优化器把继承来的门控当成自己第一轮发明的。元层面的 continual learning 回归：transfer、forgetting、interference 全员到齐，只是对象从模型权重换成了 harness 代码。</p>
