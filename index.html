@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/guard-rsi.html">GUARD：递归自我改进的稳定器——先拆方向，再加门控</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-20</span><span class="article-sep">·</span><span class="article-tag">自我改进 · RSI · Agent 自进化 · Google Cloud</span></div>
+<p class="article-desc">agent 自我改进最怕的不是学不会，而是改进本身把学会的东西弄丢。GUARD 点破病根是方向盲：反思和标量分数把这次编辑新弄坏的、与一直没解决的两种失败信号混为一谈，喂给优化器就出现过度触发、灾难性遗忘、记忆污染三种崩坏。解法四步环环相扣：预执行原子判据清单、Soft-HURT 区分退化方向、Gate+Ledger 只放行有证据的改动、pin+工具签名分区防遗忘。EvoHarness ACC 80.80% 八胜零负、tokens -54.5%，Drift Gauntlet 遗忘 0.00pp、19/19 晋级改动零回退。RSI 三部曲收官：SIM 记什么、Meta 装哪里、GUARD 怎么改才不崩。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/self-improving-memory.html">别再手写记忆 prompt：Meta 让 agent 自己搜出 56 分，再蒸馏进权重</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-18</span><span class="article-sep">·</span><span class="article-tag">自我改进 · Agent 记忆 · Harness 蒸馏 · Meta FAIR</span></div>
 <p class="article-desc">决定 agent 记什么、怎么读回的 LOAD/OFFLOAD prompt 一直是人写的，而四种人类设计在 CLB 三任务上没有一个全胜——Meta FAIR 的答案釜底抽薪：别写了。meta agent 读任务 agent 的轨迹与分数、归因失败模式、重写记忆指令、外循环保留最优，56.0 分超人类手写最好 11.4，Codebase 单任务高 20.6。更精巧的是 harness distillation：轨迹录完后把优化 prompt 换回通用版再做 SFT——优化版只规定记忆设计、行为天然兼容，无需纠正 agent；模型仅靠通用 prompt 拿到 43.1，比通用轨迹 SFT 高 5.5，约 35% 的 prompt 收益进了权重。冷数据 37/44：44 个修订提案 37 个没超过历史最优，元优化的胜负手在评估与选择。与 Google SIM（存在存储层的日志）合读正好构成一个栈：日志是权重的缓存，权重是日志的固化。</p>
