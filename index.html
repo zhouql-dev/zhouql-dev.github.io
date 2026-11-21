@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/self-rewriting.html">语言模型第一次改了自己的权重——Self-Rewriting Agent</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-21</span><span class="article-sep">&middot;</span><span class="article-tag">论文解读 &middot; RSI &middot; 权重编辑 &middot; 终身学习</span></div>
+<p class="article-desc">图灵 1947 年「让机器修改自己的指令」的愿景第一次有了实验结果：27B 开源模型靠自己的推理改写自己的权重——没有梯度、没有训练，只有前向传播。会话即实验室：起始诊断定位失败模式，CODE 工具直接读写权重张量，配对测试不过就撤回，最终在从未见过的 490 道题上 +6.6 分。更狠的是损坏修复实验：权重被噪声破坏后模型自己找到 layer 30 病灶并裁剪修复，而这套修复经验只在文本题上获得，却在六个从未见过的图像 benchmark 平均拿回 83%——它修的是「病」，不是「题」。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/guard-rsi.html">GUARD：递归自我改进的稳定器——先拆方向，再加门控</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-20</span><span class="article-sep">·</span><span class="article-tag">自我改进 · RSI · Agent 自进化 · Google Cloud</span></div>
 <p class="article-desc">agent 自我改进最怕的不是学不会，而是改进本身把学会的东西弄丢。GUARD 点破病根是方向盲：反思和标量分数把这次编辑新弄坏的、与一直没解决的两种失败信号混为一谈，喂给优化器就出现过度触发、灾难性遗忘、记忆污染三种崩坏。解法四步环环相扣：预执行原子判据清单、Soft-HURT 区分退化方向、Gate+Ledger 只放行有证据的改动、pin+工具签名分区防遗忘。EvoHarness ACC 80.80% 八胜零负、tokens -54.5%，Drift Gauntlet 遗忘 0.00pp、19/19 晋级改动零回退。RSI 三部曲收官：SIM 记什么、Meta 装哪里、GUARD 怎么改才不崩。</p>
