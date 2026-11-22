@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/memory-cl-survey.html">从经验到记忆，从记忆到权重：持续学习的三级台阶</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-22</span><span class="article-sep">&middot;</span><span class="article-tag">综述 &middot; 持续学习 &middot; Agent 记忆 &middot; 经验学习</span></div>
+<p class="article-desc">持续学习的瓶颈不再只是学不学得会：Opus 上进化好的 harness 搬到 Gemini 只剩 68.41，比不进化（73.89）还低；连续 50 次编辑后，传统方法巩固率只剩 22.7%。10 篇工作按一条梯子排开——经验写进记忆（Meta 自动发现 56.0、RIME 用 RL 训写记忆 0.82→10.55、AutoMem 只优化记忆翻 2–4 倍）、记忆记成可追责的过程（SIM 配对 9/10 胜、+2.36、p=0.003）、过程再转正进权重（Cortex CR 88.9%/RR 99.8%，只用 0.74M 参数，参数量差 478 倍）；删除与审计是这条梯子的两道边界：Deletion Tuning 只删不写、遗忘近零，而 44 个候选修订有 37 个没能超过历史最优。7 张原文插图、10 条文献。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/weight-space-survey.html">能读能写能合并：一万次连续编辑后，缺的是谁来审计</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-22</span><span class="article-sep">&middot;</span><span class="article-tag">综述 &middot; 权重空间 &middot; 模型编辑 &middot; 权重合并 &middot; 自我改写</span></div>
 <p class="article-desc">一个月里五个方向把「权重」从训练的产物变成可以直接操作的对象：编辑线连续改一万次就归零（ROSE 95.24% 对 FT-L 68.14%）、合并线不用数据不用前向也到 89.45%、自我改写让 27B 无梯度改自己并在 490 道没见过的题上 +6.6 分、静态预判能到 0.730 却在 40 次零变化编辑上报出 85% 的假变化。14 篇工作、6 张原文图、一条主线：写权限放开之后，验证必须外置——谁改，谁审计。</p>
