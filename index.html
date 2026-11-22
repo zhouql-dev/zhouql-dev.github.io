@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/weight-space-survey.html">能读能写能合并：一万次连续编辑后，缺的是谁来审计</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-22</span><span class="article-sep">&middot;</span><span class="article-tag">综述 &middot; 权重空间 &middot; 模型编辑 &middot; 权重合并 &middot; 自我改写</span></div>
+<p class="article-desc">一个月里五个方向把「权重」从训练的产物变成可以直接操作的对象：编辑线连续改一万次就归零（ROSE 95.24% 对 FT-L 68.14%）、合并线不用数据不用前向也到 89.45%、自我改写让 27B 无梯度改自己并在 490 道没见过的题上 +6.6 分、静态预判能到 0.730 却在 40 次零变化编辑上报出 85% 的假变化。14 篇工作、6 张原文图、一条主线：写权限放开之后，验证必须外置——谁改，谁审计。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/self-rewriting.html">语言模型第一次改了自己的权重——Self-Rewriting Agent</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-21</span><span class="article-sep">&middot;</span><span class="article-tag">论文解读 &middot; RSI &middot; 权重编辑 &middot; 终身学习</span></div>
 <p class="article-desc">图灵 1947 年「让机器修改自己的指令」的愿景第一次有了实验结果：27B 开源模型靠自己的推理改写自己的权重——没有梯度、没有训练，只有前向传播。会话即实验室：起始诊断定位失败模式，CODE 工具直接读写权重张量，配对测试不过就撤回，最终在从未见过的 490 道题上 +6.6 分。更狠的是损坏修复实验：权重被噪声破坏后模型自己找到 layer 30 病灶并裁剪修复，而这套修复经验只在文本题上获得，却在六个从未见过的图像 benchmark 平均拿回 83%——它修的是「病」，不是「题」。</p>
