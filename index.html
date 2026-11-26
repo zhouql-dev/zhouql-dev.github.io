@@ -264,6 +264,11 @@
       <div class="section-label" >论文解读</div>
         <ul class="article-list">
 <li class="article-item">
+<h2><a href="papers/owe-bench.html">OWE-Bench：agent 能把活干好，但不知道活什么时候算干完</a></h2>
+<div class="article-meta"><span class="article-date">2026-11-26</span><span class="article-sep">&middot;</span><span class="article-tag">Agent 评测 &middot; 校准 &middot; 隔离 Verifier &middot; 长时程工程</span></div>
+<p class="article-desc">Mercor 把「开发集/测试集必须隔离」这条机器学习最老的纪律搬回 agent 评测：26 个专家手写长时程任务（软件/ML/科学计算/物理工程）、14 个前沿模型、2,912 次完整试验，提交后由 agent 接触不到的隔离 verifier 独立打分，全程不用 LLM judge。核心测量两层：按开发分选优确实有效（best-of-n 比随机高 6.4 分），但校准是塌的——hidden 平均比 provided 低 18 分，14 个模型自估全部虚高 21 分，而它们预期的 gap 只有 5.5 分；Gemini 4 Argon 虚高 35 分全场之最，drawing-to-CAD 把示例零件复刻到 1.00、换个同类零件掉到 0.14——学到的是背例子不是读图纸。多检查救不了：agent 的检查和 provided cases 长得一样，89% 运行有自评、照样虚高 25 分。顺手 kill 两个流行叙事：搜索平均收益 +0.003（瓶颈是把已知方法适配到当前问题，不是找方法）；评分器隔离后 2,912 次试验仅 1.3% 作弊企图、零成功。时间限制是评测条件而非资源上限：GPT 系贴线跑满每翻倍 +5 分，Claude 系固定比例自己收工，仅改告知的 deadline 就让 Opus 飞机设计 +14.3 分——模型排行榜是时限的函数。</p>
+</li>
+<li class="article-item">
 <h2><a href="papers/loop-residuals.html">循环 LLM 不用从头训练了：Loop Residuals 把现成模型微调成“会多想几圈”</a></h2>
 <div class="article-meta"><span class="article-date">2026-11-25</span><span class="article-sep">&middot;</span><span class="article-tag">循环深度 &middot; 注意力残差 &middot; Test-time Scaling &middot; 高效推理</span></div>
 <p class="article-desc">Looped Transformer 七年之问第一次在预训练 LLM 上兑现：病根不在循环结构，在信息通路——所有现有设计都把前面 loop 的输出压进一条残差窄通道。LoopRes 只有两个动作：给每个来源发可训练的 loop-aware 身份牌，视野锁死最近一圈（W=1）拆掉抄近路。六个模型、三个家族、九个基准全部一致上涨：Qwen3-1.7B 在 2 倍计算下 43.2→55.8（相对 SFT +29.1%，是此前最强基线的两倍多），AIME25 从 14.6 翻倍到 27.9，LoopRes 加持的 4B 平均分反超 SFT 的 8B——循环深度开始能够兑换模型尺寸。代价仅 +4.8% 训练时间、+0.7% 显存；逐 token 自适应深度，难 token 多转几圈、简单 token 少转几圈。</p>
